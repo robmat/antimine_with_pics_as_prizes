@@ -1,5 +1,5 @@
 # Android an
-Classical anti-mine that rewards users with pictures as winning prizes.
+Classical anti-mine that rewards users with pictures as prizes.
 
 Work based on https://github.com/lucasnlm/antimine-android
 
@@ -7,8 +7,5 @@ Work based on https://github.com/lucasnlm/antimine-android
 
 1. Import into android studio
 2. Add `prize-images` directory in `app/src/main/assets` and some prize images inside
-3. Create `local.properties` file in root directory and add properties for AdMob:
-
-```properties
-manifest.ad.id=ca-app-pub-XXXXXXXXXXXXXXXXXXXXX
-adhelper.ad.id=ca-app-pub-XXXXXXXXXXXXXXXXXXXXX
+3. Update you app id for AdMob in: (AndroidManifest.xml)[proprietary/src/main/AndroidManifest.xml]
+4. Update you ad ids for AdMob in: (Ads.kt)[external/src/main/java/dev/lucasnlm/external/Ads.kt]
