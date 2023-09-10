@@ -8,7 +8,7 @@ class FeatureFlagManagerImpl : FeatureFlagManager() {
     override val isAdsOnNewGameEnabled: Boolean = false
     override val isAdsOnContinueEnabled: Boolean = false
     override val isContinueGameEnabled: Boolean = true
-    override val isFoss: Boolean = true
+    override val isFoss: Boolean = false
     override val minUsageToReview: Int = Int.MAX_VALUE
     override val useInterstitialAd: Boolean = false
     override val isBannerAdEnabled: Boolean = false
