@@ -415,7 +415,7 @@ class PreferencesRepositoryImpl(
     }
 
     override fun requestDonation(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_DONATION, true)
+        return false//preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_DONATION, true)
     }
 
     override fun letNumbersAutoFlag(): Boolean {
