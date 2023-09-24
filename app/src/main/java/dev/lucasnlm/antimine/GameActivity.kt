@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateUtils
@@ -20,6 +21,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
+import com.batodev.antimine.PRIZE_IMAGES
+import com.batodev.antimine.SettingsHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dev.lucasnlm.antimine.common.level.repository.SavesRepository
@@ -130,6 +133,8 @@ class GameActivity :
         onBackPressedDispatcher.addCallback {
             finish()
         }
+        val settingsHelper = SettingsHelper(this)
+        Log.d(TAG, settingsHelper.preferences.toString())
     }
 
     private fun handleIntent(intent: Intent) {
@@ -141,26 +146,27 @@ class GameActivity :
                     val upperDifficulty = queryParamDifficulty.uppercase()
                     val difficulty = Difficulty.values().firstOrNull { it.id == upperDifficulty }
                     if (difficulty == null) {
-                        gameViewModel.loadLastGame()
+                        gameViewModel.loadLastGame(this@GameActivity)
                     } else {
-                        gameViewModel.startNewGame(difficulty)
+                        gameViewModel.startNewGame(this@GameActivity, difficulty)
                     }
+                    bindPrizeImage()
                 }
                 extras.containsKey(DIFFICULTY) -> {
                     intent.removeExtra(DIFFICULTY)
                     val difficulty = extras.serializableNonSafe<Difficulty>(DIFFICULTY)
-                    gameViewModel.startNewGame(difficulty)
+                    gameViewModel.startNewGame(this@GameActivity, difficulty)
                 }
                 extras.containsKey(RETRY_GAME) -> {
                     val uid = extras.getInt(RETRY_GAME)
-                    gameViewModel.retryGame(uid)
+                    gameViewModel.retryGame(uid, this@GameActivity)
                 }
                 extras.containsKey(START_GAME) -> {
                     val uid = extras.getInt(START_GAME)
-                    gameViewModel.loadGame(uid)
+                    gameViewModel.loadGame(uid, this@GameActivity)
                 }
                 else -> {
-                    gameViewModel.loadLastGame()
+                    gameViewModel.loadLastGame(this@GameActivity)
                 }
             }
         }
@@ -310,6 +316,7 @@ class GameActivity :
                         refreshRetryShortcut(it.hasMines)
                     }
 
+                    bindPrizeImage()
                     keepScreenOn(it.isActive)
                 }
             }
@@ -439,6 +446,14 @@ class GameActivity :
                 }
             }
         }
+
+    private fun bindPrizeImage() {
+        if (gameViewModel.prizeImage != "") {
+            binding.gameBackground?.setImageBitmap(BitmapFactory.decodeStream(assets.open("$PRIZE_IMAGES/${gameViewModel.prizeImage}")))
+        } else {
+            Log.d(TAG, "gameViewModel.prizeImage: ${gameViewModel.prizeImage}")
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -670,7 +685,7 @@ class GameActivity :
                     activity = this,
                     onDismiss = {
                         lifecycleScope.launch {
-                            gameViewModel.startNewGame()
+                            gameViewModel.startNewGame(this@GameActivity)
                         }
                     },
                 )
@@ -680,19 +695,19 @@ class GameActivity :
                     skipIfFrequent = true,
                     onRewarded = {
                         lifecycleScope.launch {
-                            gameViewModel.startNewGame()
+                            gameViewModel.startNewGame(this@GameActivity)
                         }
                     },
                     onFail = {
                         lifecycleScope.launch {
-                            gameViewModel.startNewGame()
+                            gameViewModel.startNewGame(this@GameActivity)
                         }
                     },
                 )
             }
         } else {
             lifecycleScope.launch {
-                gameViewModel.startNewGame()
+                gameViewModel.startNewGame(this@GameActivity)
             }
         }
     }

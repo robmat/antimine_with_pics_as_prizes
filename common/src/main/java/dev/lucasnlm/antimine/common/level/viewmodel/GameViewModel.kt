@@ -3,10 +3,15 @@ package dev.lucasnlm.antimine.common.level.viewmodel
 import android.content.Context
 import android.text.SpannedString
 import android.util.LayoutDirection
+import android.util.Log
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.text.layoutDirection
 import androidx.lifecycle.viewModelScope
+import com.batodev.antimine.ImageHelper
+import com.batodev.antimine.SettingsHelper
 import dev.lucasnlm.antimine.common.level.database.models.FirstOpen
 import dev.lucasnlm.antimine.common.level.database.models.Save
 import dev.lucasnlm.antimine.common.level.logic.GameController
@@ -55,6 +60,8 @@ open class GameViewModel(
     private val featureFlagManager: FeatureFlagManager,
     private val clock: Clock,
 ) : IntentViewModel<GameEvent, GameState>() {
+    var prizeImage: String = ""
+    lateinit var context: Context
     private lateinit var gameController: GameController
     private var initialized = false
 
@@ -172,7 +179,7 @@ open class GameViewModel(
                     if (!wasCompleted) {
                         when {
                             isVictory && !gameController.hadMistakes() -> {
-                                onVictory()
+                                onVictory(context)
                                 newState = newState.copy(field = gameController.field())
 
                                 val totalMines = gameController.mines().count()
@@ -231,7 +238,10 @@ open class GameViewModel(
             }
         }
 
-    suspend fun startNewGame(newDifficulty: Difficulty = state.difficulty): Minefield {
+    suspend fun startNewGame(
+        context: Context,
+        newDifficulty: Difficulty = state.difficulty
+    ): Minefield {
         clock.reset()
         initialized = false
 
@@ -246,7 +256,8 @@ open class GameViewModel(
             sendEvent(GameEvent.LoadingNewGame)
 
             val seed = minefieldRepository.randomSeed()
-
+            prizeImage = ImageHelper.randomImage(context)
+            this@GameViewModel.context = context
             gameController =
                 GameController(
                     minefield = minefield,
@@ -254,6 +265,7 @@ open class GameViewModel(
                     useSimonTatham = preferencesRepository.useSimonTathamAlgorithm(),
                     onCreateUnsafeLevel = ::onCreateUnsafeLevel,
                     saveId = null,
+                    prizeImage = prizeImage
                 )
 
             val newGameState =
@@ -300,6 +312,8 @@ open class GameViewModel(
         initialized = true
 
         refreshUserPreferences()
+        prizeImage = save.prizeImage
+        gameController.prizeImage = prizeImage
 
         val newGameState =
             GameState(
@@ -344,6 +358,7 @@ open class GameViewModel(
                 useSimonTatham = preferencesRepository.useSimonTathamAlgorithm(),
                 saveId = save.uid,
                 onCreateUnsafeLevel = ::onCreateUnsafeLevel,
+                prizeImage = prizeImage
             )
         initialized = true
         refreshUserPreferences()
@@ -379,7 +394,7 @@ open class GameViewModel(
         )
     }
 
-    suspend fun loadGame(uid: Int): Minefield =
+    suspend fun loadGame(uid: Int, context: AppCompatActivity): Minefield =
         withContext(Dispatchers.IO) {
             val lastGame = savesRepository.loadFromId(uid)
 
@@ -387,7 +402,7 @@ open class GameViewModel(
                 resumeGameFromSave(lastGame)
             } else {
                 // Fail to load
-                startNewGame()
+                startNewGame(context)
             }
         }
 
@@ -406,7 +421,7 @@ open class GameViewModel(
         return gameController.hadMistakes() && gameController.hasIsolatedAllMines()
     }
 
-    suspend fun retryGame(uid: Int): Minefield =
+    suspend fun retryGame(uid: Int, context: AppCompatActivity): Minefield =
         withContext(Dispatchers.IO) {
             val save = savesRepository.loadFromId(uid)
 
@@ -425,11 +440,11 @@ open class GameViewModel(
                 save.minefield
             } else {
                 // Fail to load
-                startNewGame()
+                startNewGame(context)
             }
         }
 
-    suspend fun loadLastGame(): Minefield =
+    suspend fun loadLastGame(context: AppCompatActivity): Minefield =
         withContext(Dispatchers.IO) {
             val lastGame = savesRepository.fetchCurrentSave()
 
@@ -437,7 +452,7 @@ open class GameViewModel(
                 resumeGameFromSave(lastGame)
             } else {
                 // Fail to load
-                startNewGame()
+                startNewGame(context)
             }
         }
 
@@ -718,7 +733,16 @@ open class GameViewModel(
         return tipRepository.getTotalTips()
     }
 
-    private suspend fun onVictory() {
+    private suspend fun onVictory(context: Context) {
+        withContext(Dispatchers.IO) {
+            val settingsHelper = SettingsHelper(context)
+            val preferences = settingsHelper.preferences
+            if (!preferences.uncoveredPics.contains(prizeImage)) {
+                preferences.uncoveredPics.add(prizeImage)
+                settingsHelper.savePreferences()
+                Log.d(GameViewModel::class.java.simpleName, "Won prize: $prizeImage")
+            }
+        }
         analyticsManager.sentEvent(
             Analytics.Victory(
                 clock.time(),

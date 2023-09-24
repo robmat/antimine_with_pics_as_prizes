@@ -22,6 +22,7 @@ class GameController {
     private val startTime = System.currentTimeMillis()
     private var saveId = 0
     private var actions = 0
+    var prizeImage = ""
     private var firstOpen: FirstOpen = FirstOpen.Unknown
     private var gameControl: GameControl = GameControl.Standard
     private var useQuestionMark = true
@@ -49,6 +50,7 @@ class GameController {
         useSimonTatham: Boolean,
         saveId: Int? = null,
         onCreateUnsafeLevel: (() -> Unit)? = null,
+        prizeImage: String
     ) {
         val creationSeed = minefield.seed ?: seed
         val shouldUseSimonTatham = useSimonTatham
@@ -66,6 +68,7 @@ class GameController {
         this.onCreateUnsafeLevel = onCreateUnsafeLevel
         this.field = minefieldCreator.createEmpty()
         this.useSimonTatham = shouldUseSimonTatham
+        this.prizeImage = prizeImage
     }
 
     constructor(
@@ -467,6 +470,7 @@ class GameController {
             status = saveStatus,
             field = field.toList(),
             actions = actions,
+            prizeImage = prizeImage
         )
     }
 

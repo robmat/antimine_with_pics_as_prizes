@@ -38,4 +38,6 @@ data class Save(
     val field: List<Area>,
     @ColumnInfo(name = "actions")
     val actions: Int,
+    @ColumnInfo(name = "prizeImage")
+    val prizeImage: String
 )

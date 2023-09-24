@@ -90,7 +90,7 @@ class GameOverDialogFragment : CommonGameDialogFragment() {
 
                         newGame.setOnClickListener {
                             lifecycleScope.launch {
-                                gameViewModel.startNewGame()
+                                gameViewModel.startNewGame(context)
                             }
                             dismissAllowingStateLoss()
                         }

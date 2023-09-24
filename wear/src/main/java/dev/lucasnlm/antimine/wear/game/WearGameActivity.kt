@@ -141,17 +141,17 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
                     if (difficulty == null) {
                         gameViewModel.loadLastGame()
                     } else {
-                        gameViewModel.startNewGame(difficulty)
+                        gameViewModel.startNewGame(difficulty, this@GameActivity)
                     }
                 }
                 extras.containsKey(DIFFICULTY) -> {
                     intent.removeExtra(DIFFICULTY)
                     val difficulty = extras.serializableNonSafe<Difficulty>(DIFFICULTY)
-                    gameViewModel.startNewGame(difficulty)
+                    gameViewModel.startNewGame(difficulty, this@GameActivity)
                 }
                 extras.containsKey(NEW_GAME) -> {
                     intent.removeExtra(NEW_GAME)
-                    gameViewModel.startNewGame()
+                    gameViewModel.startNewGame(gameActivity = this@GameActivity)
                 }
                 extras.containsKey(RETRY_GAME) -> {
                     val uid = extras.getInt(RETRY_GAME)
@@ -159,7 +159,7 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
                 }
                 extras.containsKey(START_GAME) -> {
                     val uid = extras.getInt(START_GAME)
-                    gameViewModel.loadGame(uid)
+                    gameViewModel.loadGame(uid, this@GameActivity)
                 }
                 else -> {
                     gameViewModel.loadLastGame()
@@ -221,7 +221,7 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
                     if (it.isGameCompleted) {
                         binding.newGame.setOnClickListener {
                             lifecycleScope.launch {
-                                gameViewModel.startNewGame()
+                                gameViewModel.startNewGame(gameActivity = this@GameActivity)
                             }
                         }
                         binding.newGame.isVisible = true

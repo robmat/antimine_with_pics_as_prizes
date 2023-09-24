@@ -63,9 +63,10 @@ class WinGameDialogFragment : CommonGameDialogFragment() {
     }
 
     override fun continueGame() {
+        val context = requireContext()
         activity?.let { _ ->
             lifecycleScope.launch {
-                gameViewModel.startNewGame()
+                gameViewModel.startNewGame(context)
             }
             dismissAllowingStateLoss()
         }
