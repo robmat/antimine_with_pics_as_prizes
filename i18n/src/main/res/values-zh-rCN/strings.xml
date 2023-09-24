@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh-rCN">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh-rCN">
     <string name="tutorial">教程</string>
     <string name="tutorial_basic">游戏规则很简单：方块上的数字是周围地雷的数量；你必须标出所有地雷。</string>
     <string name="tutorial_text_1">如果一个数字和它周围的方块数量相等，那么这些方块都是地雷。</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">显示时钟</string>
     <string name="donate_request">如果您喜欢这个游戏，捐助我们吧</string>
     <string name="donate_help">这有助于保持该项目活跃</string>
-</resources>
+<string name="pictures_gallery">图片库</string></resources>

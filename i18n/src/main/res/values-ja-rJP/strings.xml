@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ja">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ja">
     <string name="tutorial">チュートリアル</string>
     <string name="tutorial_basic">ゲームのルールは簡単です。マスの数字はそのマスに隣接している地雷の数を表しているので、それを手がかりにすべての地雷に旗を立てていきます。</string>
     <string name="tutorial_text_1">数字が同じ数の開けていないマスに隣接していれば、それらはすべて地雷です。</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">時計の表示</string>
     <string name="donate_request">もしこのゲームが気に入ったら、ぜひご支援の検討をお願いします。</string>
     <string name="donate_help">このプロジェクトを長く続かせるのに一役買うでしょう！</string>
-</resources>
+<string name="pictures_gallery">写真ギャラリー</string></resources>

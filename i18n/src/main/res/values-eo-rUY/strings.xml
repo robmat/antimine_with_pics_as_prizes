@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="eo">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="eo">
     <string name="tutorial">Lernilo</string>
     <string name="tutorial_basic">La reguloj de la ludo estas simpla, la numero sur kvadrato signas la kvanton da la bomboj ĉirkaŭ ĝi, kaj vi devas flagi ĉiuj la bomboj.</string>
     <string name="tutorial_text_1">Se numero tuŝas la saman nombron da kvadratoj, do ĉiuj kvadratoj estas minoj.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Show clock</string>
     <string name="donate_request">Se vi ŝatas la ludon, konsideru donaci.</string>
     <string name="donate_help">It will help keep this project active!</string>
-</resources>
+<string name="pictures_gallery">Galerio de bildoj</string></resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="si-rLK">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="si-rLK">
     <string name="tutorial">නිබන්ධනය</string>
     <string name="tutorial_basic">ක්‍රීඩාවේ රීතිය සරලයි, චතුරස්‍රයක ඇති අංකය එයට යාබද පතල් ගණන පෙන්වන අතර ඔබ සියලු පතල් සලකුණු කළ යුතුය.</string>
     <string name="tutorial_text_1">සංඛ්‍යාවක් එකම වර්ග සංඛ්‍යාවක් ස්පර්ශ කරන්නේ නම්, එම වර්ග සියල්ලම පතල් වේ.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Show clock</string>
     <string name="donate_request">ඔබ මෙම ක්‍රීඩාවට කැමති නම්, පරිත්‍යාගයක් කිරීමට සලකා බලන්න.</string>
     <string name="donate_help">එය මෙම ව්‍යාපෘතිය ක්‍රියාකාරීව තබා ගැනීමට උපකාරී වනු ඇත!</string>
-</resources>
+<string name="pictures_gallery">පින්තූර ගැලරිය</string></resources>

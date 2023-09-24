@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hi">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hi">
     <string name="tutorial">ट्यूटोरियल</string>
     <string name="tutorial_basic">गेम का नियम सरल है, स्क्वेयर पर मौजूद संख्या उसके पास वाले माइन की संख्या को दर्शाती है और आपको सभी माइन पर फ़्लैग लगाना है.</string>
     <string name="tutorial_text_1">यदि कोई संख्या स्क्वेयर की समान संख्या को टच कर रही है, तो इसका मतलब है कि सभी स्क्वेयर माइन हैं.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Show clock</string>
     <string name="donate_request">अगर आपको यह खेल पसंद है, तो दान करने पर विचार करें।</string>
     <string name="donate_help">यह इस प्रोजैक्ट को सक्रिय रखने में मदद करेगा!</string>
-</resources>
+<string name="pictures_gallery">चित्र गैलरी</string></resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt-rPT">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt-rPT">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">A regra do jogo é simples, o número em um quadrado mostra o número de minas adjacentes a ele e você tem que sinalizar todas as minas.</string>
     <string name="tutorial_text_1">Se um número está atingindo o mesmo número de quadrados, então os quadrados são todos as minas.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Mostrar Relógio</string>
     <string name="donate_request">Se você gosta deste jogo, considere fazer uma doação.</string>
     <string name="donate_help">Isso ajudará a manter este projeto ativo!</string>
-</resources>
+<string name="pictures_gallery">Galeria de fotos</string></resources>

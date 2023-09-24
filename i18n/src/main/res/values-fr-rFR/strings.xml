@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="fr">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="fr">
     <string name="tutorial">Tutoriel</string>
     <string name="tutorial_basic">La règle du jeu est simple, le numéro sur un carré indique le nombre de mines adjacentes et vous devez marquer toutes les mines.</string>
     <string name="tutorial_text_1">Si un numéro touche le même nombre de carrés, alors les carrés sont tous des mines.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Afficher l’horloge</string>
     <string name="donate_request">Si vous appréciez ce jeu, pensez à faire un don.</string>
     <string name="donate_help">Cela aidera à maintenir ce projet actif !</string>
-</resources>
+<string name="pictures_gallery">Galerie de photos</string></resources>

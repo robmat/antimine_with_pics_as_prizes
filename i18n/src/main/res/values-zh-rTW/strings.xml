@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh-rTW">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh-rTW">
     <string name="tutorial">教程</string>
     <string name="tutorial_basic">遊戲規則很簡單，方格上的數字顯示與其相鄰的地雷數量，您必須標記所有地雷。</string>
     <string name="tutorial_text_1">如果一個數字與相同數量的方塊接觸，那麼這些方塊都是地雷。</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">顯示時鐘</string>
     <string name="donate_request">如果您喜歡這款遊戲，不妨付費贊助。</string>
     <string name="donate_help">您的舉手之勞能使本專案繼續活躍！</string>
-</resources>
+<string name="pictures_gallery">图片库</string></resources>

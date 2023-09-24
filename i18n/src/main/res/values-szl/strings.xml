@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="szl">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="szl">
     <string name="tutorial">Samouczek</string>
     <string name="tutorial_basic">Prawidła tego szpilu sōm snadne. Numer pokozany na polu ôznaczo wielość min, kere przilygajōm do tego pola. Twojim auftragym je ôznaczyć wszyjske z ônych.</string>
     <string name="tutorial_text_1">Jeźli do pola z numerym przilygo tela samo niyôdkrytych polōw na wiela skazuje tyn numer, to na wszyjskich tych polach sōm miny.</string>

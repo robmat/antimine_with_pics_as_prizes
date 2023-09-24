@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="lv">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="lv">
     <string name="tutorial">Pamācība</string>
     <string name="tutorial_basic">Spēles noteikumi ir vienkārši: kvadrātā ierakstītiais skaitlis apzīmē apkārt esošo mīnu skaitu, un tās visas ir nepieciešams atzīmēt ar karogu.</string>
     <string name="tutorial_text_1">Ja skaitlis pieskaras tikpat kvadrātiem cik norādīts, tad visi kvadrāti ir mīnas.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Rādīt pulksteni</string>
     <string name="donate_request">Lūgums apsvērt ziedojumu, ja patīk šī spēle.</string>
     <string name="donate_help">Tas palīdzēs nodrošināt izstrādi.</string>
-</resources>
+<string name="pictures_gallery">Bilžu galerija</string></resources>

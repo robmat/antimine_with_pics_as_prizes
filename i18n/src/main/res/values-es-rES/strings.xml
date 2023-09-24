@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es-rES">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="es-rES">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">Las reglas de este juego son sencillas. El número de un cuadrado te muestra la cantidad de minas adyacentes. Deberás colocar una bandera sobre cada mina.</string>
     <string name="tutorial_text_1">Si el número que aparece es el mismo número de cuadrados adyacentes, entonces todos esos cuadrados serán minas.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Mostrar reloj</string>
     <string name="donate_request">Si te gusta el juego, aceptamos cualquier tipo de donación.</string>
     <string name="donate_help">¡Eso nos ayudará a mantener este proyecto activo!</string>
-</resources>
+<string name="pictures_gallery">galería de fotos</string></resources>

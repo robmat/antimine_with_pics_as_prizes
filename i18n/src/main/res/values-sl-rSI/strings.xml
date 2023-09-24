@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="sl">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="sl">
     <string name="app_name">Antimine</string>
     <string name="tutorial">Vadba</string>
     <string name="tutorial_basic">Pravila igre so preprosta. Števlika prikazana na polju prikazuje število min v okolici, katere je potrebno označiti z zastavo.</string>
@@ -116,4 +115,4 @@
     <string name="no_guess_fail_warning">Trenutnega polja ni mogoče končati prez ugibanja!</string>
     <string name="fixed_size">Fiksna velikost</string>
     <string name="progressive">Progresivno</string>
-</resources>
+<string name="control_settings">Nastavitve nadzora</string><string name="shapes">Oblike</string><string name="quit">Prenehati</string><string name="seed">Seme</string><string name="export_settings">Izvozi</string><string name="import_settings">Uvozi</string><string name="exported_success">Nastavitve izvožene!</string><string name="imported_success">Nastavitve uvožene!</string><string name="music">Glasba</string><string name="music_by">Glasba %1$s</string><string name="check_music">Poslušajte na Spotify…</string><string name="selected">Izbrano</string><string name="control_types">Vrste nadzora</string><string name="mine_revealed">Odkrit je bil rudnik</string><string name="fail_to_load_ad">Oglasa ni bilo mogoče naložiti</string><string name="error">Napaka!</string><string name="unlock_all">Odkleni vse</string><string name="language">Jezik</string><string name="creating_valid_game">Ustvarjanje veljavne igre …</string><string name="pictures_gallery">Galerija slik</string><string name="flag_when_tap_numbers">Označi, ko se dotakneš številk</string><string name="highlight_unsolved_numbers">Označite nerešena števila</string><string name="show_clock">Pokaži uro</string><string name="donate_request">Če vam je ta igra všeč, razmislite o donaciji.</string><string name="donate_help">To bo pomagalo ohraniti ta projekt aktiven!</string></resources>

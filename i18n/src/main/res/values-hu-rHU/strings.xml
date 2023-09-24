@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hu">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="hu">
     <string name="tutorial">Ismertető</string>
     <string name="tutorial_basic">A játékszabály egyszerű, a négyzeten lévő szám mutatja a szomszédos aknák számát. A cél minden akna megjelölése.</string>
     <string name="tutorial_text_1">Ha egy szám ugyanannyi négyzetet érint, akkor a négyzetek mind aknák.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Óra megjelenítése</string>
     <string name="donate_request">Ha tetszik ez a játék, fontolja meg az adományozást.</string>
     <string name="donate_help">Ez segíteni fog abban, hogy ez a projekt aktív maradjon!</string>
-</resources>
+<string name="pictures_gallery">Képgaléria</string></resources>

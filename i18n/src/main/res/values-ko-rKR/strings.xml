@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ko">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ko">
     <string name="tutorial">튜토리얼</string>
     <string name="tutorial_basic">게임의 규칙은 간단합니다. 네모 위의 숫자는 인접한 칸의 지뢰의 수를 보여주고, 지뢰가 있는 모든 칸에 깃발을 꽂아야 합니다.</string>
     <string name="tutorial_text_1">만약 숫자가 맞닿은 네모 칸의 수와 같다면, 그 칸들에는 모두 지뢰가 있는 것입니다.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">시계 표시</string>
     <string name="donate_request">이 게임이 좋으시다면, 후원을 고려해주세요.</string>
     <string name="donate_help">프로젝트를 지속적으로 진행하는 데 도움이 됩니다!</string>
-</resources>
+<string name="pictures_gallery">사진 갤러리</string></resources>

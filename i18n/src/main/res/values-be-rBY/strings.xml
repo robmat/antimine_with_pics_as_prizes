@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="be">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="be">
     <string name="tutorial">Кіраўніцтва</string>
     <string name="tutorial_basic">Правілы гульні простыя: лік на квадраце паказвае колькасць мін, якія прымыкаюць да яго, і вы павінны адзначыць усе міны.</string>
     <string name="tutorial_text_1">Калі лік датыкаецца з аднолькавай колькасцю квадратаў, то ўсе квадраты з\'яўляюцца мінамi.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Паказваць гадзіннік</string>
     <string name="donate_request">Калі вам падабаецца гэтая гульня, падумайце аб ахвяраванні.</string>
     <string name="donate_help">Гэта дапаможа падтрымліваць гэты праект актыўным!</string>
-</resources>
+<string name="pictures_gallery">Галерэя малюнкаў</string></resources>

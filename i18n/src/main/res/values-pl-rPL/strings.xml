@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pl">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pl">
     <string name="tutorial">Samouczek</string>
     <string name="tutorial_basic">Reguły gry są proste. Liczba widoczna na polu oznacza ilość min przylegających do tego pola, a Twoim zadaniem jest oznaczyć je wszystkie.</string>
     <string name="tutorial_text_1">Jeśli do pola z liczbą przylega taka sama liczba nieodkrytych pól na jaką wskazuje ta liczba, to na wszystkich tych polach są miny.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Pokaż zegar</string>
     <string name="donate_request">Jeśli lubisz tę grę, rozważ przekazanie darowizny.</string>
     <string name="donate_help">Dzięki temu będzie ona dalej rozwijana!</string>
-</resources>
+<string name="pictures_gallery">Galeria zdjęć</string></resources>

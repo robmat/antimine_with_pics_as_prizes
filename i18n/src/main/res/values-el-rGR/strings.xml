@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="el">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="el">
     <string name="tutorial">Οδηγίες</string>
     <string name="tutorial_basic">Ο κανόνας του παιχνιδιού είναι απλός, ο αριθμός σε ένα τετράγωνο δείχνει τον αριθμό των ναρκών δίπλα σε αυτό και θα πρέπει να επισημάνετε όλες τις νάρκες.</string>
     <string name="tutorial_text_1">Εάν ένας αριθμός αγγίζει τον ίδιο αριθμό τετραγώνων, τότε τα τετράγωνα είναι όλες οι νάρκες.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Εμφάνιση ρολογιού</string>
     <string name="donate_request">Αν σας αρέσει αυτό το παιχνίδι, σκεφτείτε να κάνετε μια δωρεά.</string>
     <string name="donate_help">Θα βοηθήσει να διατηρηθεί αυτό το έργο ενεργό!</string>
-</resources>
+<string name="pictures_gallery">Γκαλερί εικόνων</string></resources>

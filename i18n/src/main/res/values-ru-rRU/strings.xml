@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ru">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ru">
     <string name="tutorial">Обучение</string>
     <string name="tutorial_basic">Правило игры простое, число на квадрате показывает количество мин вокруг него, и Вы должны отметить все мины.</string>
     <string name="tutorial_text_1">Если число отображает количество всех квадратов, то во всех квадратах мины.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Отображать часы</string>
     <string name="donate_request">Если вам нравится эта игра, подумайте о том, чтобы сделать пожертвование.</string>
     <string name="donate_help">Это поможет сохранить проект активным!</string>
-</resources>
+<string name="pictures_gallery">Галерея фотографий</string></resources>

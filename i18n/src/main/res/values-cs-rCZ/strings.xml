@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="cs">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="cs">
     <string name="tutorial">Průvodce</string>
     <string name="tutorial_basic">Pravidlo hry je jednoduché, číslo na čtverci ukazuje počet min, které s ním sousedí a Vy musíte označit všechny miny.</string>
     <string name="tutorial_text_1">Pokud se číslo dotýká stejného počtu čtverců, jsou ve čtvercích miny.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Zobrazit hodiny</string>
     <string name="donate_request">Pokud se vám hra líbí, zvažte možnost přispět.</string>
     <string name="donate_help">Pomůžete nám udržet tento projekt aktivní!</string>
-</resources>
+<string name="pictures_gallery">Galerie obrázků</string></resources>

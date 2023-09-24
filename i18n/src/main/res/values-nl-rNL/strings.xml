@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="nl">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="nl">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">De regels van het spel zijn eenvoudig: het getal op een vierkant toont het aantal mijnen dat ernaast ligt, en je moet alle mijnen markeren met een vlag.</string>
     <string name="tutorial_text_1">Als een nummer hetzelfde aantal vierkanten raakt, zijn de vierkanten allemaal mijnen.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Show clock</string>
     <string name="donate_request">Overweeg een donatie te doen als je dit spel leuk vind.</string>
     <string name="donate_help">Hierdoor kan het project actief blijven!</string>
-</resources>
+<string name="pictures_gallery">Fotogalerij</string></resources>

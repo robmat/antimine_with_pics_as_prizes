@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="da">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="da">
     <string name="tutorial">Vejledning</string>
     <string name="tutorial_basic">Reglen for spillet er enkel, nummeret på en firkant viser antallet af miner ved siden af, og du skal markere alle minerne.</string>
     <string name="tutorial_text_1">Hvis et tal rører det samme antal firkanter, så er kvadraterne alle miner.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Vis ur</string>
     <string name="donate_request">Hvis du kan lide dette spil, overvej at lave en donation.</string>
     <string name="donate_help">Det vil bidrage til at holde projektet aktivt!</string>
-</resources>
+<string name="pictures_gallery">Billedgalleri</string></resources>

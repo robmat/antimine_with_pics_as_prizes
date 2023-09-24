@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="sv-rSE">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="sv-rSE">
     <string name="tutorial">Guide</string>
     <string name="tutorial_basic">Reglerna är enkla, siffran på en kvadrat visar antalet minor bredvid den och man måste flagga alla minor.</string>
     <string name="tutorial_text_1">Om ett tal rör samma antal rutor, då är alla rutor minor.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Visa klocka</string>
     <string name="donate_request">Om du gillar spelet, överväg om du vill göra en donation.</string>
     <string name="donate_help">Det kommer hjälpa till att hålla projektet aktivt!</string>
-</resources>
+<string name="pictures_gallery">Bildgalleri</string></resources>

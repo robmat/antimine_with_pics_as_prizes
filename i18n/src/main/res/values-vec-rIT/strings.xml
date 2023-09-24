@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="vec">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="vec">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">Ła règoła de\'l zogo ła ze sénplise, el nùmaro sora de un cuadrato el mostra el nùmaro de mine tacà de łu e te ghè da marcar tute łe mine.</string>
     <string name="tutorial_text_1">Se un nùmaro el ze tacà a el steso nùmaro de cuadrài, łora i cuadrài i ze tuti mine.</string>

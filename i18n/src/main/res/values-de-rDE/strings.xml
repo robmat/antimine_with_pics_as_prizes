@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="de">
     <string name="tutorial">Anleitung</string>
     <string name="tutorial_basic">Die Regeln des Spiels sind einfach. Die Zahl auf einem Quadrat zeigt die Anzahl an benachbarten Minen an, und deine Aufgabe ist es, alle Minen zu markieren.</string>
     <string name="tutorial_text_1">Falls eine Zahl gleich der Anzahl an berührenden Quadraten ist, dann sind diese Quadrate alle vermint.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Uhr anzeigen</string>
     <string name="donate_request">Wenn dir dieses Spiel gefällt, erwäge eine Spende zu tätigen.</string>
     <string name="donate_help">Es wird helfen, dieses Projekt aktiv zu halten!</string>
-</resources>
+<string name="pictures_gallery">Bildergalerie</string></resources>

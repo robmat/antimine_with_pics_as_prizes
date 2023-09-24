@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="fi">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="fi">
     <string name="tutorial">Johdanto</string>
     <string name="tutorial_basic">Pelin sääntö on yksinkertainen: ruudussa oleva numero kertoo sen vierellä olevien miinojen määrän, ja sinun täytyy merkitä kaikki miinat.</string>
     <string name="tutorial_text_1">Jos numero koskettaa samaa määrää ruutuja, ovat ne kaikki ruudut miinoja.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Show clock</string>
     <string name="donate_request">Jos pidät pelistä, harkitse lahjoittamista.</string>
     <string name="donate_help">Se auttaisi pitämään tämän projektin aktiivisena!</string>
-</resources>
+<string name="pictures_gallery">Kuvagalleria</string></resources>

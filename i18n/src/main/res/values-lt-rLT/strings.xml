@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="lt">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="lt">
     <string name="tutorial">Apmokymas</string>
     <string name="tutorial_basic">Žaidimo taisyklės yra paprastos - skaičius kvadrate rodo minų skaičių aplink jį. Jūsų tikslas yra pažymėti visas minas.</string>
     <string name="tutorial_text_1">Jei skaičius liečia vienodą skaičių kvadratų, tai visi kvadratai turi minų.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Rodyti laikrodį</string>
     <string name="donate_request">Jei jums patinka šis žaidimas, apsvarstykite galimybę paremti kūrėją.</string>
     <string name="donate_help">Tai padės šiam projektui išlikti aktyviam!</string>
-</resources>
+<string name="pictures_gallery">Paveikslėlių galerija</string></resources>

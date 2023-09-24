@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="id">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="id">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">Peraturan permainannya mudah, angka pada kotak menunjukan jumlah ranjau yang berdekatan dengannya dan Anda harus menandai semua ranjau.</string>
     <string name="tutorial_text_1">Jika angka menyentuh jumlah kotak yang sama, maka semua kotak tersebut adalah ranjau.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Show clock</string>
     <string name="donate_request">Jika Anda menyukai permainan ini, pertimbangkan untuk berdonasi.</string>
     <string name="donate_help">It will help keep this project active!</string>
-</resources>
+<string name="pictures_gallery">Galeri gambar</string></resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ar">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ar">
     <string name="tutorial">التدريب</string>
     <string name="tutorial_basic">قاعدة اللعبة بسيطة، الرقم الموجود على المربع يوضح عدد الألغام المجاورة لها وعليك وضع علامة على جميع الألغام.</string>
     <string name="tutorial_text_1">إذا كان الرقم يلامس نفس العدد من المربعات، فإن المربعات كلها ألغام.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">إظهار الساعة</string>
     <string name="donate_request">If you like this game, consider making a donation.</string>
     <string name="donate_help">It will help keep this project active!</string>
-</resources>
+<string name="pictures_gallery">معرض الصور</string></resources>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="tr">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="tr">
     <string name="tutorial">Eğitim</string>
     <string name="tutorial_basic">Oyunun kuralı basit, bir karenin üzerindeki sayı ona bitişik olan mayınların sayısını gösterir ve tüm mayınları işaretlemeniz gerekir.</string>
     <string name="tutorial_text_1">Eğer bir sayı aynı sayıda kareye dokunuyorsa, karelerin hepsi mayınlıdır.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Saati göster</string>
     <string name="donate_request">Eğer oyunu beğendiyseniz, bağış yapmayı unutmayın.</string>
     <string name="donate_help">Projeyi ayakta tutmamıza yardımcı olacaktır!</string>
-</resources>
+<string name="pictures_gallery">Resim galerisi</string></resources>

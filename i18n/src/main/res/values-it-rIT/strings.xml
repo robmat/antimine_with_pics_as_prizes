@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="it">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="it">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">Hai un\'unica regola da seguire: il numero della casella mostra la quantità di mine adiacenti a essa; dovrai segnalare tutte le mine.</string>
     <string name="tutorial_text_1">Se il numero è adiacente allo stesso numero di caselle ignote, allora quelle caselle saranno tutte mine.</string>
@@ -140,4 +139,4 @@
     <string name="show_clock">Mostra orologio</string>
     <string name="donate_request">Se il gioco ti è piaciuto, supporta i creatori con una donazione.</string>
     <string name="donate_help">Contribuirai a mantenere il progetto attivo!</string>
-</resources>
+<string name="pictures_gallery">Galleria di immagini</string></resources>
