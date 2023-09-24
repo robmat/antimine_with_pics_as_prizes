@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     android:fitsSystemWindows="false"
     android:paddingHorizontal="16dp"
-    tools:context=".main.MainActivity">
+    tools:context="com.batodev.antimine.main.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -422,43 +422,18 @@
                     android:orientation="vertical">
 
                     <FrameLayout
-                        android:id="@+id/removeAdsRoot"
+                        android:id="@+id/picturesGallleryRoot"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/removeAds"
+                            android:id="@+id/picturesGalllery"
                             style="@style/CustomButton"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start|center_vertical"
-                            android:text="@string/remove_ad" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/priceText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:includeFontPadding="false"
-                            android:paddingStart="0dp"
-                            android:paddingEnd="26dp"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            app:tint="?colorError"
-                            tools:text="$1,00" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/priceOff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/offer"
-                            android:visibility="gone"
-                            app:tint="?colorError"
-                            app:tintMode="multiply" />
+                            android:text="@string/pictures_gallery" />
                     </FrameLayout>
 
                     <com.google.android.material.button.MaterialButton

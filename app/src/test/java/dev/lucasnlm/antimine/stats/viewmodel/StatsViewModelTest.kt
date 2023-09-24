@@ -1,5 +1,7 @@
 package dev.lucasnlm.antimine.stats.viewmodel
 
+import com.batodev.antimine.stats.viewmodel.StatsEvent
+import com.batodev.antimine.stats.viewmodel.StatsViewModel
 import dev.lucasnlm.antimine.IntentViewModelTest
 import dev.lucasnlm.antimine.common.level.database.models.Stats
 import dev.lucasnlm.antimine.common.level.repository.MinefieldRepository

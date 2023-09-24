@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context="dev.lucasnlm.antimine.history.views.HistoryFragment">
+    tools:context="dev.lucasnlm.antimine.com.batodev.antimine.history.views.HistoryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saveHistory"

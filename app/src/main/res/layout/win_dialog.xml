@@ -140,11 +140,11 @@
                 tools:visibility="visible" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/remove_ads"
+                android:id="@+id/picturesGalllery"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/remove_ad"
+                android:text="@string/pictures_gallery"
                 android:textAllCaps="true"
                 android:visibility="gone"
                 app:strokeWidth="0dp"

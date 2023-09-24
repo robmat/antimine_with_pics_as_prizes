@@ -36,7 +36,7 @@
             android:fitsSystemWindows="true"
             android:showDividers="middle"
             android:stretchColumns="1"
-            tools:context=".stats.StatsActivity">
+            tools:context="com.batodev.antimine.stats.StatsActivity">
 
             <TableRow>
 

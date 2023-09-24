@@ -140,17 +140,6 @@
             </com.google.android.material.button.MaterialButton>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/remove_ads"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/remove_ad"
-                android:textAllCaps="true"
-                android:visibility="gone"
-                app:strokeWidth="0dp"
-                tools:visibility="visible" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/tutorial"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"

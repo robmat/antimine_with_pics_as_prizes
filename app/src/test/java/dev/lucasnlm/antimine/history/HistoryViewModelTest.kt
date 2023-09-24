@@ -6,9 +6,9 @@ import dev.lucasnlm.antimine.common.level.database.models.Save
 import dev.lucasnlm.antimine.common.level.database.models.SaveStatus
 import dev.lucasnlm.antimine.common.level.repository.SavesRepository
 import dev.lucasnlm.antimine.core.models.Difficulty
-import dev.lucasnlm.antimine.history.viewmodel.HistoryEvent
-import dev.lucasnlm.antimine.history.viewmodel.HistoryState
-import dev.lucasnlm.antimine.history.viewmodel.HistoryViewModel
+import com.batodev.antimine.history.viewmodel.HistoryEvent
+import com.batodev.antimine.history.viewmodel.HistoryState
+import com.batodev.antimine.history.viewmodel.HistoryViewModel
 import dev.lucasnlm.antimine.preferences.models.Minefield
 import io.mockk.coEvery
 import io.mockk.mockk

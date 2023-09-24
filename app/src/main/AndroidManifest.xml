@@ -33,7 +33,7 @@
     <dist:module dist:instant="true" />
 
     <application
-        android:name="dev.lucasnlm.antimine.MainApplication"
+        android:name="com.batodev.antimine.MainApplication"
         android:allowBackup="true"
         android:allowClearUserData="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -63,10 +63,10 @@
             android:required="false" />
 
         <activity
-            android:name="dev.lucasnlm.antimine.GameActivity"
+            android:name="com.batodev.antimine.GameActivity"
             android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTask"
-            android:parentActivityName=".main.MainActivity"
+            android:parentActivityName="com.batodev.antimine.main.MainActivity"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:saveEnabled="false"
             android:exported="true"
@@ -82,7 +82,7 @@
         </activity>
 
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.batodev.antimine.main.MainActivity"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTop"
@@ -102,20 +102,24 @@
         </activity>
 
         <activity
-            android:name="dev.lucasnlm.antimine.stats.StatsActivity"
+            android:name="com.batodev.antimine.stats.StatsActivity"
             android:label="@string/events"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name="dev.lucasnlm.antimine.history.HistoryActivity"
+            android:name="com.batodev.antimine.GalleryActivity"
+            android:label="@string/pictures_gallery" />
+
+        <activity
+            android:name="com.batodev.antimine.history.HistoryActivity"
             android:label="@string/previous_games" />
 
         <activity
-            android:name="dev.lucasnlm.antimine.l10n.LocalizationActivity"
+            android:name="com.batodev.antimine.l10n.LocalizationActivity"
             android:label="@string/language" />
 
         <activity
-            android:name="dev.lucasnlm.antimine.preferences.PreferencesActivity"
+            android:name="com.batodev.antimine.preferences.PreferencesActivity"
             android:label="@string/settings" />
 
         <meta-data android:name="com.android.automotive"
@@ -131,5 +135,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <provider
+            android:authorities="com.batodev.antimine.ImagesProvider"
+            android:name="com.batodev.antimine.ImagesProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
     </application>
 </manifest>

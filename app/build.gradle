@@ -10,7 +10,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    namespace 'dev.lucasnlm.antimine'
+    namespace 'com.batodev.antimine'
 
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
@@ -75,21 +75,21 @@ android {
     productFlavors {
         google {
             dimension 'version'
-            applicationId 'dev.lucasnlm.antimine'
+            applicationId 'com.batodev.antimine'
             versionNameSuffix " S"
         }
 
         googleInstant {
             versionCode 157
             dimension 'version'
-            applicationId 'dev.lucasnlm.antimine'
+            applicationId 'com.batodev.antimine'
             versionNameSuffix " I"
         }
 
         foss {
             dimension 'version'
             // There's a typo on F-Droid release :(
-            applicationId 'dev.lucanlm.antimine'
+            applicationId 'com.batodev.antimine'
             versionNameSuffix " F"
         }
     }
@@ -158,6 +158,9 @@ dependencies {
 
     // Konfetti
     implementation 'nl.dionsegijn:konfetti-xml:2.0.2'
+
+    // Photo view
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
     // Tests
     testImplementation 'junit:junit:4.13.2'

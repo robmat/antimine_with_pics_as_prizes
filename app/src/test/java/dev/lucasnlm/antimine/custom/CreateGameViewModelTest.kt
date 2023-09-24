@@ -1,8 +1,8 @@
 package dev.lucasnlm.antimine.custom
 
 import dev.lucasnlm.antimine.IntentViewModelTest
-import dev.lucasnlm.antimine.custom.viewmodel.CreateGameViewModel
-import dev.lucasnlm.antimine.custom.viewmodel.CustomEvent
+import com.batodev.antimine.custom.viewmodel.CreateGameViewModel
+import com.batodev.antimine.custom.viewmodel.CustomEvent
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.Minefield
 import io.mockk.every

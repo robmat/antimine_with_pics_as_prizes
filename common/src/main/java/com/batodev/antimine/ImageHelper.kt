@@ -1,6 +1,8 @@
 package com.batodev.antimine
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 
 const val PRIZE_IMAGES = "prize-images"
@@ -17,5 +19,9 @@ object ImageHelper {
         }
         Log.d(ImageHelper::class.java.simpleName, "imageDrawn: $imageDrawn")
         return imageDrawn
+    }
+
+    fun findBitmap(image: String, context: Context): Bitmap {
+        return BitmapFactory.decodeStream(context.assets.open("$PRIZE_IMAGES/$image"))
     }
 }
