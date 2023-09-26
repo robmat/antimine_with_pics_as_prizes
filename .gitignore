@@ -35,3 +35,7 @@ google-services.json
 # prize images
 app/src/main/assets/prize-images
 /wear/release/wear-release.aab
+/launcher.png
+/play_store_graphic.png
+
+/Screenshot_*
