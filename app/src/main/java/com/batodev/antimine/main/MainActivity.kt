@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.batodev.antimine.GalleryActivity
 import com.batodev.antimine.GameActivity
+import com.batodev.antimine.SettingsHelper
 import dev.lucasnlm.antimine.about.AboutActivity
 import dev.lucasnlm.antimine.common.level.database.models.SaveStatus
 import dev.lucasnlm.antimine.common.level.repository.MinefieldRepository

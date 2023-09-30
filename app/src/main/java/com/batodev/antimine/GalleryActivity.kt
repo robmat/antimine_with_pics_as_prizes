@@ -36,10 +36,12 @@ class GalleryActivity : Activity() {
         pics.clear()
         val settingsHelper = SettingsHelper(this)
         pics.addAll(settingsHelper.preferences.uncoveredPics)
-        findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
-            ImageHelper.findBitmap(pics[settingsHelper.preferences.lastSeenGalleryPic], this)
-        );
-        currentPic = pics[settingsHelper.preferences.lastSeenGalleryPic]
+        if (!pics.isEmpty()) {
+            findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
+                ImageHelper.findBitmap(pics[settingsHelper.preferences.lastSeenGalleryPic], this)
+            );
+            currentPic = pics[settingsHelper.preferences.lastSeenGalleryPic]
+        }
     }
 
     fun leftClicked(view: View) {

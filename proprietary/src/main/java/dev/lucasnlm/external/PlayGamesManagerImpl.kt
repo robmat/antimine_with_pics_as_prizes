@@ -63,7 +63,7 @@ class PlayGamesManagerImpl(
         }
     }
 
-    override fun hasGooglePlayGames(): Boolean = true
+    override fun hasGooglePlayGames(): Boolean = false
 
     override suspend fun silentLogin(): Boolean {
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN).build()

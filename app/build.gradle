@@ -9,13 +9,15 @@ if (System.getenv('IS_RELEASE_BUILD')) {
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+def versionCodeNum = 5
+
 android {
     namespace 'com.batodev.antimine'
 
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
-        versionCode 1
-        versionName '1.0.0'
+        versionCode versionCodeNum
+        versionName '1.0.4'
         minSdk 21
         targetSdk 34
         compileSdk 34
@@ -80,7 +82,7 @@ android {
         }
 
         googleInstant {
-            versionCode 1
+            versionCode versionCodeNum
             dimension 'version'
             applicationId 'com.batodev.antimine'
             versionNameSuffix " I"

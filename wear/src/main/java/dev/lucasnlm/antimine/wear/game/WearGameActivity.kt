@@ -139,30 +139,30 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
                     val upperDifficulty = queryParamDifficulty.uppercase()
                     val difficulty = Difficulty.values().firstOrNull { it.id == upperDifficulty }
                     if (difficulty == null) {
-                        gameViewModel.loadLastGame()
+                        gameViewModel.loadLastGame(this@WearGameActivity)
                     } else {
-                        gameViewModel.startNewGame(difficulty, this@GameActivity)
+                        gameViewModel.startNewGame(this@WearGameActivity, difficulty)
                     }
                 }
                 extras.containsKey(DIFFICULTY) -> {
                     intent.removeExtra(DIFFICULTY)
                     val difficulty = extras.serializableNonSafe<Difficulty>(DIFFICULTY)
-                    gameViewModel.startNewGame(difficulty, this@GameActivity)
+                    gameViewModel.startNewGame(this@WearGameActivity, difficulty)
                 }
                 extras.containsKey(NEW_GAME) -> {
                     intent.removeExtra(NEW_GAME)
-                    gameViewModel.startNewGame(gameActivity = this@GameActivity)
+                    gameViewModel.startNewGame(this@WearGameActivity)
                 }
                 extras.containsKey(RETRY_GAME) -> {
                     val uid = extras.getInt(RETRY_GAME)
-                    gameViewModel.retryGame(uid)
+                    gameViewModel.retryGame(uid, this@WearGameActivity)
                 }
                 extras.containsKey(START_GAME) -> {
                     val uid = extras.getInt(START_GAME)
-                    gameViewModel.loadGame(uid, this@GameActivity)
+                    gameViewModel.loadGame(uid, this@WearGameActivity)
                 }
                 else -> {
-                    gameViewModel.loadLastGame()
+                    gameViewModel.loadLastGame(this@WearGameActivity)
                 }
             }
         }
@@ -221,7 +221,7 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
                     if (it.isGameCompleted) {
                         binding.newGame.setOnClickListener {
                             lifecycleScope.launch {
-                                gameViewModel.startNewGame(gameActivity = this@GameActivity)
+                                gameViewModel.startNewGame(this@WearGameActivity)
                             }
                         }
                         binding.newGame.isVisible = true

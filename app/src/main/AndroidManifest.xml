@@ -26,10 +26,6 @@
         android:name="android.hardware.faketouch"
         android:required="false" />
 
-    <uses-feature
-        android:name="android.hardware.type.automotive"
-        android:required="false" />
-
     <dist:module dist:instant="true" />
 
     <application
@@ -66,7 +62,7 @@
             android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTask"
             android:parentActivityName="com.batodev.antimine.main.MainActivity"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_launcher"
             android:saveEnabled="false"
             android:exported="true"
             android:theme="@style/AppTheme">
@@ -85,7 +81,7 @@
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTop"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_launcher"
             android:saveEnabled="false"
             android:theme="@style/AppTheme">
 

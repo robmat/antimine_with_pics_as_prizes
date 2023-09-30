@@ -186,7 +186,7 @@ class BillingManagerImpl(
     }
 
     override fun isEnabled(): Boolean {
-        return true
+        return false
     }
 
     override suspend fun charge(activity: Activity) {

@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import com.batodev.antimine.GalleryActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batodev.antimine.R
+import com.batodev.antimine.SettingsHelper
 import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.core.parcelable
