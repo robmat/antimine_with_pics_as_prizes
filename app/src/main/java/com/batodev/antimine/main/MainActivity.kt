@@ -227,7 +227,7 @@ class MainActivity : ThemedActivity() {
                 setIconResource(com.batodev.antimine.R.drawable.ic_round_gallery_24)
             }
         } else {
-            if (!preferencesRepository.isPremiumEnabled() && billingManager.isEnabled()) {
+            if (!preferencesRepository.isPremiumEnabled()) {
                 billingManager.start()
 
                 lifecycleScope.launch {
