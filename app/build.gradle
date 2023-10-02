@@ -2,14 +2,12 @@ apply plugin: 'com.android.application'
 
 if (System.getenv('IS_RELEASE_BUILD')) {
     apply plugin: 'com.google.gms.google-services'
-    apply plugin: 'com.google.firebase.crashlytics'
-    apply plugin: 'com.google.firebase.firebase-perf'
 }
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-def versionCodeNum = 6
+def versionCodeNum = 12
 
 android {
     namespace 'com.batodev.antimine'
@@ -17,7 +15,7 @@ android {
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
         versionCode versionCodeNum
-        versionName '1.0.5'
+        versionName '1.0.11'
         minSdk 21
         targetSdk 34
         compileSdk 34
@@ -27,14 +25,14 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
 
+    Properties localProperties = new Properties()
+    localProperties.load(new FileReader(file('../local.properties')))
     signingConfigs {
         release {
-            if (System.getenv('IS_RELEASE_BUILD')) {
-                storeFile file(System.getenv('KEYSTORE'))
-                keyAlias System.getenv('KEY_ALIAS')
-                storePassword System.getenv('KEY_STORE_PASSWORD')
-                keyPassword System.getenv('KEY_PASSWORD')
-            }
+                storeFile file(localProperties.get('storeFile'))
+                keyAlias localProperties.get('keyAlias')
+                storePassword localProperties.get('storePassword')
+                keyPassword localProperties.get('keyPassword')
         }
     }
 
@@ -45,8 +43,8 @@ android {
         }
 
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -58,12 +56,12 @@ android {
     }
 
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_17
-        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
     testOptions {
