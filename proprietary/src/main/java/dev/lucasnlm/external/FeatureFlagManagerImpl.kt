@@ -1,12 +1,5 @@
 package dev.lucasnlm.external
 
-import android.util.Log
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import dev.lucasnlm.antimine.proprietary.BuildConfig
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
-
 class FeatureFlagManagerImpl : FeatureFlagManager() {
     private val defaultMap by lazy {
         mapOf(
@@ -24,32 +17,18 @@ class FeatureFlagManagerImpl : FeatureFlagManager() {
         )
     }
 
-    private val remoteConfig: FirebaseRemoteConfig? by lazy {
-        runCatching {
-            FirebaseRemoteConfig.getInstance().apply {
-                setDefaultsAsync(defaultMap)
-            }
-        }.getOrNull()
-    }
-
     private fun getBoolean(
         key: String,
         default: Boolean,
     ): Boolean {
-        return when {
-            BuildConfig.DEBUG -> default
-            else -> remoteConfig?.getBoolean(key) ?: default
-        }
+        return default
     }
 
     private fun getInt(
         key: String,
         default: Int,
     ): Int {
-        return when {
-            BuildConfig.DEBUG -> default
-            else -> remoteConfig?.getLong(key)?.toInt() ?: default
-        }
+        return default
     }
 
     override val isFoss: Boolean = false
@@ -99,15 +78,6 @@ class FeatureFlagManagerImpl : FeatureFlagManager() {
     }
 
     override suspend fun refresh() {
-        if (!BuildConfig.DEBUG && remoteConfig != null) {
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    remoteConfig?.fetchAndActivate()?.await()
-                }.onFailure {
-                    Log.e(TAG, "Fail to fetch flags", it)
-                }
-            }
-        }
     }
 
     companion object {
