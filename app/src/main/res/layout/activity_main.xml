@@ -323,6 +323,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/moreGames"
+                        style="@style/CustomButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/more_games"
+                        app:icon="@drawable/games_controller" />
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">

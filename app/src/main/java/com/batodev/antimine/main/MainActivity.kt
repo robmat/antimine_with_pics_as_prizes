@@ -201,6 +201,11 @@ class MainActivity : ThemedActivity() {
             startActivity(intent)
         }
 
+        binding.moreGames.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/dev?id=8228670503574649511"))
+            startActivity(i)
+        }
+
         binding.themes.setOnClickListener {
             soundManager.playClickSound()
             val intent = Intent(this, ThemeActivity::class.java)

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ca">
+<?xml version="1.0" encoding="utf-8" standalone="no"?><resources xmlns:tools="http://schemas.android.com/tools" tools:locale="ca">
     <string name="tutorial">Tutorial</string>
     <string name="tutorial_basic">Les regles del joc són simples, el número en un quadrat indica el número de mines que té adjacents, i heu de marcar totes les mines.</string>
     <string name="tutorial_text_1">Si un número està tocant el mateix nombre de quadrats, llavors tots els quadrats són mines.</string>
@@ -141,4 +140,4 @@
     <string name="donate_request">Si t\'agrada aquest joc, considera fer una donació.</string>
     <string name="donate_help">Ajudarà a mantenir actiu aquest projecte!</string>
     <string name="pictures_gallery">Galeria d\'imatges</string>
-</resources>
+<string name="more_games">Més jocs amb noies</string></resources>
