@@ -79,7 +79,7 @@ class AboutViewModel(
     }
 
     companion object {
-        private const val SOURCE_CODE = "https://github.com/lucasnlm/antimine-android"
+        private const val SOURCE_CODE = "https://github.com/robmat/antimine_with_pics_as_prizes"
         private const val CROWDIN_URL = "https://crowdin.com/project/antimine-android"
     }
 }

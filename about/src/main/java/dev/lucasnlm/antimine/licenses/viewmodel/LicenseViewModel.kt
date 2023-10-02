@@ -5,7 +5,7 @@ import dev.lucasnlm.antimine.core.viewmodel.IntentViewModel
 class LicenseViewModel : IntentViewModel<Void, LicenseState>() {
     private fun getLicensesList() =
         mapOf(
-            "Antimine" to "https://github.com/lucasnlm/antimine-android/blob/main/LICENSE",
+            "Antimine" to "https://github.com/robmat/antimine_with_pics_as_prizes/blob/main/LICENSE",
             "Android SDK License" to "https://developer.android.com/studio/terms",
             "Koin" to "https://github.com/InsertKoinIO/koin/blob/main/LICENSE",
             "LibGDX" to "https://github.com/libgdx/libgdx/blob/master/LICENSE",

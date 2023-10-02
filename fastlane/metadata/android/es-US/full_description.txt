@@ -25,4 +25,4 @@ Ganas el juego cuando marcas todas las minas en el campo minado.
 
 <b>Código Fuente</b>
 
-Este código fuente del juego está disponible en: <a href="https://github.com/lucasnlm/antimine-android">GitHub</a>
+Este código fuente del juego está disponible en: <a href="https://github.com/robmat/antimine_with_pics_as_prizes">GitHub</a>
