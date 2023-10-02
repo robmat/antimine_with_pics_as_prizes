@@ -9,7 +9,7 @@ class AppVersionManagerImpl(
 ) : AppVersionManager {
     private val valid by lazy {
         val id = application.packageName
-        debug || id == "com.logical.minato" || id == "dev.lucasnlm.antimine" || id == "dev.lucanlm.antimine"
+        debug || id == "com.logical.minato" || id == "com.batodev.antimine" || id == "dev.lucanlm.antimine"
     }
 
     override fun isValid(): Boolean {
