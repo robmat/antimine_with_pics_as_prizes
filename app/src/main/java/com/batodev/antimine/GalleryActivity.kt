@@ -95,24 +95,26 @@ class GalleryActivity : Activity() {
     }
 
     fun shareClicked(view: View) {
-        val imgFolder = PRIZE_IMAGES
-        val inputStream = assets.open("${imgFolder}${File.separator}${currentPic}")
-        val tmpImgPath = "tmp_shared/tmp.png"
-        val file = File(filesDir, tmpImgPath)
-        File(filesDir, "tmp_shared").mkdirs()
-        file.delete()
-        val outputStream: OutputStream = FileOutputStream(file)
-        val buffer = ByteArray(1024)
-        var bytesRead: Int
-        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-            outputStream.write(buffer, 0, bytesRead)
+        if (currentPic != "") {
+            val imgFolder = PRIZE_IMAGES
+            val inputStream = assets.open("${imgFolder}${File.separator}${currentPic}")
+            val tmpImgPath = "tmp_shared/tmp.png"
+            val file = File(filesDir, tmpImgPath)
+            File(filesDir, "tmp_shared").mkdirs()
+            file.delete()
+            val outputStream: OutputStream = FileOutputStream(file)
+            val buffer = ByteArray(1024)
+            var bytesRead: Int
+            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                outputStream.write(buffer, 0, bytesRead)
+            }
+            inputStream.close()
+            outputStream.close()
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            val uri = Uri.parse("content://com.batodev.antimine.ImagesProvider/$tmpImgPath")
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            shareIntent.type = "image/*"
+            startActivity(shareIntent)
         }
-        inputStream.close()
-        outputStream.close()
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        val uri = Uri.parse("content://com.batodev.antimine.ImagesProvider/$tmpImgPath")
-        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
-        shareIntent.type = "image/*"
-        startActivity(shareIntent)
     }
 }
