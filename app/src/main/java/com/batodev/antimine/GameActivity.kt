@@ -93,9 +93,9 @@ class GameActivity :
     }
 
     @SuppressLint("MissingSuperCall")
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.run(::handleIntent)
+        intent.run(::handleIntent)
 
         GameContext.zoom = 1.0f
         GameContext.zoomLevelAlpha = 1.0f
