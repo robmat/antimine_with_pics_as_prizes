@@ -7,7 +7,7 @@ if (System.getenv('IS_RELEASE_BUILD')) {
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-def versionCodeNum = 18
+def versionCodeNum = 19
 
 android {
     namespace 'com.batodev.antimine'
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
         versionCode versionCodeNum
-        versionName '1.0.17'
+        versionName '1.0.18'
         minSdk 21
         targetSdk 34
         compileSdk 34
