@@ -6,7 +6,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.10.1'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.21'
 
         if (System.getenv('IS_GOOGLE_BUILD')) {
             classpath 'com.google.gms:google-services:4.3.15'
@@ -23,5 +23,5 @@ allprojects {
 }
 
 tasks.register('clean', Delete) {
-    delete rootProject.buildDir
+    delete layout.buildDirectory
 }
