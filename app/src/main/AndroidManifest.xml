@@ -66,6 +66,7 @@
             android:saveEnabled="false"
             android:exported="true"
             android:theme="@style/AppTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -84,11 +85,6 @@
             android:roundIcon="@mipmap/ic_launcher"
             android:saveEnabled="false"
             android:theme="@style/AppTheme">
-
-            <tools:validation testUrl="https://www.lucasnlm.dev/antimine" />
-            <tools:validation testUrl="http://www.lucasnlm.dev/antimine" />
-            <tools:validation testUrl="https://www.lucasnlm.dev/" />
-            <tools:validation testUrl="http://www.lucasnlm.dev/" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
