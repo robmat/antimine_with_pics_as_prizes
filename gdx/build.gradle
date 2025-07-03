@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
-        minSdk 21
+        minSdk 23
         targetSdk 35
         compileSdk 35
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

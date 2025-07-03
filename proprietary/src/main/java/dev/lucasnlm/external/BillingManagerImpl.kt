@@ -24,10 +24,17 @@ class BillingManagerImpl(
     private val purchaseBroadcaster = MutableStateFlow<PurchaseInfo?>(null)
     private val unlockPrice = MutableStateFlow<Price?>(null)
     private val billingClient by lazy {
-        BillingClient.newBuilder(context)
-            .setListener(this)
-            .enablePendingPurchases()
-            .build()
+        try {
+            BillingClient.newBuilder(context)
+                .setListener(this)
+                .enablePendingPurchases(
+                    PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
+                )
+                .build()
+        } catch (e: Exception) {
+            crashReporter.sendError("Failed to initialize BillingClient: ${e.message}")
+            throw e
+        }
     }
 
     private val allowedErrorCodes =
@@ -45,7 +52,8 @@ class BillingManagerImpl(
         return unlockPrice.asSharedFlow().filterNotNull()
     }
 
-    override fun listenPurchases(): Flow<PurchaseInfo> = purchaseBroadcaster.asSharedFlow().filterNotNull()
+    override fun listenPurchases(): Flow<PurchaseInfo> =
+        purchaseBroadcaster.asSharedFlow().filterNotNull()
 
     private fun asyncRefreshPurchasesList() {
         coroutineScope.launch {
@@ -99,7 +107,12 @@ class BillingManagerImpl(
                 }
             }
 
-        purchaseBroadcaster.tryEmit(PurchaseInfo.PurchaseResult(isFreeUnlock = false, unlockStatus = status))
+        purchaseBroadcaster.tryEmit(
+            PurchaseInfo.PurchaseResult(
+                isFreeUnlock = false,
+                unlockStatus = status
+            )
+        )
         return true
     }
 
@@ -137,7 +150,7 @@ class BillingManagerImpl(
 
             billingClient
                 .queryProductDetailsAsync(productDetailsParams) { _, list ->
-                    onReceivePremiumProduct(list.firstOrNull())
+                    onReceivePremiumProduct(list.productDetailsList.firstOrNull())
                 }
 
             asyncRefreshPurchasesList()

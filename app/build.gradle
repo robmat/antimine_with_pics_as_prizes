@@ -16,7 +16,7 @@ android {
         // versionCode and versionName must be hardcoded to support F-droid
         versionCode versionCodeNum
         versionName '1.0.18'
-        minSdk 21
+        minSdk 23
         targetSdk 35
         compileSdk 35
         multiDexEnabled true
