@@ -92,12 +92,12 @@ class CardButtonView : FrameLayout {
                 com.google.android.material.R.attr.colorSurface
                 MaterialColors.getColor(this, GR.attr.colorSurface)
             } else {
-                MaterialColors.getColor(this, GR.attr.colorPrimary)
+                MaterialColors.getColor(this, GR.attr.colorPrimarySurface)
             }
 
         val backgroundColor =
             if (invert || isFocused) {
-                MaterialColors.getColor(this, GR.attr.colorPrimary)
+                MaterialColors.getColor(this, GR.attr.colorPrimarySurface)
             } else {
                 MaterialColors.getColor(this, GR.attr.colorSurface)
             }

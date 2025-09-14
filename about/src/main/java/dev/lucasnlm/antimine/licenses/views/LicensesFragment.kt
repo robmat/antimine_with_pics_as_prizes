@@ -11,11 +11,11 @@ import com.google.android.material.divider.MaterialDividerItemDecoration
 import dev.lucasnlm.antimine.about.R
 import dev.lucasnlm.antimine.about.databinding.FragmentLicensesBinding
 import dev.lucasnlm.antimine.licenses.viewmodel.LicenseViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LicensesFragment : Fragment(R.layout.fragment_licenses) {
     private lateinit var binding: FragmentLicensesBinding
-    private val viewModel: LicenseViewModel by sharedViewModel()
+    private val viewModel: LicenseViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,

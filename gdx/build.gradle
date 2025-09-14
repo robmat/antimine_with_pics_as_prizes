@@ -9,8 +9,8 @@ android {
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
         minSdk 23
-        targetSdk 35
-        compileSdk 35
+        targetSdk 36
+        compileSdk = 36
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
@@ -51,12 +51,12 @@ dependencies {
 
     // AndroidX
     implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.activity:activity-ktx:1.10.1'
-    implementation 'androidx.fragment:fragment-ktx:1.8.8'
+    implementation 'androidx.activity:activity-ktx:1.11.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'
 
     // Koin
-    implementation 'io.insert-koin:koin-android:3.5.6'
-    testImplementation 'io.insert-koin:koin-test:3.5.6'
+    implementation 'io.insert-koin:koin-android:4.1.1'
+    testImplementation 'io.insert-koin:koin-test:4.1.1'
 
     // LibGDX
     api 'com.badlogicgames.gdx:gdx-backend-android:1.13.1'

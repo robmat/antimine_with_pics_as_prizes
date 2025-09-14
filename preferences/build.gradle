@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         minSdk 23
-        targetSdk 35
-        compileSdk 35
+        targetSdk 36
+        compileSdk = 36
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles 'consumer-rules.pro'
@@ -41,7 +41,7 @@ dependencies {
 
     // Unit Tests
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.18.0'
+    testImplementation 'org.mockito:mockito-core:5.19.0'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation 'io.mockk:mockk:1.13.11'
+    testImplementation 'io.mockk:mockk:1.14.5'
 }

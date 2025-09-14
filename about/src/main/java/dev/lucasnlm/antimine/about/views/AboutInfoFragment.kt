@@ -20,12 +20,12 @@ import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.external.AnalyticsManager
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.lucasnlm.antimine.i18n.R as i18n
 
 class AboutInfoFragment : Fragment() {
     private lateinit var binding: FragmentAboutInfoBinding
-    private val aboutViewModel: AboutViewModel by sharedViewModel()
+    private val aboutViewModel: AboutViewModel by viewModel()
     private val audioManager: GameAudioManager by inject()
     private val analyticsManager: AnalyticsManager by inject()
     private val unknownVersionName = "?.?.?"
