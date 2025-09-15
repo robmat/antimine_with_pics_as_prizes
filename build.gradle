@@ -5,12 +5,12 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.0'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20'
-        classpath 'com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.2.20-2.0.2'
+        classpath libs.android.gradle.plugin
+        classpath libs.kotlin.gradle.plugin
+        classpath libs.ksp.gradle.plugin
 
         if (System.getenv('IS_GOOGLE_BUILD')) {
-            classpath 'com.google.gms:google-services:4.3.15'
+            classpath libs.google.gms
         }
     }
 }

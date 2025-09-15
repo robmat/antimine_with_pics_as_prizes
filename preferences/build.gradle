@@ -36,12 +36,12 @@ dependencies {
     // Dependencies must be hardcoded to support F-droid
 
     // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.preference.ktx
 
     // Unit Tests
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.19.0'
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation 'io.mockk:mockk:1.14.5'
+    testImplementation libs.junit
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.kotlin
+    testImplementation libs.mockk
 }

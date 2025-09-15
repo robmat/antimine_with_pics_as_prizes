@@ -50,16 +50,16 @@ dependencies {
     implementation project(':ui')
 
     // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.activity:activity-ktx:1.11.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.fragment.ktx
 
     // Koin
-    implementation 'io.insert-koin:koin-android:4.1.1'
-    testImplementation 'io.insert-koin:koin-test:4.1.1'
+    implementation libs.koin.android
+    testImplementation libs.koin.test
 
     // LibGDX
-    api 'com.badlogicgames.gdx:gdx-backend-android:1.13.1'
+    api libs.gdx.backend.android
     api 'com.badlogicgames.gdx:gdx:1.13.1'
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-armeabi-v7a'
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-arm64-v8a'
@@ -90,5 +90,3 @@ tasks.register('copyAndroidNatives') {
         }
     }
 }
-
-preBuild.dependsOn copyAndroidNatives

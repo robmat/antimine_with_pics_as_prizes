@@ -96,8 +96,8 @@ dependencies {
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.7.0'
-    androidTestImplementation 'androidx.test:rules:1.7.0'
-    androidTestUtil 'androidx.test:orchestrator:1.6.1'
+    androidTestImplementation libs.androidx.test.rules
+    androidTestUtil libs.androidx.test.orchestrator
 }
 
 tasks.withType(Test).configureEach {
