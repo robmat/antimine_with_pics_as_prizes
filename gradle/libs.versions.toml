@@ -1,129 +1,127 @@
 [versions]
-appcompat = "1.7.1"
 activityKtx = "1.11.0"
+amplitudeAndroidSdk = "3.35.1"
+androidBillingclient = "8.0.0"
+androidGradlePlugin = "8.13.0"
+androidPlayAppUpdateKtx = "2.1.0"
+androidPlayReviewKtx = "2.0.2"
+androidxCoreKtx = "1.17.0"
+androidxFragmentTesting = "1.8.9"
+androidxTestCore = "1.7.0"
+androidxTestCoreKtx = "1.7.0"
+androidxTestEspressoCore = "3.7.0"
+androidxTestExtJunit = "1.3.0"
+androidxTestOrchestrator = "1.6.1"
+androidxTestRules = "1.7.0"
+androidxTestRunner = "1.7.0"
+appcompat = "1.7.1"
+constraintlayout = "2.2.1"
 fragmentKtx = "1.8.9"
 gdxBackendAndroid = "1.13.1"
-material = "1.13.0"
-recyclerview = "1.4.0"
-constraintlayout = "2.2.1"
-lifecycleViewmodelKtx = "2.9.3"
-koinAndroid = "4.1.1"
-kotlinxCoroutinesCore = "1.10.2"
-kotlinxCoroutinesAndroid = "1.10.2"
-kotlinxCoroutinesTest = "1.10.2"
-kotlinStdlib = "2.2.20"
-kotlinxMetadataJvm = "0.9.0"
+googleGms = "4.4.3"
 junit = "4.13.2"
+koinAndroid = "4.1.1"
+koinAndroidFoss = "4.1.1"
+konfettiXml = "2.0.5"
+kotlinGradlePlugin = "2.2.20"
+kotlinStdlib = "2.2.20"
+kotlinStdlibFoss = "2.2.20"
+kotlinxCoroutinesAndroid = "1.10.2"
+kotlinxCoroutinesAndroidFoss = "1.10.2"
+kotlinxCoroutinesCore = "1.10.2"
+kotlinxCoroutinesPlayServices = "1.10.2"
+kotlinxCoroutinesTest = "1.10.2"
+kotlinxCoroutinesTestFoss = "1.10.2"
+kotlinxMetadataJvm = "0.9.0"
+kspGradlePlugin = "2.2.20-2.0.2"
+lifecycleCommonJava8 = "2.9.3"
+lifecycleLivedataKtx = "2.9.3"
+lifecycleRuntimeKtx = "2.9.3"
+lifecycleViewmodelKtx = "2.9.3"
+material = "1.13.0"
 mockitoCore = "5.19.0"
 mockitoKotlin = "2.2.0"
 mockk = "1.14.5"
-wear = "1.3.0"
-preferenceKtx = "1.2.1"
-multidex = "2.0.1"
-lifecycleRuntimeKtx = "2.9.3"
-lifecycleLivedataKtx = "2.9.3"
-lifecycleCommonJava8 = "2.9.3"
-roomKtx = "2.8.0"
-androidxCoreKtx = "1.17.0"
-androidxTestCoreKtx = "1.7.0"
-androidxTestRules = "1.7.0"
-androidxTestRunner = "1.7.0"
-androidxTestEspressoCore = "3.7.0"
-androidxFragmentTesting = "1.8.9"
-robolectric = "4.16"
-androidxTestExtJunit = "1.3.0"
-androidxTestCore = "1.7.0"
-androidxTestOrchestrator = "1.6.1"
-amplitudeAndroidSdk = "3.35.1"
-okhttp = "5.1.0"
-androidBillingclient = "8.0.0"
-playServicesInstantapps = "18.2.0"
-playServicesGamesV2 = "21.0.0"
-playServicesAuth = "21.4.0"
-playServicesAds = "24.6.0"
-androidPlayReviewKtx = "2.0.2"
-androidPlayAppUpdateKtx = "2.1.0"
-kotlinxCoroutinesPlayServices = "1.10.2"
-
-kotlinxCoroutinesAndroidFoss = "1.10.2"
-kotlinStdlibFoss = "2.2.20"
-kotlinxCoroutinesTestFoss = "1.10.2"
-koinAndroidFoss = "4.1.1"
-androidGradlePlugin = "8.13.0"
-kotlinGradlePlugin = "2.2.20"
-kspGradlePlugin = "2.2.20-2.0.2"
-googleGms = "4.4.3"
-roomRuntime = "2.8.0"
-roomCompiler = "2.8.0"
-roomTesting = "2.8.0"
 moshi = "1.15.2"
 moshiKotlin = "1.15.2"
 moshiKotlinCodegen = "1.15.2"
-konfettiXml = "2.0.5"
+multidex = "2.0.1"
+okhttp = "5.1.0"
 photoView = "2.3.0"
+playServicesAds = "24.6.0"
+playServicesAuth = "21.4.0"
+playServicesGamesV2 = "21.0.0"
+playServicesInstantapps = "18.2.0"
+preferenceKtx = "1.2.1"
+recyclerview = "1.4.0"
+robolectric = "4.16"
+roomCompiler = "2.8.0"
+roomKtx = "2.8.0"
+roomRuntime = "2.8.0"
+roomTesting = "2.8.0"
+wear = "1.3.0"
 
 [libraries]
-gdx-backend-android = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdxBackendAndroid" }
-kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+amplitude-android-sdk = { group = "com.amplitude", name = "android-sdk", version.ref = "amplitudeAndroidSdk" }
+android-billingclient = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "androidBillingclient" }
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-play-app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "androidPlayAppUpdateKtx" }
+android-play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "androidPlayReviewKtx" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
-androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
-google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "androidxFragmentTesting" }
+androidx-lifecycle-common-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycleCommonJava8" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
-koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koinAndroid" }
-kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
-kotlinx-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version.ref = "kotlinxMetadataJvm" }
+androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "roomTesting" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
+androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidxTestCoreKtx" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspressoCore" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
+androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "androidxTestOrchestrator" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-wear = { group = "androidx.wear", name = "wear", version.ref = "wear" }
+gdx-backend-android = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdxBackendAndroid" }
+google-gms = { group = "com.google.gms", name = "google-services", version.ref = "googleGms" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
+koin-android-foss = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroidFoss" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koinAndroid" }
+koin-test-foss = { group = "io.insert-koin", name = "koin-test", version.ref = "koinAndroidFoss" }
+konfetti-xml = { group = "nl.dionsegijn", name = "konfetti-xml", version.ref = "konfettiXml" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+kotlin-stdlib-foss = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlibFoss" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-android-foss = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidFoss" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-coroutines-test-foss = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestFoss" }
+kotlinx-metadata-jvm = { group = "org.jetbrains.kotlinx", name = "kotlinx-metadata-jvm", version.ref = "kotlinxMetadataJvm" }
+ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "kspGradlePlugin" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
 mockito-kotlin = { group = "com.nhaarman.mockitokotlin2", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
-androidx-wear = { group = "androidx.wear", name = "wear", version.ref = "wear" }
-androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
-androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "multidex" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
-androidx-lifecycle-common-java8 = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycleCommonJava8" }
-androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
-androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidxTestCoreKtx" }
-androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
-androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
-androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspressoCore" }
-androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "androidxFragmentTesting" }
-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
-androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
-androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "androidxTestOrchestrator" }
-amplitude-android-sdk = { group = "com.amplitude", name = "android-sdk", version.ref = "amplitudeAndroidSdk" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-android-billingclient = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "androidBillingclient" }
-play-services-instantapps = { group = "com.google.android.gms", name = "play-services-instantapps", version.ref = "playServicesInstantapps" }
-play-services-games-v2 = { group = "com.google.android.gms", name = "play-services-games-v2", version.ref = "playServicesGamesV2" }
-play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+photo-view = { group = "com.github.chrisbanes", name = "PhotoView", version.ref = "photoView" }
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
-android-play-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "androidPlayReviewKtx" }
-android-play-app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version.ref = "androidPlayAppUpdateKtx" }
-kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
-
-kotlinx-coroutines-android-foss = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidFoss" }
-kotlin-stdlib-foss = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlibFoss" }
-kotlinx-coroutines-test-foss = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestFoss" }
-koin-android-foss = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroidFoss" }
-koin-test-foss = { group = "io.insert-koin", name = "koin-test", version.ref = "koinAndroidFoss" }
-android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
-kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
-ksp-gradle-plugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "kspGradlePlugin" }
-google-gms = { group = "com.google.gms", name = "google-services", version.ref = "googleGms" }
-androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "roomRuntime" }
-androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
-androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "roomTesting" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+play-services-games-v2 = { group = "com.google.android.gms", name = "play-services-games-v2", version.ref = "playServicesGamesV2" }
+play-services-instantapps = { group = "com.google.android.gms", name = "play-services-instantapps", version.ref = "playServicesInstantapps" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 squareup-moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
 squareup-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }
 squareup-moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshiKotlinCodegen" }
-konfetti-xml = { group = "nl.dionsegijn", name = "konfetti-xml", version.ref = "konfettiXml" }
-photo-view = { group = "com.github.chrisbanes", name = "PhotoView", version.ref = "photoView" }
