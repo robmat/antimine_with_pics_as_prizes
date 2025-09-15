@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -46,8 +46,8 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+    kotlin {
+        jvmToolchain(17)
     }
 
     compileOptions {
@@ -67,9 +67,7 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes true
-}
+
 
 dependencies {
     // Dependencies must be hardcoded to support F-droid

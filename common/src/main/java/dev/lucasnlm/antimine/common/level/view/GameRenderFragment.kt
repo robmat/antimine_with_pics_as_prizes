@@ -29,11 +29,11 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import kotlin.system.exitProcess
 
 open class GameRenderFragment : AndroidFragmentApplication() {
-    private val gameViewModel by sharedViewModel<GameViewModel>()
+    private val gameViewModel by activityViewModel<GameViewModel>()
     private val themeRepository: ThemeRepository by inject()
     private val dimensionRepository: DimensionRepository by inject()
     private val preferencesRepository: PreferencesRepository by inject()

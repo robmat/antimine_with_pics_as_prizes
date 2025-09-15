@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -30,9 +30,7 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes true
-}
+
 
 dependencies {
     // Dependencies must be hardcoded to support F-droid
@@ -70,13 +68,13 @@ dependencies {
     // Room
     api 'androidx.room:room-runtime:2.8.0'
     api 'androidx.room:room-ktx:2.8.0'
-    kapt 'androidx.room:room-compiler:2.8.0'
+    ksp 'androidx.room:room-compiler:2.8.0'
     testImplementation 'androidx.room:room-testing:2.8.0'
 
     // Moshi - Json
     api 'com.squareup.moshi:moshi:1.15.2'
     api 'com.squareup.moshi:moshi-kotlin:1.15.2'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.15.2'
+    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.2'
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'

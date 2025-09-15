@@ -15,7 +15,6 @@ import androidx.lifecycle.viewModelScope
 import com.batodev.antimine.GalleryActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batodev.antimine.R
-import com.batodev.antimine.SettingsHelper
 import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.core.parcelable
@@ -29,14 +28,14 @@ import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.FeatureFlagManager
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.lucasnlm.antimine.i18n.R as i18n
 
 class WinGameDialogFragment : CommonGameDialogFragment() {
     private val analyticsManager: AnalyticsManager by inject()
     private val dialogViewModel by viewModel<EndGameDialogViewModel>()
-    private val gameViewModel by sharedViewModel<GameViewModel>()
+    private val gameViewModel by activityViewModel<GameViewModel>()
     private val featureFlagManager: FeatureFlagManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {

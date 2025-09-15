@@ -3,7 +3,6 @@ package com.batodev.antimine.gameover
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.format.DateUtils
@@ -30,13 +29,14 @@ import dev.lucasnlm.external.FeatureFlagManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.graphics.drawable.toDrawable
 
 class GameOverDialogFragment : CommonGameDialogFragment() {
     private val analyticsManager: AnalyticsManager by inject()
     private val dialogViewModel by viewModel<EndGameDialogViewModel>()
-    private val gameViewModel by sharedViewModel<GameViewModel>()
+    private val gameViewModel by activityViewModel<GameViewModel>()
     private val featureFlagManager: FeatureFlagManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -189,7 +189,7 @@ class GameOverDialogFragment : CommonGameDialogFragment() {
             setCanceledOnTouchOutside(false)
 
             window?.apply {
-                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)

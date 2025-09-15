@@ -5,7 +5,7 @@ if (System.getenv('IS_RELEASE_BUILD')) {
 }
 
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 
 def versionCodeNum = 24
 
@@ -60,8 +60,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+    kotlin {
+        jvmToolchain(17)
     }
 
     testOptions {
@@ -95,9 +95,7 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes true
-}
+
 
 dependencies {
     // Dependencies must be hardcoded to support F-droid

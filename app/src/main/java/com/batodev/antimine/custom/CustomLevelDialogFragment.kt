@@ -16,12 +16,12 @@ import com.batodev.antimine.main.viewmodel.MainViewModel
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.Minefield
 import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.lucasnlm.antimine.i18n.R as i18n
 
 class CustomLevelDialogFragment : AppCompatDialogFragment() {
-    private val gameViewModel by sharedViewModel<MainViewModel>()
+    private val gameViewModel by activityViewModel<MainViewModel>()
     private val createGameViewModel by viewModel<CreateGameViewModel>()
     private val preferencesRepository: PreferencesRepository by inject()
 

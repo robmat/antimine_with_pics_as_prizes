@@ -30,7 +30,7 @@ class SwitchButtonView : FrameLayout {
     private val selectedBackgroundTint =
         MaterialColors.getColorStateListOrNull(
             context,
-            GR.attr.colorPrimary,
+            GR.attr.colorPrimarySurface,
         )
     private val unselectedIconTint = binding.flagButton.iconTint
     private val unselectedBackgroundTint = binding.flagButton.backgroundTintList
