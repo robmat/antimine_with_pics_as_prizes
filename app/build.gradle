@@ -7,7 +7,7 @@ if (System.getenv('IS_RELEASE_BUILD')) {
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.devtools.ksp'
 
-def versionCodeNum = 24
+def versionCodeNum = 25
 
 android {
     namespace 'com.batodev.antimine'
@@ -15,7 +15,7 @@ android {
     defaultConfig {
         // versionCode and versionName must be hardcoded to support F-droid
         versionCode versionCodeNum
-        versionName '1.24'
+        versionName '1.25'
         minSdk 23
         targetSdk 36
         compileSdk = 36
