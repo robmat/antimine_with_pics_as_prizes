@@ -1,6 +1,8 @@
 plugins {
     id 'com.github.triplet.play'
     id 'com.batodev.releasetools'
+    id 'com.github.ben-manes.versions'
+    id 'se.patrikerdes.use-latest-versions'
 }
 
 apply plugin: 'com.android.application'
