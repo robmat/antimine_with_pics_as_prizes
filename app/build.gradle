@@ -23,8 +23,8 @@ android {
         versionCode versionCodeNum
         versionName versionProps.getProperty("versionName")
         minSdk 23
-        targetSdk 36
-        compileSdk = 36
+        targetSdk 37
+        compileSdk = 37
         multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

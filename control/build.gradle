@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         minSdk 23
-        targetSdk 36
-        compileSdk = 36
+        targetSdk 37
+        compileSdk = 37
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles 'consumer-rules.pro'

@@ -13,8 +13,8 @@ android {
         versionCode 1702040
         versionName '17.2.4 W'
         minSdk 25
-        targetSdk 36
-        compileSdk = 36
+        targetSdk 37
+        compileSdk = 37
         multiDexEnabled true
         vectorDrawables.useSupportLibrary true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
