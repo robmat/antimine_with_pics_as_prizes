@@ -113,6 +113,8 @@ class GalleryActivity : Activity() {
             val shareIntent = Intent(Intent.ACTION_SEND)
             val uri = Uri.parse("content://com.batodev.antimine.ImagesProvider/$tmpImgPath")
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            shareIntent.clipData = android.content.ClipData.newRawUri("", uri)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             shareIntent.type = "image/*"
             startActivity(shareIntent)
         }
