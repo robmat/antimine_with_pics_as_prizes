@@ -1,3 +1,8 @@
+plugins {
+    id 'com.github.triplet.play'
+    id 'com.batodev.releasetools'
+}
+
 apply plugin: 'com.android.application'
 
 if (System.getenv('IS_RELEASE_BUILD')) {
@@ -7,15 +12,16 @@ if (System.getenv('IS_RELEASE_BUILD')) {
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.devtools.ksp'
 
-def versionCodeNum = 25
+def versionProps = new Properties()
+file("version.properties").withInputStream { versionProps.load(it) }
+def versionCodeNum = versionProps.getProperty("versionCode").toInteger()
 
 android {
     namespace 'com.batodev.antimine'
 
     defaultConfig {
-        // versionCode and versionName must be hardcoded to support F-droid
         versionCode versionCodeNum
-        versionName '1.25'
+        versionName versionProps.getProperty("versionName")
         minSdk 23
         targetSdk 36
         compileSdk = 36
@@ -93,6 +99,21 @@ android {
             versionNameSuffix " F"
         }
     }
+}
+
+// All three flavors share the same applicationId (a single Play Console
+// listing), so one play {} config covers publishing - just point it at the
+// google flavor's tasks specifically, since foss/googleInstant aren't
+// published to Play through this path.
+releaseTools {
+    publishTaskName.set("publishGoogleReleaseBundle")
+    promoteTaskName.set("promoteGoogleReleaseArtifact")
+}
+
+play {
+    serviceAccountCredentials.set(rootProject.file("../play-console-api-465319-0f9c399097c5.json"))
+    track.set("internal")
+    defaultToAppBundles.set(true)
 }
 
 dependencies {
