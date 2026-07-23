@@ -2,7 +2,7 @@
 activityKtx = "1.11.0"
 amplitudeAndroidSdk = "3.35.1"
 androidBillingclient = "8.0.0"
-androidGradlePlugin = "8.13.0"
+androidGradlePlugin = "9.3.0"
 androidPlayAppUpdateKtx = "2.1.0"
 androidPlayReviewKtx = "2.0.2"
 androidxCoreKtx = "1.17.0"
