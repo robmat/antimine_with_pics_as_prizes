@@ -89,11 +89,11 @@ class MinefieldHandler(
                 field[index] =
                     it.copy(
                         mark =
-                            when (it.mark) {
-                                Mark.PurposefulNone, Mark.None -> Mark.Flag
-                                Mark.Flag -> if (useQuestionMark && !individualActions) Mark.Question else Mark.None
-                                Mark.Question -> Mark.None
-                            },
+                        when (it.mark) {
+                            Mark.PurposefulNone, Mark.None -> Mark.Flag
+                            Mark.Flag -> if (useQuestionMark && !individualActions) Mark.Question else Mark.None
+                            Mark.Question -> Mark.None
+                        },
                     )
             }
         }
@@ -125,25 +125,33 @@ class MinefieldHandler(
         }
     }
 
+    private fun openUnflaggedCoveredNeighbors(neighbors: List<Area>) {
+        neighbors
+            .filter { it.isCovered && it.mark.isNone() }
+            .forEach { openAt(it.id, passive = false, openNeighbors = true) }
+    }
+
+    private fun flagCoveredNeighborsIfAllAreMines(neighbors: List<Area>) {
+        val coveredNeighbors = neighbors.filter { it.isCovered }
+        val minesAmongNeighbors = neighbors.count { it.hasMine && it.isCovered }
+        if (coveredNeighbors.count() == minesAmongNeighbors) {
+            coveredNeighbors.filter {
+                it.mark.isNone()
+            }.forEach {
+                switchMarkAt(it.id)
+            }
+        }
+    }
+
     fun openOrFlagNeighborsOf(index: Int) {
         field.getOrNull(index)?.run {
             if (!isCovered) {
                 val neighbors = neighborsIds.map { field[it] }
                 val flaggedCount = neighbors.count { it.mark.isFlag() || (!it.isCovered && it.hasMine) }
                 if (flaggedCount >= minesAround) {
-                    neighbors
-                        .filter { it.isCovered && it.mark.isNone() }
-                        .forEach { openAt(it.id, passive = false, openNeighbors = true) }
+                    openUnflaggedCoveredNeighbors(neighbors)
                 } else {
-                    val coveredNeighbors = neighbors.filter { it.isCovered }
-                    val minesAround = neighbors.count { it.hasMine && it.isCovered }
-                    if (coveredNeighbors.count() == minesAround) {
-                        coveredNeighbors.filter {
-                            it.mark.isNone()
-                        }.forEach {
-                            switchMarkAt(it.id)
-                        }
-                    }
+                    flagCoveredNeighborsIfAllAreMines(neighbors)
                 }
             }
         }

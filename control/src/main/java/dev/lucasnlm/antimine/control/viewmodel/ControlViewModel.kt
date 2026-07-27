@@ -79,75 +79,56 @@ class ControlViewModel(
 
     override suspend fun mapEventToState(event: ControlEvent) =
         flow {
-            when (event) {
-                is ControlEvent.UpdateHapticFeedbackLevel -> {
-                    val value = event.value.coerceIn(0, MAX_HAPTIC_VALUE)
-                    preferencesRepository.setHapticFeedbackLevel(value)
-                    hapticFeedbackManager.longPressFeedback()
-                    preferencesRepository.setHapticFeedback(value != 0)
-
-                    val newState =
-                        state.copy(
-                            showReset = hasChangedPreferences(),
-                        )
-                    emit(newState)
+            val newState =
+                when (event) {
+                    is ControlEvent.UpdateHapticFeedbackLevel -> onUpdateHapticFeedbackLevel(event.value)
+                    is ControlEvent.UpdateDoubleClick -> onUpdateDoubleClick(event.value)
+                    is ControlEvent.UpdateLongPress -> onUpdateLongPress(event.value)
+                    is ControlEvent.UpdateTouchSensibility -> onUpdateTouchSensibility(event.value)
+                    is ControlEvent.Reset -> onReset()
+                    is ControlEvent.SelectControlStyle -> onSelectControlStyle(event.controlStyle)
                 }
-                is ControlEvent.UpdateDoubleClick -> {
-                    preferencesRepository.setDoubleClickTimeout(event.value.toLong())
-
-                    val newState =
-                        state.copy(
-                            doubleClick = event.value,
-                            showReset = hasChangedPreferences(),
-                        )
-                    emit(newState)
-                }
-                is ControlEvent.UpdateLongPress -> {
-                    preferencesRepository.setCustomLongPressTimeout(event.value.toLong())
-
-                    val newState =
-                        state.copy(
-                            longPress = event.value,
-                            showReset = hasChangedPreferences(),
-                        )
-                    emit(newState)
-                }
-                is ControlEvent.UpdateTouchSensibility -> {
-                    preferencesRepository.setTouchSensibility(event.value)
-                    val newState =
-                        state.copy(
-                            touchSensibility = event.value,
-                            showReset = hasChangedPreferences(),
-                        )
-                    emit(newState)
-                }
-                is ControlEvent.Reset -> {
-                    preferencesRepository.resetControls()
-
-                    val newState =
-                        state.copy(
-                            longPress = preferencesRepository.customLongPressTimeout().toInt(),
-                            touchSensibility = preferencesRepository.touchSensibility(),
-                            doubleClick = preferencesRepository.getDoubleClickTimeout().toInt(),
-                            showReset = hasChangedPreferences(),
-                        )
-                    emit(newState)
-                }
-                is ControlEvent.SelectControlStyle -> {
-                    val controlStyle = event.controlStyle
-                    preferencesRepository.useControlStyle(controlStyle)
-
-                    val selected = state.controls.first { it.controlStyle == event.controlStyle }
-
-                    val newState =
-                        state.copy(
-                            selected = selected.controlStyle,
-                        )
-
-                    emit(newState)
-                }
-            }
+            emit(newState)
         }
+
+    private fun onUpdateHapticFeedbackLevel(value: Int): ControlState {
+        val coercedValue = value.coerceIn(0, MAX_HAPTIC_VALUE)
+        preferencesRepository.setHapticFeedbackLevel(coercedValue)
+        hapticFeedbackManager.longPressFeedback()
+        preferencesRepository.setHapticFeedback(coercedValue != 0)
+        return state.copy(showReset = hasChangedPreferences())
+    }
+
+    private fun onUpdateDoubleClick(value: Int): ControlState {
+        preferencesRepository.setDoubleClickTimeout(value.toLong())
+        return state.copy(doubleClick = value, showReset = hasChangedPreferences())
+    }
+
+    private fun onUpdateLongPress(value: Int): ControlState {
+        preferencesRepository.setCustomLongPressTimeout(value.toLong())
+        return state.copy(longPress = value, showReset = hasChangedPreferences())
+    }
+
+    private fun onUpdateTouchSensibility(value: Int): ControlState {
+        preferencesRepository.setTouchSensibility(value)
+        return state.copy(touchSensibility = value, showReset = hasChangedPreferences())
+    }
+
+    private fun onReset(): ControlState {
+        preferencesRepository.resetControls()
+        return state.copy(
+            longPress = preferencesRepository.customLongPressTimeout().toInt(),
+            touchSensibility = preferencesRepository.touchSensibility(),
+            doubleClick = preferencesRepository.getDoubleClickTimeout().toInt(),
+            showReset = hasChangedPreferences(),
+        )
+    }
+
+    private fun onSelectControlStyle(controlStyle: ControlStyle): ControlState {
+        preferencesRepository.useControlStyle(controlStyle)
+        val selected = state.controls.first { it.controlStyle == controlStyle }
+        return state.copy(selected = selected.controlStyle)
+    }
 
     companion object {
         const val MAX_HAPTIC_VALUE = 200

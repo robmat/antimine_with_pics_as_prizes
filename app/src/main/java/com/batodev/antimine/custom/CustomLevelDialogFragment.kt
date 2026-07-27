@@ -6,18 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatDialogFragment
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import dev.lucasnlm.antimine.core.models.Difficulty
 import com.batodev.antimine.custom.viewmodel.CreateGameViewModel
 import com.batodev.antimine.custom.viewmodel.CustomEvent
 import com.batodev.antimine.databinding.DialogCustomGameBinding
 import com.batodev.antimine.main.viewmodel.MainEvent
 import com.batodev.antimine.main.viewmodel.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.lucasnlm.antimine.core.models.Difficulty
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.Minefield
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 import dev.lucasnlm.antimine.i18n.R as i18n
 
 class CustomLevelDialogFragment : AppCompatDialogFragment() {
@@ -45,9 +46,9 @@ class CustomLevelDialogFragment : AppCompatDialogFragment() {
     private fun createView(): View {
         createGameViewModel.singleState().let { state ->
             binding.run {
-                mapWidth.setText(state.width.toString())
-                mapHeight.setText(state.height.toString())
-                mapMines.setText(state.mines.toString())
+                mapWidth.setText(String.format(Locale.US, "%d", state.width))
+                mapHeight.setText(String.format(Locale.US, "%d", state.height))
+                mapMines.setText(String.format(Locale.US, "%d", state.mines))
                 seed.setText("")
             }
         }

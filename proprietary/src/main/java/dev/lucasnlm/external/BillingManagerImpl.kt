@@ -3,7 +3,19 @@ package dev.lucasnlm.external
 import android.app.Activity
 import android.content.Context
 import android.text.format.DateUtils
-import com.android.billingclient.api.*
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.PendingPurchasesParams
+import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.queryPurchasesAsync
 import dev.lucasnlm.external.model.Price
 import dev.lucasnlm.external.model.PurchaseInfo
 import kotlinx.coroutines.CoroutineScope
@@ -57,30 +69,33 @@ class BillingManagerImpl(
 
     private fun asyncRefreshPurchasesList() {
         coroutineScope.launch {
-            while (true) {
-                val queryPurchasesParams =
-                    QueryPurchasesParams.newBuilder()
-                        .setProductType(BillingClient.ProductType.INAPP)
-                        .build()
-
-                val purchasesList: List<Purchase> =
-                    billingClient
-                        .queryPurchasesAsync(queryPurchasesParams)
-                        .purchasesList
-
-                if (purchasesList.isEmpty()) {
-                    break
-                } else {
-                    val result = handlePurchases(purchasesList)
-
-                    if (result) {
-                        break
-                    } else {
-                        delay(30 * DateUtils.SECOND_IN_MILLIS)
-                    }
-                }
+            var shouldContinuePolling = true
+            while (shouldContinuePolling) {
+                shouldContinuePolling = refreshPurchasesListOnce()
             }
         }
+    }
+
+    private suspend fun refreshPurchasesListOnce(): Boolean {
+        val queryPurchasesParams =
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
+
+        val purchasesList: List<Purchase> =
+            billingClient
+                .queryPurchasesAsync(queryPurchasesParams)
+                .purchasesList
+
+        if (purchasesList.isEmpty()) {
+            return false
+        }
+
+        val handled = handlePurchases(purchasesList)
+        if (!handled) {
+            delay(PURCHASE_POLL_DELAY_SECONDS * DateUtils.SECOND_IN_MILLIS)
+        }
+        return !handled
     }
 
     private suspend fun handlePurchases(purchases: List<Purchase>): Boolean {
@@ -120,10 +135,10 @@ class BillingManagerImpl(
         crashReporter.sendError("Billing service disconnected $retry")
         isLoading = false
 
-        if (retry < 3) {
+        if (retry < MAX_BILLING_RETRY_ATTEMPTS) {
             retry++
             coroutineScope.launch {
-                delay(5 * 1000)
+                delay(BILLING_RETRY_DELAY_MS)
                 start()
             }
         }
@@ -225,5 +240,8 @@ class BillingManagerImpl(
 
     companion object {
         private const val PREMIUM = "unlock_0"
+        private const val PURCHASE_POLL_DELAY_SECONDS = 30L
+        private const val MAX_BILLING_RETRY_ATTEMPTS = 3
+        private const val BILLING_RETRY_DELAY_MS = 5000L
     }
 }

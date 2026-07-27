@@ -2,9 +2,7 @@ package dev.lucasnlm.external
 
 import android.content.Context
 
-class ExternalAnalyticsWrapperImpl(
-    context: Context,
-) : ExternalAnalyticsWrapper {
+class ExternalAnalyticsWrapperImpl : ExternalAnalyticsWrapper {
     override fun setup(
         context: Context,
         properties: Map<String, String>,

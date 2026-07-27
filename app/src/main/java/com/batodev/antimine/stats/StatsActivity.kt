@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batodev.antimine.R
 import com.batodev.antimine.databinding.ActivityStatsBinding
 import com.batodev.antimine.stats.view.StatsAdapter
 import com.batodev.antimine.stats.viewmodel.StatsEvent
 import com.batodev.antimine.stats.viewmodel.StatsViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dev.lucasnlm.antimine.ui.ext.ThemedActivity
 import dev.lucasnlm.antimine.ui.model.TopBarAction
 import kotlinx.coroutines.launch

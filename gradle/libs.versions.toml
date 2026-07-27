@@ -17,6 +17,7 @@ androidxTestRules = "1.7.0"
 androidxTestRunner = "1.7.0"
 appcompat = "1.7.1"
 constraintlayout = "2.2.1"
+detektFormatting = "1.23.8"
 fragmentKtx = "1.8.9"
 gdxBackendAndroid = "1.13.1"
 googleGms = "4.4.3"
@@ -94,6 +95,7 @@ androidx-test-orchestrator = { group = "androidx.test", name = "orchestrator", v
 androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-wear = { group = "androidx.wear", name = "wear", version.ref = "wear" }
+detekt-formatting = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detektFormatting" }
 gdx-backend-android = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdxBackendAndroid" }
 google-gms = { group = "com.google.gms", name = "google-services", version.ref = "googleGms" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }

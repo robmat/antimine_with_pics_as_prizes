@@ -38,7 +38,7 @@ class CameraController(
                 val screenWidth = if (zoom < 1.0f) Gdx.graphics.width * zoom else Gdx.graphics.width.toFloat()
                 val screenHeight = if (zoom < 1.0f) Gdx.graphics.height * zoom else Gdx.graphics.height.toFloat()
                 val invZoom = 1.0f / zoom
-                val percentLimit = 0.15f
+                val percentLimit = EDGE_PERCENT_LIMIT
 
                 val start = percentLimit * screenWidth - padding.start * invZoom
                 val end = minefieldSize.width - percentLimit * screenWidth + padding.end * invZoom
@@ -85,5 +85,9 @@ class CameraController(
                 unlockTouch = true
             }
         }
+    }
+
+    private companion object {
+        const val EDGE_PERCENT_LIMIT = 0.15f
     }
 }

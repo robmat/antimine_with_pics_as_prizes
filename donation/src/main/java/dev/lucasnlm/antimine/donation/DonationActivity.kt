@@ -79,18 +79,7 @@ class DonationActivity : ThemedActivity() {
 
     private fun hasBrazilLocale(): Boolean {
         return LocaleListCompat.getAdjustedDefault().run {
-            var result = false
-            for (i in 0..size()) {
-                get(i)?.let {
-                    if (it.country == "BR") {
-                        result = true
-                    }
-                }
-                if (result) {
-                    break
-                }
-            }
-            result
+            (0..size()).any { get(it)?.country == "BR" }
         }
     }
 

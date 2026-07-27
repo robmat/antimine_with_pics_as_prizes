@@ -21,6 +21,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.lifecycleScope
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
+import com.batodev.antimine.databinding.ActivityGameBinding
+import com.batodev.antimine.gameover.GameOverDialogFragment
+import com.batodev.antimine.gameover.WinGameDialogFragment
+import com.batodev.antimine.gameover.model.CommonDialogState
+import com.batodev.antimine.gameover.model.GameResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dev.lucasnlm.antimine.common.level.repository.SavesRepository
@@ -35,11 +40,6 @@ import dev.lucasnlm.antimine.core.isPortrait
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.core.models.Difficulty
 import dev.lucasnlm.antimine.core.serializableNonSafe
-import com.batodev.antimine.databinding.ActivityGameBinding
-import com.batodev.antimine.gameover.GameOverDialogFragment
-import com.batodev.antimine.gameover.WinGameDialogFragment
-import com.batodev.antimine.gameover.model.CommonDialogState
-import com.batodev.antimine.gameover.model.GameResult
 import dev.lucasnlm.antimine.gdx.GameContext
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.ControlStyle
@@ -63,6 +63,7 @@ import nl.dionsegijn.konfetti.core.Position
 import nl.dionsegijn.konfetti.core.emitter.Emitter
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import dev.lucasnlm.antimine.i18n.R as i18n
 import dev.lucasnlm.antimine.ui.R as ui
@@ -101,7 +102,7 @@ class GameActivity :
         GameContext.zoomLevelAlpha = 1.0f
     }
 
-    private fun Int.toL10nString() = String.format("%d", this)
+    private fun Int.toL10nString() = String.format(Locale.getDefault(), "%d", this)
 
     private fun showGameWarning(
         @StringRes text: Int,
@@ -214,7 +215,7 @@ class GameActivity :
                             stopKonfettiView()
                         }
 
-                        val color = usingTheme.palette.covered.toAndroidColor(168)
+                        val color = usingTheme.palette.covered.toAndroidColor(COVERED_TINT_ALPHA)
                         val tint = ColorStateList.valueOf(color)
 
                         binding.tapToBegin.apply {
@@ -254,7 +255,7 @@ class GameActivity :
                     }
 
                     if (it.shouldShowControls) {
-                        val color = usingTheme.palette.covered.toAndroidColor(168)
+                        val color = usingTheme.palette.covered.toAndroidColor(COVERED_TINT_ALPHA)
                         val tint = ColorStateList.valueOf(color)
                         val controlText = gameViewModel.getControlDescription(applicationContext)
 
@@ -289,9 +290,12 @@ class GameActivity :
                             if (oldValue != null) {
                                 if (currentMineCount < 0) {
                                     if (oldValue > currentMineCount) {
-                                        startAnimation(AnimationUtils.loadAnimation(context,
-                                            R.anim.fast_shake
-                                        ))
+                                        startAnimation(
+                                            AnimationUtils.loadAnimation(
+                                                context,
+                                                R.anim.fast_shake
+                                            )
+                                        )
                                     }
                                 }
 
@@ -449,7 +453,9 @@ class GameActivity :
 
     private fun bindPrizeImage() {
         if (gameViewModel.prizeImage != "") {
-            binding.gameBackground?.setImageBitmap(BitmapFactory.decodeStream(assets.open("$PRIZE_IMAGES/${gameViewModel.prizeImage}")))
+            binding.gameBackground?.setImageBitmap(
+                BitmapFactory.decodeStream(assets.open("$PRIZE_IMAGES/${gameViewModel.prizeImage}"))
+            )
         } else {
             Log.d(TAG, "gameViewModel.prizeImage: ${gameViewModel.prizeImage}")
         }
@@ -523,7 +529,7 @@ class GameActivity :
         }
 
         binding.appBar.apply {
-            setBackgroundColor(usingTheme.palette.background.toAndroidColor(200))
+            setBackgroundColor(usingTheme.palette.background.toAndroidColor(APP_BAR_BACKGROUND_ALPHA))
         }
 
         if (applicationContext.isPortrait()) {
@@ -905,5 +911,8 @@ class GameActivity :
 
         const val ENABLED_SHORTCUT_ALPHA = 1.0f
         const val DISABLED_SHORTCUT_ALPHA = 0.3f
+
+        const val COVERED_TINT_ALPHA = 168
+        const val APP_BAR_BACKGROUND_ALPHA = 200
     }
 }

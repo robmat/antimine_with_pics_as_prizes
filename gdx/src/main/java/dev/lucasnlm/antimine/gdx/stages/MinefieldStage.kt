@@ -77,24 +77,20 @@ class MinefieldStage(
             )
     }
 
+    private fun zoomLevelAlphaFor(zoom: Float): Float =
+        when {
+            zoom < ZOOM_ALPHA_FADE_START -> 1.0f
+            zoom > ZOOM_ALPHA_FADE_END -> 0.0f
+            else -> (ZOOM_ALPHA_FADE_START - zoom)
+        }
+
     fun setZoom(value: Float) {
         (camera as OrthographicCamera).apply {
-            zoom = value.coerceIn(0.8f, 3.0f)
+            zoom = value.coerceIn(SET_ZOOM_MIN, MAX_ZOOM_IN)
             currentZoom = zoom
             update(true)
 
-            GameContext.zoomLevelAlpha =
-                when {
-                    zoom < 3.5f -> {
-                        1.0f
-                    }
-                    zoom > 4.0f -> {
-                        0.0f
-                    }
-                    else -> {
-                        (3.5f - zoom)
-                    }
-                }
+            GameContext.zoomLevelAlpha = zoomLevelAlphaFor(zoom)
         }
 
         inputEvents.clear()
@@ -114,18 +110,7 @@ class MinefieldStage(
                 Gdx.graphics.requestRendering()
             }
 
-            GameContext.zoomLevelAlpha =
-                when {
-                    zoom < 3.5f -> {
-                        1.0f
-                    }
-                    zoom > 4.0f -> {
-                        0.0f
-                    }
-                    else -> {
-                        (3.5f - zoom)
-                    }
-                }
+            GameContext.zoomLevelAlpha = zoomLevelAlphaFor(zoom)
         }
 
         inputEvents.clear()
@@ -134,6 +119,41 @@ class MinefieldStage(
     fun bindField(field: List<Area>) {
         newBoundAreas = field
         forceRefreshVisibleAreas = true
+    }
+
+    private fun rebuildActors(boundAreas: List<Area>) {
+        clear()
+        if (boundAreas.size < actors.size) {
+            root.children.shrink()
+        } else {
+            root.children.ensureCapacity(boundAreas.size)
+        }
+
+        boundAreas.forEach {
+            addActor(
+                AreaActor(
+                    theme = renderSettings.theme,
+                    size = renderSettings.areaSize,
+                    area = it,
+                    field = boundAreas,
+                    onInputEvent = ::handleGameEvent,
+                    enableLigatures = renderSettings.joinAreas,
+                ),
+            )
+        }
+        refreshVisibleActorsIfNeeded()
+    }
+
+    private fun updateExistingActors(boundAreas: List<Area>) {
+        val reset = boundAreas.count { it.hasMine } == 0
+
+        actors.forEach {
+            if (it.isVisible) {
+                val areaActor = (it as AreaActor)
+                val area = boundAreas[areaActor.boundAreaId()]
+                areaActor.bindArea(reset, renderSettings.joinAreas, area, boundAreas)
+            }
+        }
     }
 
     private fun refreshAreas(forceRefresh: Boolean) {
@@ -146,36 +166,9 @@ class MinefieldStage(
             }
 
             if (actors.size != boundAreas.size) {
-                clear()
-                if (boundAreas.size < actors.size) {
-                    root.children.shrink()
-                } else {
-                    root.children.ensureCapacity(boundAreas.size)
-                }
-
-                boundAreas.forEach {
-                    addActor(
-                        AreaActor(
-                            theme = renderSettings.theme,
-                            size = renderSettings.areaSize,
-                            area = it,
-                            field = boundAreas,
-                            onInputEvent = ::handleGameEvent,
-                            enableLigatures = renderSettings.joinAreas,
-                        ),
-                    )
-                }
-                refreshVisibleActorsIfNeeded()
+                rebuildActors(boundAreas)
             } else {
-                val reset = boundAreas.count { it.hasMine } == 0
-
-                actors.forEach {
-                    if (it.isVisible) {
-                        val areaActor = (it as AreaActor)
-                        val area = boundAreas[areaActor.boundAreaId()]
-                        areaActor.bindArea(reset, renderSettings.joinAreas, area, boundAreas)
-                    }
-                }
+                updateExistingActors(boundAreas)
             }
 
             onEngineReady()
@@ -203,13 +196,13 @@ class MinefieldStage(
             val virtualHeight = Gdx.graphics.height
             val padding = renderSettings.internalPadding
 
-            val start = 0.5f * virtualWidth - padding.start
-            val end = it.width - 0.5f * virtualWidth + padding.end
-            val top = it.height - 0.5f * (virtualHeight - padding.top)
-            val bottom = 0.5f * virtualHeight + padding.bottom - renderSettings.navigationBarHeight
+            val start = CENTER_FACTOR * virtualWidth - padding.start
+            val end = it.width - CENTER_FACTOR * virtualWidth + padding.end
+            val top = it.height - CENTER_FACTOR * (virtualHeight - padding.top)
+            val bottom = CENTER_FACTOR * virtualHeight + padding.bottom - renderSettings.navigationBarHeight
 
             camera.run {
-                position.set((start + end) * 0.5f, (top + bottom) * 0.5f, 0f)
+                position.set((start + end) * CENTER_FACTOR, (top + bottom) * CENTER_FACTOR, 0f)
                 update(true)
             }
 
@@ -238,54 +231,77 @@ class MinefieldStage(
         inputEvents.add(gdxEvent)
     }
 
-    private fun checkGameTouchInput(now: Long) {
-        if (inputEvents.isNotEmpty()) {
-            val dt = now - inputInit
-
-            val touchUpEvents = inputEvents.filterIsInstance<GdxEvent.TouchUpEvent>()
-            val touchDownEvents = inputEvents.filterIsInstance<GdxEvent.TouchDownEvent>()
-
-            if (touchUpEvents.isNotEmpty()) {
-                if (touchUpEvents.size == touchDownEvents.size) {
-                    if (actionSettings.handleDoubleTaps) {
-                        if (dt > actionSettings.doubleTapTimeout) {
-                            touchUpEvents.groupBy { it.id }
-                                .entries
-                                .first()
-                                .let {
-                                    when (it.value.count()) {
-                                        1 -> onSingleTap(it.key)
-                                        2 -> onDoubleTap(it.key)
-                                        else -> {
-                                        }
-                                    }
-                                }.also {
-                                    inputEvents.clear()
-                                }
+    private fun handleTapWithDoubleTapSupport(
+        dt: Long,
+        touchUpEvents: List<GdxEvent.TouchUpEvent>,
+    ) {
+        if (dt > actionSettings.doubleTapTimeout) {
+            touchUpEvents.groupBy { it.id }
+                .entries
+                .first()
+                .let {
+                    when (it.value.count()) {
+                        1 -> onSingleTap(it.key)
+                        2 -> onDoubleTap(it.key)
+                        else -> {
                         }
-                    } else {
-                        touchUpEvents.map { it.id }
-                            .first()
-                            .run(onSingleTap)
-                            .also {
-                                inputEvents.clear()
-                            }
                     }
+                }.also {
+                    inputEvents.clear()
                 }
+        }
+    }
 
-                Gdx.graphics.requestRendering()
-            } else if (touchDownEvents.isNotEmpty()) {
-                if (dt > actionSettings.longTapTimeout) {
-                    touchDownEvents.map { it.id }
-                        .first()
-                        .run(onLongTouch)
-                        .also {
-                            inputEvents.clear()
-                        }
-                }
-
-                Gdx.graphics.requestRendering()
+    private fun handleTouchUp(
+        dt: Long,
+        touchUpEvents: List<GdxEvent.TouchUpEvent>,
+        touchDownEvents: List<GdxEvent.TouchDownEvent>,
+    ) {
+        if (touchUpEvents.size == touchDownEvents.size) {
+            if (actionSettings.handleDoubleTaps) {
+                handleTapWithDoubleTapSupport(dt, touchUpEvents)
+            } else {
+                touchUpEvents.map { it.id }
+                    .first()
+                    .run(onSingleTap)
+                    .also {
+                        inputEvents.clear()
+                    }
             }
+        }
+
+        Gdx.graphics.requestRendering()
+    }
+
+    private fun handleTouchDown(
+        dt: Long,
+        touchDownEvents: List<GdxEvent.TouchDownEvent>,
+    ) {
+        if (dt > actionSettings.longTapTimeout) {
+            touchDownEvents.map { it.id }
+                .first()
+                .run(onLongTouch)
+                .also {
+                    inputEvents.clear()
+                }
+        }
+
+        Gdx.graphics.requestRendering()
+    }
+
+    private fun checkGameTouchInput(now: Long) {
+        if (inputEvents.isEmpty()) {
+            return
+        }
+
+        val dt = now - inputInit
+        val touchUpEvents = inputEvents.filterIsInstance<GdxEvent.TouchUpEvent>()
+        val touchDownEvents = inputEvents.filterIsInstance<GdxEvent.TouchDownEvent>()
+
+        if (touchUpEvents.isNotEmpty()) {
+            handleTouchUp(dt, touchUpEvents, touchDownEvents)
+        } else if (touchDownEvents.isNotEmpty()) {
+            handleTouchDown(dt, touchDownEvents)
         }
     }
 
@@ -296,15 +312,15 @@ class MinefieldStage(
             val theme = renderSettings.theme
             backgroundColor =
                 if (theme.isDarkTheme && canTintAreas) {
-                    theme.palette.covered.toGdxColor(0.035f * zoomLevelAlpha)
+                    theme.palette.covered.toGdxColor(DARK_THEME_BG_ALPHA_FACTOR * zoomLevelAlpha)
                 } else {
-                    theme.palette.background.toInverseBackOrWhite(0.1f * zoomLevelAlpha)
+                    theme.palette.background.toInverseBackOrWhite(LIGHT_THEME_BG_ALPHA_FACTOR * zoomLevelAlpha)
                 }
             coveredAreaColor = theme.palette.covered.toGdxColor(1.0f)
-            coveredMarkedAreaColor = theme.palette.covered.toGdxColor(1.0f).dim(0.6f)
+            coveredMarkedAreaColor = theme.palette.covered.toGdxColor(1.0f).dim(MARKED_AREA_DIM)
             markColor =
                 if (canTintAreas) {
-                    theme.palette.covered.toInverseBackOrWhite(0.8f)
+                    theme.palette.covered.toInverseBackOrWhite(TINTED_MARK_ALPHA)
                 } else {
                     whiteColor
                 }
@@ -363,7 +379,7 @@ class MinefieldStage(
             val dx = Gdx.input.deltaX.toFloat()
             val dy = Gdx.input.deltaY.toFloat()
 
-            if (dx * dx + dy * dy > actionSettings.touchSensibility * 8) {
+            if (dx * dx + dy * dy > actionSettings.touchSensibility * DRAG_THRESHOLD_MULTIPLIER) {
                 inputEvents.clear()
             }
 
@@ -390,5 +406,14 @@ class MinefieldStage(
     companion object {
         const val MAX_ZOOM_OUT = 0.35f
         const val MAX_ZOOM_IN = 3.0f
+        const val SET_ZOOM_MIN = 0.8f
+        const val ZOOM_ALPHA_FADE_START = 3.5f
+        const val ZOOM_ALPHA_FADE_END = 4.0f
+        const val CENTER_FACTOR = 0.5f
+        const val DARK_THEME_BG_ALPHA_FACTOR = 0.035f
+        const val LIGHT_THEME_BG_ALPHA_FACTOR = 0.1f
+        const val MARKED_AREA_DIM = 0.6f
+        const val TINTED_MARK_ALPHA = 0.8f
+        const val DRAG_THRESHOLD_MULTIPLIER = 8
     }
 }

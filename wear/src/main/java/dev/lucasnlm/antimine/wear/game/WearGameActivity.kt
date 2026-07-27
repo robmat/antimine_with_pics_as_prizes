@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
 import dev.lucasnlm.antimine.common.level.view.GameRenderFragment
 import dev.lucasnlm.antimine.common.level.viewmodel.GameEvent
+import dev.lucasnlm.antimine.common.level.viewmodel.GameState
 import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
 import dev.lucasnlm.antimine.core.models.Difficulty
 import dev.lucasnlm.antimine.core.serializableNonSafe
@@ -103,9 +104,11 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
             finish()
         }
 
+        val switchControlAction = preferencesRepository.getSwitchControlAction()
+
         binding.selectOpen.apply {
             isVisible = enabled
-            alpha = if (preferencesRepository.getSwitchControlAction() == Action.OpenTile) 1.0f else 0.5f
+            alpha = if (switchControlAction == Action.OpenTile) 1.0f else INACTIVE_ACTION_ALPHA
             setOnClickListener {
                 gameViewModel.changeSwitchControlAction(Action.OpenTile)
             }
@@ -113,7 +116,7 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
 
         binding.selectFlag.apply {
             isVisible = enabled
-            alpha = if (preferencesRepository.getSwitchControlAction() == Action.SwitchMark) 1.0f else 0.5f
+            alpha = if (switchControlAction == Action.SwitchMark) 1.0f else INACTIVE_ACTION_ALPHA
             setOnClickListener {
                 gameViewModel.changeSwitchControlAction(Action.SwitchMark)
             }
@@ -171,102 +174,104 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
     private fun bindViewModel() =
         gameViewModel.apply {
             lifecycleScope.launchWhenCreated {
-                observeState().collect {
-                    if (it.turn == 0 && (it.saveId == 0L || it.isLoadingMap || it.isCreatingGame)) {
-                        binding.tapToBegin.apply {
-                            text =
-                                when {
-                                    it.isCreatingGame -> {
-                                        getString(i18n.string.creating_valid_game)
-                                    }
-                                    it.isLoadingMap -> {
-                                        getString(i18n.string.loading)
-                                    }
-                                    else -> {
-                                        getString(i18n.string.tap_to_begin)
-                                    }
-                                }
-                            isVisible = true
-                        }
-                    } else {
-                        binding.tapToBegin.isVisible = false
-                    }
-
-                    if (it.isCreatingGame) {
-                        launch {
-                            // Show loading indicator only when it takes more than:
-                            delay(500)
-                            if (singleState().isCreatingGame) {
-                                binding.loadingGame.show()
-                            }
-                        }
-                    } else if (binding.loadingGame.isVisible) {
-                        binding.loadingGame.hide()
-                    }
-
-                    if (it.duration % 10 > 2) {
-                        binding.timer.apply {
-                            isVisible = preferencesRepository.showTimer()
-                            alpha = 0.7f
-                            text = DateUtils.formatElapsedTime(it.duration)
-                        }
-                    } else if (it.duration > 0) {
-                        binding.timer.apply {
-                            text = getString(i18n.string.mines_remaining, it.mineCount)
-                        }
-                    } else {
-                        binding.timer.isVisible = false
-                    }
-
-                    if (it.isGameCompleted) {
-                        binding.newGame.setOnClickListener {
-                            lifecycleScope.launch {
-                                gameViewModel.startNewGame(this@WearGameActivity)
-                            }
-                        }
-                        binding.newGame.isVisible = true
-                    } else {
-                        binding.newGame.isVisible = false
-                    }
-
-                    keepScreenOn(it.isActive)
-                    refreshSwitchButtons()
+                observeState().collect { state ->
+                    applyGameState(state)
                 }
             }
 
             lifecycleScope.launchWhenCreated {
-                gameViewModel.observeSideEffects().collect {
-                    when (it) {
-                        is GameEvent.ShowNoGuessFailWarning -> {}
-                        is GameEvent.ShowNewGameDialog -> {}
-                        is GameEvent.VictoryDialog -> {
-                            val intent =
-                                Intent(applicationContext, VictoryActivity::class.java).apply {
-                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                }
-                            startActivity(intent)
-                        }
-                        is GameEvent.GameOverDialog -> {
-                            val intent =
-                                Intent(applicationContext, GameOverActivity::class.java).apply {
-                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                }
-                            startActivity(intent)
-                        }
-                        is GameEvent.GameCompleteDialog -> {
-                            val intent =
-                                Intent(applicationContext, VictoryActivity::class.java).apply {
-                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                }
-                            startActivity(intent)
-                        }
-                        else -> {
-                            // Empty
-                        }
-                    }
+                gameViewModel.observeSideEffects().collect { event ->
+                    handleGameEvent(event)
                 }
             }
         }
+
+    private fun applyGameState(state: GameState) {
+        updateTapToBeginLabel(state)
+
+        if (state.isCreatingGame) {
+            lifecycleScope.launch {
+                // Show loading indicator only when it takes more than:
+                delay(LOADING_INDICATOR_DELAY_MS)
+                if (gameViewModel.singleState().isCreatingGame) {
+                    binding.loadingGame.show()
+                }
+            }
+        } else if (binding.loadingGame.isVisible) {
+            binding.loadingGame.hide()
+        }
+
+        updateTimerLabel(state)
+
+        if (state.isGameCompleted) {
+            binding.newGame.setOnClickListener {
+                lifecycleScope.launch {
+                    gameViewModel.startNewGame(this@WearGameActivity)
+                }
+            }
+            binding.newGame.isVisible = true
+        } else {
+            binding.newGame.isVisible = false
+        }
+
+        keepScreenOn(state.isActive)
+        refreshSwitchButtons()
+    }
+
+    private fun updateTapToBeginLabel(state: GameState) {
+        val hasNoProgress = state.saveId == 0L || state.isLoadingMap || state.isCreatingGame
+        val shouldShowTapToBegin = state.turn == 0 && hasNoProgress
+        if (shouldShowTapToBegin) {
+            binding.tapToBegin.apply {
+                text =
+                    when {
+                        state.isCreatingGame -> getString(i18n.string.creating_valid_game)
+                        state.isLoadingMap -> getString(i18n.string.loading)
+                        else -> getString(i18n.string.tap_to_begin)
+                    }
+                isVisible = true
+            }
+        } else {
+            binding.tapToBegin.isVisible = false
+        }
+    }
+
+    private fun updateTimerLabel(state: GameState) {
+        if (state.duration % TIMER_BLINK_PERIOD_SECONDS > TIMER_BLINK_VISIBLE_SECONDS) {
+            binding.timer.apply {
+                isVisible = preferencesRepository.showTimer()
+                alpha = TIMER_ALPHA
+                text = DateUtils.formatElapsedTime(state.duration)
+            }
+        } else if (state.duration > 0) {
+            binding.timer.apply {
+                text = getString(i18n.string.mines_remaining, state.mineCount)
+            }
+        } else {
+            binding.timer.isVisible = false
+        }
+    }
+
+    private fun handleGameEvent(event: GameEvent) {
+        when (event) {
+            is GameEvent.ShowNoGuessFailWarning -> {}
+            is GameEvent.ShowNewGameDialog -> {}
+            is GameEvent.VictoryDialog -> startDialogActivity(VictoryActivity::class.java)
+            is GameEvent.GameOverDialog -> startDialogActivity(GameOverActivity::class.java)
+            is GameEvent.GameCompleteDialog -> startDialogActivity(VictoryActivity::class.java)
+            else -> {
+                // Empty
+            }
+        }
+    }
+
+    private fun startDialogActivity(activityClass: Class<*>) {
+        val intent =
+            Intent(applicationContext, activityClass).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        startActivity(intent)
+    }
 
     private fun keepScreenOn(enabled: Boolean) {
         if (enabled) {
@@ -285,5 +290,10 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
         const val DIFFICULTY = "difficulty"
         const val START_GAME = "start_game"
         const val RETRY_GAME = "retry_game"
+        const val INACTIVE_ACTION_ALPHA = 0.5f
+        const val LOADING_INDICATOR_DELAY_MS = 500L
+        const val TIMER_BLINK_PERIOD_SECONDS = 10
+        const val TIMER_BLINK_VISIBLE_SECONDS = 2
+        const val TIMER_ALPHA = 0.7f
     }
 }

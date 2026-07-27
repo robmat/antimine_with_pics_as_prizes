@@ -5,8 +5,8 @@ import android.content.Context.AUDIO_SERVICE
 import android.media.AudioManager
 import androidx.annotation.DrawableRes
 import com.batodev.antimine.R
-import dev.lucasnlm.antimine.core.viewmodel.IntentViewModel
 import com.batodev.antimine.gameover.model.GameResult
+import dev.lucasnlm.antimine.core.viewmodel.IntentViewModel
 import dev.lucasnlm.antimine.preferences.PreferencesRepositoryImpl
 import kotlinx.coroutines.flow.flow
 import java.util.concurrent.TimeUnit

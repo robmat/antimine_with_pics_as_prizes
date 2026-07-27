@@ -4,10 +4,10 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batodev.antimine.playgames.view.PlayGamesAdapter
 import com.batodev.antimine.playgames.viewmodel.PlayGamesEvent
 import com.batodev.antimine.playgames.viewmodel.PlayGamesViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.lucasnlm.antimine.i18n.R as i18n

@@ -27,7 +27,7 @@ val ExternalModule =
 
         single { BillingManagerImpl() } bind BillingManager::class
 
-        single { PlayGamesManagerImpl(get()) } bind PlayGamesManager::class
+        single { PlayGamesManagerImpl() } bind PlayGamesManager::class
 
         single { ReviewWrapperImpl() } bind ReviewWrapper::class
 

@@ -3,27 +3,27 @@ package com.batodev.antimine.gameover
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.WindowManager
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.batodev.antimine.GalleryActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batodev.antimine.R
-import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
-import dev.lucasnlm.antimine.core.models.Analytics
-import dev.lucasnlm.antimine.core.parcelable
 import com.batodev.antimine.databinding.WinDialogBinding
 import com.batodev.antimine.gameover.model.CommonDialogState
 import com.batodev.antimine.gameover.model.GameResult
 import com.batodev.antimine.gameover.viewmodel.EndGameDialogEvent
 import com.batodev.antimine.gameover.viewmodel.EndGameDialogViewModel
 import com.batodev.antimine.stats.StatsActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
+import dev.lucasnlm.antimine.core.models.Analytics
+import dev.lucasnlm.antimine.core.parcelable
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.FeatureFlagManager
 import kotlinx.coroutines.launch
@@ -47,11 +47,11 @@ class WinGameDialogFragment : CommonGameDialogFragment() {
                 dialogViewModel.sendEvent(
                     EndGameDialogEvent.BuildCustomEndGame(
                         gameResult =
-                            if (totalMines > 0) {
-                                gameResult
-                            } else {
-                                GameResult.GameOver
-                            },
+                        if (totalMines > 0) {
+                            gameResult
+                        } else {
+                            GameResult.GameOver
+                        },
                         showContinueButton = showContinueButton,
                         time = time,
                         rightMines = rightMines,
@@ -198,7 +198,7 @@ class WinGameDialogFragment : CommonGameDialogFragment() {
             setCanceledOnTouchOutside(false)
 
             window?.apply {
-                setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)

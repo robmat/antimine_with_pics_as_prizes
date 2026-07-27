@@ -84,9 +84,8 @@ class SkinAdapter(
             }
 
             holder.binding.skinImage.apply {
-                val floatAlpha = 0.45f
-                val paddingValue = context.dpToPx(8)
-                alpha = if (selected) 1.0f else floatAlpha
+                val paddingValue = context.dpToPx(SKIN_PADDING_DP)
+                alpha = if (selected) 1.0f else UNSELECTED_SKIN_ALPHA
                 setImageResource(skin.thumbnailImageRes)
                 isSoundEffectsEnabled = false
                 if (skin.canTint) {
@@ -106,6 +105,8 @@ class SkinAdapter(
     private companion object {
         const val WITH_PADDING = 0
         const val WITHOUT_PADDING = 1
+        const val UNSELECTED_SKIN_ALPHA = 0.45f
+        const val SKIN_PADDING_DP = 8
     }
 }
 

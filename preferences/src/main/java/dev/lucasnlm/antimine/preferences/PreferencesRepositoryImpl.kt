@@ -64,9 +64,9 @@ class PreferencesRepositoryImpl(
     override fun customGameMode(): Minefield =
         with(preferencesManager) {
             Minefield(
-                getInt(PreferenceKeys.PREFERENCE_CUSTOM_GAME_WIDTH, 9),
-                getInt(PreferenceKeys.PREFERENCE_CUSTOM_GAME_HEIGHT, 9),
-                getInt(PreferenceKeys.PREFERENCE_CUSTOM_GAME_MINES, 9),
+                getInt(PreferenceKeys.PREFERENCE_CUSTOM_GAME_WIDTH, DEFAULT_CUSTOM_GAME_SIZE),
+                getInt(PreferenceKeys.PREFERENCE_CUSTOM_GAME_HEIGHT, DEFAULT_CUSTOM_GAME_SIZE),
+                getInt(PreferenceKeys.PREFERENCE_CUSTOM_GAME_MINES, DEFAULT_CUSTOM_GAME_SIZE),
                 getLongOrNull(PreferenceKeys.PREFERENCE_CUSTOM_GAME_SEED),
             )
         }
@@ -97,11 +97,11 @@ class PreferencesRepositoryImpl(
     }
 
     override fun getHapticFeedbackLevel(): Int {
-        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_VIBRATION_LEVEL, 100)
+        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_VIBRATION_LEVEL, DEFAULT_HAPTIC_FEEDBACK_LEVEL)
     }
 
     override fun setHapticFeedbackLevel(value: Int) {
-        val newValue = value.coerceIn(0, 200)
+        val newValue = value.coerceIn(0, MAX_HAPTIC_FEEDBACK_LEVEL)
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_VIBRATION_LEVEL, newValue)
     }
 
@@ -142,7 +142,8 @@ class PreferencesRepositoryImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_MUSIC, value)
     }
 
-    override fun touchSensibility(): Int = preferencesManager.getInt(PreferenceKeys.PREFERENCE_TOUCH_SENSIBILITY, 5)
+    override fun touchSensibility(): Int =
+        preferencesManager.getInt(PreferenceKeys.PREFERENCE_TOUCH_SENSIBILITY, DEFAULT_TOUCH_SENSIBILITY)
 
     override fun setTouchSensibility(sensibility: Int) {
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_TOUCH_SENSIBILITY, sensibility)
@@ -203,7 +204,10 @@ class PreferencesRepositoryImpl(
     }
 
     override fun getDoubleClickTimeout(): Long {
-        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_DOUBLE_CLICK_TIMEOUT, 250).toLong()
+        return preferencesManager.getInt(
+            PreferenceKeys.PREFERENCE_DOUBLE_CLICK_TIMEOUT,
+            DEFAULT_DOUBLE_CLICK_TIMEOUT_MS,
+        ).toLong()
     }
 
     override fun setDoubleClickTimeout(value: Long) {
@@ -326,7 +330,7 @@ class PreferencesRepositoryImpl(
     }
 
     override fun getTips(): Int {
-        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_HINTS, 5)
+        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_HINTS, DEFAULT_HINTS)
     }
 
     override fun setTips(tips: Int) {
@@ -415,7 +419,7 @@ class PreferencesRepositoryImpl(
     }
 
     override fun requestDonation(): Boolean {
-        return false//preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_DONATION, true)
+        return false // preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_DONATION, true)
     }
 
     override fun letNumbersAutoFlag(): Boolean {
@@ -502,5 +506,14 @@ class PreferencesRepositoryImpl(
         if (versionCode > 0) {
             preferencesManager.putInt(PreferenceKeys.PREFERENCE_LAST_VERSION, versionCode)
         }
+    }
+
+    private companion object {
+        const val DEFAULT_CUSTOM_GAME_SIZE = 9
+        const val DEFAULT_HAPTIC_FEEDBACK_LEVEL = 100
+        const val MAX_HAPTIC_FEEDBACK_LEVEL = 200
+        const val DEFAULT_TOUCH_SENSIBILITY = 5
+        const val DEFAULT_DOUBLE_CLICK_TIMEOUT_MS = 250
+        const val DEFAULT_HINTS = 5
     }
 }

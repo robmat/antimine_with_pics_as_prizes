@@ -8,6 +8,7 @@ import com.google.android.material.slider.Slider
 import dev.lucasnlm.antimine.control.databinding.ActivityControlBinding
 import dev.lucasnlm.antimine.control.view.ControlAdapter
 import dev.lucasnlm.antimine.control.viewmodel.ControlEvent
+import dev.lucasnlm.antimine.control.viewmodel.ControlState
 import dev.lucasnlm.antimine.control.viewmodel.ControlViewModel
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
@@ -54,52 +55,59 @@ class ControlActivity : ThemedActivity(), Slider.OnChangeListener {
 
         lifecycleScope.launch {
             viewModel.observeState().collect {
-                controlAdapter.bindControlStyleList(it.selected, it.controls)
-                val longPress: Slider = binding.longPress
-                val touchSensibility: Slider = binding.touchSensibility
-                val hapticLevel: Slider = binding.hapticLevel
-
-                longPress.value = (it.longPress.toFloat() / longPress.stepSize).toInt() * longPress.stepSize
-                touchSensibility.value =
-                    (it.touchSensibility.toFloat() / touchSensibility.stepSize).toInt() * touchSensibility.stepSize
-
-                val longPressVisible =
-                    when (it.selected) {
-                        ControlStyle.Standard, ControlStyle.FastFlag -> true
-                        else -> false
-                    }
-                longPress.isVisible = longPressVisible
-                binding.longPressLabel.isVisible = longPressVisible
-
-                val doubleClickVisible =
-                    when (it.selected) {
-                        ControlStyle.DoubleClick, ControlStyle.DoubleClickInverted -> true
-                        else -> false
-                    }
-                binding.doubleClick.isVisible = doubleClickVisible
-                binding.doubleClickLabel.isVisible = doubleClickVisible
-                binding.doubleClick.value = it.doubleClick.toFloat()
-
-                hapticLevel.value =
-                    (it.hapticFeedbackLevel.toFloat() / hapticLevel.stepSize).toInt() * hapticLevel.stepSize
-
-                if (it.showReset) {
-                    setTopBarAction(
-                        TopBarAction(
-                            name = i18n.string.delete_all,
-                            icon = R.drawable.undo,
-                            action = {
-                                viewModel.sendEvent(ControlEvent.Reset)
-                            },
-                        ),
-                    )
-                } else {
-                    setTopBarAction(null)
-                }
+                applyState(it, controlAdapter)
             }
         }
 
         bindToolbar(binding.toolbar)
+    }
+
+    private fun applyState(
+        state: ControlState,
+        controlAdapter: ControlAdapter,
+    ) {
+        controlAdapter.bindControlStyleList(state.selected, state.controls)
+        val longPress: Slider = binding.longPress
+        val touchSensibility: Slider = binding.touchSensibility
+        val hapticLevel: Slider = binding.hapticLevel
+
+        longPress.value = (state.longPress.toFloat() / longPress.stepSize).toInt() * longPress.stepSize
+        touchSensibility.value =
+            (state.touchSensibility.toFloat() / touchSensibility.stepSize).toInt() * touchSensibility.stepSize
+
+        val longPressVisible =
+            when (state.selected) {
+                ControlStyle.Standard, ControlStyle.FastFlag -> true
+                else -> false
+            }
+        longPress.isVisible = longPressVisible
+        binding.longPressLabel.isVisible = longPressVisible
+
+        val doubleClickVisible =
+            when (state.selected) {
+                ControlStyle.DoubleClick, ControlStyle.DoubleClickInverted -> true
+                else -> false
+            }
+        binding.doubleClick.isVisible = doubleClickVisible
+        binding.doubleClickLabel.isVisible = doubleClickVisible
+        binding.doubleClick.value = state.doubleClick.toFloat()
+
+        hapticLevel.value =
+            (state.hapticFeedbackLevel.toFloat() / hapticLevel.stepSize).toInt() * hapticLevel.stepSize
+
+        if (state.showReset) {
+            setTopBarAction(
+                TopBarAction(
+                    name = i18n.string.delete_all,
+                    icon = R.drawable.undo,
+                    action = {
+                        viewModel.sendEvent(ControlEvent.Reset)
+                    },
+                ),
+            )
+        } else {
+            setTopBarAction(null)
+        }
     }
 
     override fun onValueChange(

@@ -9,20 +9,21 @@ import android.text.format.DateUtils
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.WindowManager
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.batodev.antimine.R
-import dev.lucasnlm.antimine.common.level.viewmodel.GameEvent
-import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
-import dev.lucasnlm.antimine.core.models.Analytics
-import dev.lucasnlm.antimine.core.parcelable
 import com.batodev.antimine.databinding.GameOverDialogBinding
 import com.batodev.antimine.gameover.model.CommonDialogState
 import com.batodev.antimine.gameover.model.GameResult
 import com.batodev.antimine.gameover.viewmodel.EndGameDialogEvent
 import com.batodev.antimine.gameover.viewmodel.EndGameDialogViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dev.lucasnlm.antimine.common.level.viewmodel.GameEvent
+import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
+import dev.lucasnlm.antimine.core.models.Analytics
+import dev.lucasnlm.antimine.core.parcelable
 import dev.lucasnlm.antimine.tutorial.TutorialActivity
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.FeatureFlagManager
@@ -31,7 +32,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.core.graphics.drawable.toDrawable
+import java.util.Locale
 
 class GameOverDialogFragment : CommonGameDialogFragment() {
     private val analyticsManager: AnalyticsManager by inject()
@@ -48,11 +49,11 @@ class GameOverDialogFragment : CommonGameDialogFragment() {
                 dialogViewModel.sendEvent(
                     EndGameDialogEvent.BuildCustomEndGame(
                         gameResult =
-                            if (totalMines > 0) {
-                                gameResult
-                            } else {
-                                GameResult.GameOver
-                            },
+                        if (totalMines > 0) {
+                            gameResult
+                        } else {
+                            GameResult.GameOver
+                        },
                         showContinueButton = showContinueButton,
                         time = time,
                         rightMines = rightMines,
@@ -145,7 +146,8 @@ class GameOverDialogFragment : CommonGameDialogFragment() {
                                 countdown.isVisible = true
                                 lifecycleScope.launch {
                                     repeat(CONTINUE_COUNTDOWN_SECONDS) {
-                                        countdown.text = (CONTINUE_COUNTDOWN_SECONDS - it).toString()
+                                        countdown.text =
+                                            String.format(Locale.US, "%d", CONTINUE_COUNTDOWN_SECONDS - it)
                                         delay(DateUtils.SECOND_IN_MILLIS)
                                     }
                                     countdown.isVisible = false

@@ -29,7 +29,7 @@ val AppModule =
             if (BuildConfig.DEBUG) {
                 DebugAnalyticsManager()
             } else {
-                ProdAnalyticsManager(ExternalAnalyticsWrapperImpl(get()))
+                ProdAnalyticsManager(ExternalAnalyticsWrapperImpl())
             }
         } bind AnalyticsManager::class
     }

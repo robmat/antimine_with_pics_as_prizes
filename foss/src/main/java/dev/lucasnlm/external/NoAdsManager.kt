@@ -5,7 +5,9 @@ import android.content.Context
 import android.view.View
 
 class NoAdsManager : AdsManager {
-    override fun start(context: Context) {}
+    override fun start(context: Context) {
+        // Empty
+    }
 
     override fun showRewardedAd(
         activity: Activity,

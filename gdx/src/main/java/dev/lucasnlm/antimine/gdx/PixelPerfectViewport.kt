@@ -19,11 +19,15 @@ class PixelPerfectViewport(worldWidth: Float, worldHeight: Float) : FitViewport(
         val viewportHeight = worldHeight.toInt() * iRate
 
         setScreenBounds(
-            ((screenWidth - viewportWidth) * 0.5f).toInt(),
-            ((screenHeight - viewportHeight) * 0.5f).toInt(),
+            ((screenWidth - viewportWidth) * CENTER_FACTOR).toInt(),
+            ((screenHeight - viewportHeight) * CENTER_FACTOR).toInt(),
             viewportWidth.toInt(),
             viewportHeight.toInt(),
         )
         apply(false)
+    }
+
+    private companion object {
+        const val CENTER_FACTOR = 0.5f
     }
 }

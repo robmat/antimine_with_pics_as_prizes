@@ -215,7 +215,7 @@ class AreaActor(
     }
 
     private fun drawMineBackground(batch: Batch) {
-        val coverColor = Color(0.8f, 0.3f, 0.3f, 1.0f)
+        val coverColor = Color(MISTAKE_TINT_RED, MISTAKE_TINT_GREEN, MISTAKE_TINT_BLUE, 1.0f)
 
         GameContext.atlas?.let { atlas ->
             pieces.forEach { piece ->
@@ -242,7 +242,7 @@ class AreaActor(
                 area.mark.isFlag() -> {
                     val color =
                         if (area.mistake) {
-                            Color(0.8f, 0.3f, 0.3f, 1.0f)
+                            Color(MISTAKE_TINT_RED, MISTAKE_TINT_GREEN, MISTAKE_TINT_BLUE, 1.0f)
                         } else {
                             GameContext.markColor
                         }
@@ -270,7 +270,7 @@ class AreaActor(
                     drawAsset(
                         batch = batch,
                         texture = it.mine,
-                        color = color.alpha(0.65f),
+                        color = color.alpha(REVEALED_MINE_ALPHA),
                         scale = BASE_ICON_SCALE,
                     )
                 }
@@ -285,16 +285,16 @@ class AreaActor(
                     batch = batch,
                     texture = it.aroundMines[area.minesAround - 1],
                     color =
-                        if (area.dimNumber) {
-                            theme.palette
-                                .minesAround(area.minesAround - 1)
-                                .toGdxColor(GameContext.zoomLevelAlpha * 0.45f)
-                                .dim(0.5f)
-                        } else {
-                            theme.palette
-                                .minesAround(area.minesAround - 1)
-                                .toGdxColor(GameContext.zoomLevelAlpha)
-                        },
+                    if (area.dimNumber) {
+                        theme.palette
+                            .minesAround(area.minesAround - 1)
+                            .toGdxColor(GameContext.zoomLevelAlpha * DIMMED_NUMBER_ALPHA_FACTOR)
+                            .dim(DIMMED_NUMBER_DIM_FACTOR)
+                    } else {
+                        theme.palette
+                            .minesAround(area.minesAround - 1)
+                            .toGdxColor(GameContext.zoomLevelAlpha)
+                    },
                 )
             } else if (area.hasMine) {
                 val color = theme.palette.uncovered
@@ -324,7 +324,7 @@ class AreaActor(
                                 theme.palette.covered
                             }
                         else -> Themes.WHITE
-                    }.toGdxColor(0.5f)
+                    }.toGdxColor(PRESSED_COVER_ALPHA)
 
                 GameContext.gameTextures?.detailedArea?.let {
                     batch.drawRegion(
@@ -343,7 +343,7 @@ class AreaActor(
                         y = y - height * (focusScale - 1.0f) * 0.5f,
                         width = width * focusScale,
                         height = height * focusScale,
-                        color = coverColor.dim(0.8f - (focusScale - 1.0f)),
+                        color = coverColor.dim(FOCUS_DIM_BASE - (focusScale - 1.0f)),
                         blend = true,
                     )
                 }
@@ -356,7 +356,9 @@ class AreaActor(
                         y = y - height * (focusScale - 1.0f) * 0.5f,
                         width = width * focusScale,
                         height = height * focusScale,
-                        color = color.toInverseBackOrWhite(0.25f).dim(0.8f - (focusScale - 1.0f)),
+                        color =
+                        color.toInverseBackOrWhite(PRESSED_UNCOVERED_ALPHA)
+                            .dim(FOCUS_DIM_BASE - (focusScale - 1.0f)),
                         blend = true,
                     )
                 }
@@ -418,6 +420,15 @@ class AreaActor(
         const val MIN_SCALE = 1.0f
         const val MAX_SCALE = 1.15f
         const val BASE_ICON_SCALE = 0.8f
+        const val MISTAKE_TINT_RED = 0.8f
+        const val MISTAKE_TINT_GREEN = 0.3f
+        const val MISTAKE_TINT_BLUE = 0.3f
+        const val REVEALED_MINE_ALPHA = 0.65f
+        const val DIMMED_NUMBER_ALPHA_FACTOR = 0.45f
+        const val DIMMED_NUMBER_DIM_FACTOR = 0.5f
+        const val PRESSED_COVER_ALPHA = 0.5f
+        const val FOCUS_DIM_BASE = 0.8f
+        const val PRESSED_UNCOVERED_ALPHA = 0.25f
 
         private fun Area.canLinkTo(area: Area): Boolean {
             return isCovered && mark.ligatureMask == area.mark.ligatureMask

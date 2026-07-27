@@ -146,6 +146,126 @@ class GameController {
         }
     }
 
+    private fun newMinefieldHandler(): MinefieldHandler =
+        MinefieldHandler(
+            field = field.toMutableList(),
+            useQuestionMark = useQuestionMark,
+            individualActions = useIndividualActions(),
+        )
+
+    private suspend fun handleFirstAction(target: Area): MinefieldHandler? {
+        val created = plantMinesExcept(target.id)
+        if (!created) {
+            return null
+        }
+
+        val minefieldHandler = newMinefieldHandler()
+        minefieldHandler.openAt(target.id, false)
+
+        if (!noGuessTestedLevel) {
+            onCreateUnsafeLevel?.invoke()
+        }
+        return minefieldHandler
+    }
+
+    private fun handleOpenTileAction(
+        minefieldHandler: MinefieldHandler,
+        target: Area,
+    ) {
+        if (target.mark.isNotNone()) {
+            minefieldHandler.removeMarkAt(target.id)
+        } else {
+            this.actions++
+            minefieldHandler.openAt(target.id, false)
+        }
+    }
+
+    private fun handleSwitchMarkAction(
+        minefieldHandler: MinefieldHandler,
+        target: Area,
+    ) {
+        if (!hasMines()) {
+            if (target.mark.isNotNone()) {
+                minefieldHandler.removeMarkAt(target.id)
+            } else {
+                minefieldHandler.openAt(target.id, false)
+            }
+        } else {
+            minefieldHandler.switchMarkAt(target.id)
+        }
+    }
+
+    private fun handleOpenNeighborsAction(
+        minefieldHandler: MinefieldHandler,
+        target: Area,
+    ) {
+        if (useClickOnNumbers) {
+            this.actions++
+            if (letNumbersPutFlag) {
+                minefieldHandler.openOrFlagNeighborsOf(target.id)
+            } else {
+                minefieldHandler.openNeighborsOf(target.id)
+            }
+        }
+    }
+
+    private fun handleSelectedSubAction(
+        minefieldHandler: MinefieldHandler,
+        target: Area,
+    ) {
+        when (selectedAction) {
+            Action.OpenTile -> {
+                if (target.mark.isNone()) {
+                    minefieldHandler.openAt(target.id, false)
+                } else {
+                    minefieldHandler.removeMarkAt(target.id)
+                }
+            }
+            Action.SwitchMark -> {
+                minefieldHandler.switchMarkAt(target.id)
+            }
+            Action.QuestionMark -> {
+                minefieldHandler.toggleMarkAt(target.id, Mark.Question)
+            }
+            else -> {
+                // Unexpected Action. Ignore.
+            }
+        }
+    }
+
+    private fun handleOpenOrMarkAction(
+        minefieldHandler: MinefieldHandler,
+        target: Area,
+    ) {
+        if (!hasMines()) {
+            if (target.mark.isNotNone()) {
+                minefieldHandler.removeMarkAt(target.id)
+            } else {
+                minefieldHandler.openAt(target.id, false)
+            }
+        } else {
+            this.actions++
+            handleSelectedSubAction(minefieldHandler, target)
+        }
+    }
+
+    private fun handleSubsequentAction(
+        target: Area,
+        action: Action?,
+    ): MinefieldHandler {
+        val minefieldHandler = newMinefieldHandler()
+
+        when (action) {
+            Action.OpenTile -> handleOpenTileAction(minefieldHandler, target)
+            Action.SwitchMark -> handleSwitchMarkAction(minefieldHandler, target)
+            Action.OpenNeighbors -> handleOpenNeighborsAction(minefieldHandler, target)
+            Action.OpenOrMark -> handleOpenOrMarkAction(minefieldHandler, target)
+            else -> {}
+        }
+
+        return minefieldHandler
+    }
+
     private suspend fun handleAction(
         target: Area,
         action: Action?,
@@ -155,95 +275,12 @@ class GameController {
             return
         }
 
-        val mustPlantMines = !hasMines()
-        var minefieldHandler: MinefieldHandler? = null
-
-        if (mustPlantMines) {
-            val created = plantMinesExcept(target.id)
-            if (created) {
-                minefieldHandler =
-                    MinefieldHandler(
-                        field = field.toMutableList(),
-                        useQuestionMark = useQuestionMark,
-                        individualActions = useIndividualActions(),
-                    )
-                minefieldHandler.openAt(target.id, false)
-
-                if (!noGuessTestedLevel) {
-                    onCreateUnsafeLevel?.invoke()
-                }
+        val minefieldHandler =
+            if (!hasMines()) {
+                handleFirstAction(target)
+            } else {
+                handleSubsequentAction(target, action)
             }
-        } else {
-            minefieldHandler =
-                MinefieldHandler(
-                    field = field.toMutableList(),
-                    useQuestionMark = useQuestionMark,
-                    individualActions = useIndividualActions(),
-                )
-
-            when (action) {
-                Action.OpenTile -> {
-                    if (target.mark.isNotNone()) {
-                        minefieldHandler.removeMarkAt(target.id)
-                    } else {
-                        this.actions++
-                        minefieldHandler.openAt(target.id, false)
-                    }
-                }
-                Action.SwitchMark -> {
-                    if (!hasMines()) {
-                        if (target.mark.isNotNone()) {
-                            minefieldHandler.removeMarkAt(target.id)
-                        } else {
-                            minefieldHandler.openAt(target.id, false)
-                        }
-                    } else {
-                        minefieldHandler.switchMarkAt(target.id)
-                    }
-                }
-                Action.OpenNeighbors -> {
-                    if (useClickOnNumbers) {
-                        this.actions++
-                        if (letNumbersPutFlag) {
-                            minefieldHandler.openOrFlagNeighborsOf(target.id)
-                        } else {
-                            minefieldHandler.openNeighborsOf(target.id)
-                        }
-                    }
-                }
-                Action.OpenOrMark -> {
-                    if (!hasMines()) {
-                        if (target.mark.isNotNone()) {
-                            minefieldHandler.removeMarkAt(target.id)
-                        } else {
-                            minefieldHandler.openAt(target.id, false)
-                        }
-                    } else {
-                        this.actions++
-
-                        when (selectedAction) {
-                            Action.OpenTile -> {
-                                if (target.mark.isNone()) {
-                                    minefieldHandler.openAt(target.id, false)
-                                } else {
-                                    minefieldHandler.removeMarkAt(target.id)
-                                }
-                            }
-                            Action.SwitchMark -> {
-                                minefieldHandler.switchMarkAt(target.id)
-                            }
-                            Action.QuestionMark -> {
-                                minefieldHandler.toggleMarkAt(target.id, Mark.Question)
-                            }
-                            else -> {
-                                // Unexpected Action. Ignore.
-                            }
-                        }
-                    }
-                }
-                else -> {}
-            }
-        }
 
         lastIdInteractionX = target.posX
         lastIdInteractionY = target.posY

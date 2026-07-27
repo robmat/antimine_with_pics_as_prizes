@@ -1,22 +1,6 @@
 package dev.lucasnlm.external
 
 class FeatureFlagManagerImpl : FeatureFlagManager() {
-    private val defaultMap by lazy {
-        mapOf(
-            HISTORY_ENABLED to isGameHistoryEnabled,
-            RATE_US_ENABLED to isRateUsEnabled,
-            GAMEPLAY_EVENTS_ENABLED to isGameplayAnalyticsEnabled,
-            GAME_OVER_AD_ENABLED to isGameOverAdEnabled,
-            SHOW_ADS_ON_CONTINUE_ENABLED to isAdsOnContinueEnabled,
-            SHOW_ADS_ON_NEW_GAME_ENABLED to isAdsOnNewGameEnabled,
-            CONTINUE_ENABLED to isContinueGameEnabled,
-            MIN_USAGE_TO_REVIEW to minUsageToReview,
-            USE_INTERSTITIAL_AD to useInterstitialAd,
-            BANNER_AD_ENABLED to isBannerAdEnabled,
-            SHOW_COUNTDOWN_TO_CONTINUE to showCountdownToContinue,
-        )
-    }
-
     private fun getBoolean(
         key: String,
         default: Boolean,
@@ -78,11 +62,10 @@ class FeatureFlagManagerImpl : FeatureFlagManager() {
     }
 
     override suspend fun refresh() {
+        // No-op: remote config backend not available in this build.
     }
 
     companion object {
-        private val TAG = FeatureFlagManagerImpl::class.simpleName
-
         private const val HISTORY_ENABLED = "history_enabled"
         private const val RATE_US_ENABLED = "rate_us_enabled"
         private const val GAMEPLAY_EVENTS_ENABLED = "gameplay_events_enabled"

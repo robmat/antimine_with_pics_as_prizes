@@ -2,15 +2,14 @@ package com.batodev.antimine
 
 import androidx.multidex.MultiDexApplication
 import com.badlogic.gdx.utils.GdxNativesLoader
+import com.batodev.antimine.di.AppModule
+import com.batodev.antimine.di.ViewModelModule
+import com.batodev.antimine.support.IapHandler
 import com.google.android.material.color.DynamicColors
 import dev.lucasnlm.antimine.common.level.di.LevelModule
 import dev.lucasnlm.antimine.core.di.CommonModule
 import dev.lucasnlm.antimine.core.models.Analytics
-import com.batodev.antimine.di.AppModule
-import com.batodev.antimine.di.ViewModelModule
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
-import com.batodev.antimine.support.IapHandler
-import com.batodev.antimine.BuildConfig
 import dev.lucasnlm.external.AdsManager
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.FeatureFlagManager

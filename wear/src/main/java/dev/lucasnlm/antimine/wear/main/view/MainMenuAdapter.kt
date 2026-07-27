@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.color.MaterialColors
 import dev.lucasnlm.antimine.wear.databinding.ViewMenuItemBinding
 import dev.lucasnlm.antimine.wear.main.models.MenuItem
+import androidx.appcompat.R as AR
 import com.google.android.material.R as GR
 
 class MainMenuAdapter(
@@ -55,7 +56,7 @@ class MainMenuAdapter(
                     if (menuItem.highlight) {
                         MaterialColors.getColorStateListOrNull(
                             context,
-                            GR.attr.colorPrimaryDark,
+                            AR.attr.colorPrimaryDark,
                         )?.withAlpha(HIGHLIGHT_ITEM_ALPHA)
                     } else {
                         MaterialColors.getColorStateListOrNull(

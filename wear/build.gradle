@@ -1,4 +1,5 @@
 plugins {
+    id 'io.gitlab.arturbosch.detekt'
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
@@ -68,6 +69,8 @@ android {
 }
 
 dependencies {
+    detektPlugins libs.detekt.formatting
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':external')
     implementation project(':common')
@@ -77,6 +80,7 @@ dependencies {
     implementation project(':core')
     implementation project(':gdx')
     implementation project(':foss')
+    implementation project(':i18n')
 
     // Wear OS
     implementation libs.androidx.wear

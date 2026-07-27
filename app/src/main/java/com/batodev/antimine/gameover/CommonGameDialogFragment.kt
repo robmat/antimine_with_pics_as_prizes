@@ -2,22 +2,22 @@ package com.batodev.antimine.gameover
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textview.MaterialTextView
 import com.batodev.antimine.R
+import com.batodev.antimine.preferences.PreferencesActivity
+import com.google.android.material.textview.MaterialTextView
 import dev.lucasnlm.antimine.core.audio.GameAudioManagerImpl
 import dev.lucasnlm.antimine.core.dpToPx
 import dev.lucasnlm.antimine.core.models.Analytics
-import com.batodev.antimine.preferences.PreferencesActivity
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.external.AdsManager
 import dev.lucasnlm.external.AnalyticsManager
@@ -73,7 +73,7 @@ abstract class CommonGameDialogFragment : AppCompatDialogFragment() {
         runCatching {
             val hexUri = "https://play.google.com/store/apps/details?id=dev.lucasnlm.hexo"
             val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(hexUri)).apply {
+                Intent(Intent.ACTION_VIEW, hexUri.toUri()).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
             context.startActivity(intent)
@@ -143,7 +143,7 @@ abstract class CommonGameDialogFragment : AppCompatDialogFragment() {
 
         runCatching {
             val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(composerLink)).apply {
+                Intent(Intent.ACTION_VIEW, composerLink.toUri()).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
             context.startActivity(intent)

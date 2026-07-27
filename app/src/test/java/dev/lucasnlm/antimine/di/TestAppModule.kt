@@ -27,12 +27,10 @@ val AppModule =
 
         single {
             object : BillingManager {
-                override fun start() {}
-
+                override fun start() { /* no-op */ }
                 override fun isEnabled(): Boolean = false
 
-                override suspend fun charge(activity: Activity) {}
-
+                override suspend fun charge(activity: Activity) { /* no-op */ }
                 override suspend fun getPrice(): Price? = null
 
                 override suspend fun getPriceFlow(): Flow<Price> = flowOf()
@@ -49,40 +47,31 @@ val AppModule =
 
                 override suspend fun silentLogin(): Boolean = false
 
-                override fun showPlayPopUp(activity: Activity) {}
-
+                override fun showPlayPopUp(activity: Activity) { /* no-op */ }
                 override fun getLoginIntent(): Intent? = null
 
-                override fun handleLoginResult(data: Intent?) {}
-
+                override fun handleLoginResult(data: Intent?) { /* no-op */ }
                 override fun isLogged(): Boolean = false
 
-                override fun openAchievements(activity: Activity) {}
-
-                override fun openLeaderboards(activity: Activity) {}
-
+                override fun openAchievements(activity: Activity) { /* no-op */ }
+                override fun openLeaderboards(activity: Activity) { /* no-op */ }
                 override suspend fun incrementAchievement(
                     achievement: Achievement,
                     value: Int,
-                ) {}
-
+                ) { /* no-op */ }
                 override suspend fun setAchievementSteps(
                     achievement: Achievement,
                     value: Int,
-                ) {}
-
-                override suspend fun unlockAchievement(achievement: Achievement) {}
-
+                ) { /* no-op */ }
+                override suspend fun unlockAchievement(achievement: Achievement) { /* no-op */ }
                 override fun submitLeaderboard(
                     leaderboard: Leaderboard,
                     value: Long,
-                ) {}
-
-                override fun keepRequestingLogin(status: Boolean) {}
-
+                ) { /* no-op */ }
+                override fun keepRequestingLogin(status: Boolean) { /* no-op */ }
                 override fun shouldRequestLogin(): Boolean = false
 
-                override fun signInToFirebase(activity: Activity) {}
+                override fun signInToFirebase(activity: Activity) { /* no-op */ }
             }
         } bind PlayGamesManager::class
 

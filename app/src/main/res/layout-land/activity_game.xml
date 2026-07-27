@@ -101,7 +101,6 @@
                     android:visibility="gone"
                     app:drawableTint="?android:attr/textColorPrimary"
                     app:drawableTopCompat="@drawable/timer"
-                    tools:targetApi="m"
                     tools:text="10:00"
                     tools:visibility="visible" />
 
@@ -121,7 +120,6 @@
                     app:drawableTint="?android:attr/textColorPrimary"
                     app:drawableTopCompat="@drawable/mine"
                     app:layout_constraintBottom_toTopOf="@+id/shortcutIcon"
-                    tools:targetApi="m"
                     tools:text="99"
                     tools:visibility="visible" />
             </LinearLayout>

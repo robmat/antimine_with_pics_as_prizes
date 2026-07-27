@@ -51,6 +51,9 @@ fun CloudSave.toHashMap(): HashMap<String, Any> =
         "dimNumbers" to dimNumbers,
     )
 
+private const val DEFAULT_HAPTIC_FEEDBACK_LEVEL = 100
+private const val DEFAULT_DOUBLE_CLICK_TIMEOUT_MS = 400
+
 private fun Any?.parseInt(): Int = this?.toString()?.toInt() ?: throw InvalidKeyException("Fail to parse Int")
 
 private fun Any?.parseInt(default: Int): Int = this?.toString()?.toInt() ?: default
@@ -69,14 +72,14 @@ fun cloudSaveOf(
     gameAssistance = data["gameAssistance"].parseInt(),
     help = data["help"].parseInt(),
     hapticFeedback = data["hapticFeedback"].parseInt(),
-    hapticFeedbackLevel = data["hapticFeedbackLevel"].parseInt(100),
+    hapticFeedbackLevel = data["hapticFeedbackLevel"].parseInt(DEFAULT_HAPTIC_FEEDBACK_LEVEL),
     soundEffects = data["soundEffects"].parseInt(),
     music = data["music"].parseInt(1),
     stats = data["stats"] as List<HashMap<String, String>>,
     premiumFeatures = data["premiumFeatures"].parseInt(),
     controlStyle = data["controlStyle"].parseInt(),
     openDirectly = data["openDirectly"].parseInt(0),
-    doubleClickTimeout = data["doubleClickTimeout"].parseInt(400),
+    doubleClickTimeout = data["doubleClickTimeout"].parseInt(DEFAULT_DOUBLE_CLICK_TIMEOUT_MS),
     allowTapNumbers = data["allowTapNumbers"].parseInt(1),
     highlightNumbers = data["highlightNumbers"].parseInt(0),
     leftHanded = data["leftHanded"].parseInt(0),

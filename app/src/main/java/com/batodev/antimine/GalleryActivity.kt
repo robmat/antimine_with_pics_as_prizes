@@ -2,13 +2,12 @@ package com.batodev.antimine
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import androidx.core.net.toUri
 import com.github.chrisbanes.photoview.PhotoView
-import com.batodev.antimine.R
 import dev.lucasnlm.external.AdsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,7 +38,7 @@ class GalleryActivity : Activity() {
         if (!pics.isEmpty()) {
             findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
                 ImageHelper.findBitmap(pics[settingsHelper.preferences.lastSeenGalleryPic], this)
-            );
+            )
             currentPic = pics[settingsHelper.preferences.lastSeenGalleryPic]
         }
     }
@@ -55,7 +54,6 @@ class GalleryActivity : Activity() {
         }
         showAD()
     }
-
 
     fun rightClicked(view: View) {
         val indexOf = pics.indexOf(currentPic)
@@ -84,7 +82,7 @@ class GalleryActivity : Activity() {
 
     private fun showAD() {
         Log.d(GalleryActivity::class.java.simpleName, "Showing ad.")
-        if (++scrollCount >= 3) {
+        if (++scrollCount >= AD_SCROLL_THRESHOLD) {
             adsManager.showInterstitialAd(this, onDismiss = {})
             scrollCount = 0
         }
@@ -97,13 +95,13 @@ class GalleryActivity : Activity() {
     fun shareClicked(view: View) {
         if (currentPic != "") {
             val imgFolder = PRIZE_IMAGES
-            val inputStream = assets.open("${imgFolder}${File.separator}${currentPic}")
+            val inputStream = assets.open("${imgFolder}${File.separator}$currentPic")
             val tmpImgPath = "tmp_shared/tmp.png"
             val file = File(filesDir, tmpImgPath)
             File(filesDir, "tmp_shared").mkdirs()
             file.delete()
             val outputStream: OutputStream = FileOutputStream(file)
-            val buffer = ByteArray(1024)
+            val buffer = ByteArray(COPY_BUFFER_SIZE)
             var bytesRead: Int
             while (inputStream.read(buffer).also { bytesRead = it } != -1) {
                 outputStream.write(buffer, 0, bytesRead)
@@ -111,12 +109,17 @@ class GalleryActivity : Activity() {
             inputStream.close()
             outputStream.close()
             val shareIntent = Intent(Intent.ACTION_SEND)
-            val uri = Uri.parse("content://com.batodev.antimine.ImagesProvider/$tmpImgPath")
+            val uri = "content://com.batodev.antimine.ImagesProvider/$tmpImgPath".toUri()
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
             shareIntent.clipData = android.content.ClipData.newRawUri("", uri)
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             shareIntent.type = "image/*"
             startActivity(shareIntent)
         }
+    }
+
+    private companion object {
+        const val AD_SCROLL_THRESHOLD = 3
+        const val COPY_BUFFER_SIZE = 1024
     }
 }

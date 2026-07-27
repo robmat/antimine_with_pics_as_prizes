@@ -12,11 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.batodev.antimine.R
+import com.batodev.antimine.databinding.ActivityPreferencesBinding
+import com.google.android.material.materialswitch.MaterialSwitch
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.core.cloud.CloudSaveManager
-import com.batodev.antimine.databinding.ActivityPreferencesBinding
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.ui.ext.ThemedActivity
 import dev.lucasnlm.antimine.ui.ext.showWarning
@@ -124,13 +124,13 @@ class PreferencesActivity :
         )
 
         binding.soundEffects.bindItem(
-            visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M,
+            visible = true,
             initialValue = preferenceRepository.isSoundEffectsEnabled(),
             onChangeValue = { preferenceRepository.setSoundEffectsEnabled(it) },
         )
 
         binding.music.bindItem(
-            visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M,
+            visible = true,
             initialValue = preferenceRepository.isMusicEnabled(),
             onChangeValue = { preferenceRepository.setMusicEnabled(it) },
         )

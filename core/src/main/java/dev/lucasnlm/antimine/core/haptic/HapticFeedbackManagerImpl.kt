@@ -27,18 +27,18 @@ class HapticFeedbackManagerImpl(
     }
 
     override fun longPressFeedback() {
-        vibrateTo(70, 240)
-        vibrateTo(10, 100)
+        vibrateTo(SHORT_TAP_TIME_MS, SHORT_TAP_AMPLITUDE)
+        vibrateTo(LONG_PRESS_TIME_MS, LONG_PRESS_AMPLITUDE)
     }
 
     override fun explosionFeedback() {
-        vibrateTo(400, -1)
+        vibrateTo(EXPLOSION_TIME_MS, DEFAULT_AMPLITUDE)
     }
 
     override fun tutorialErrorFeedback() {
-        vibrateTo(70, 240)
-        vibrateTo(10, 100)
-        vibrateTo(70, 240)
+        vibrateTo(SHORT_TAP_TIME_MS, SHORT_TAP_AMPLITUDE)
+        vibrateTo(LONG_PRESS_TIME_MS, LONG_PRESS_AMPLITUDE)
+        vibrateTo(SHORT_TAP_TIME_MS, SHORT_TAP_AMPLITUDE)
     }
 
     private fun vibrateTo(
@@ -46,7 +46,7 @@ class HapticFeedbackManagerImpl(
         amplitude: Int,
     ) {
         runCatching {
-            val feedbackLevel = preferencesRepository.getHapticFeedbackLevel().toDouble() / 100.0
+            val feedbackLevel = preferencesRepository.getHapticFeedbackLevel().toDouble() / HAPTIC_LEVEL_MAX
             val realAmplitude = (feedbackLevel * amplitude).toInt()
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -58,5 +58,15 @@ class HapticFeedbackManagerImpl(
                 vibrator.vibrate(time)
             }
         }
+    }
+
+    private companion object {
+        const val SHORT_TAP_TIME_MS = 70L
+        const val SHORT_TAP_AMPLITUDE = 240
+        const val LONG_PRESS_TIME_MS = 10L
+        const val LONG_PRESS_AMPLITUDE = 100
+        const val EXPLOSION_TIME_MS = 400L
+        const val DEFAULT_AMPLITUDE = -1
+        const val HAPTIC_LEVEL_MAX = 100.0
     }
 }

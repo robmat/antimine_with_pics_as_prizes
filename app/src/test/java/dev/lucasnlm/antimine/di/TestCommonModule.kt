@@ -36,10 +36,8 @@ val TestCommonModule =
 
                 override fun getAllSkins(): List<AppSkin> = Skins.getAllSkins()
 
-                override fun setTheme(themeId: Long) {}
-
-                override fun setSkin(skinId: Long) {}
-
+                override fun setTheme(themeId: Long) { /* no-op */ }
+                override fun setSkin(skinId: Long) { /* no-op */ }
                 override fun reset(): AppTheme = lightTheme()
             }
         } bind ThemeRepository::class

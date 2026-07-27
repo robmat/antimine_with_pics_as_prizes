@@ -7,6 +7,8 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
 import dev.lucasnlm.antimine.ui.databinding.ViewOfferCardButtonBinding
@@ -49,6 +51,86 @@ class OfferCardButtonView : FrameLayout {
         )
     }
 
+    private fun bindLabel(
+        text: String,
+        centralize: Boolean,
+        color: Int,
+    ) = binding.label.apply {
+        this.text = text
+        if (centralize) {
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        setTextColor(color)
+    }
+
+    private fun bindPrice(
+        price: String?,
+        invert: Boolean,
+        color: Int,
+    ) = binding.price.apply {
+        isVisible = price != null
+        if (price != null) {
+            this.text = price
+        }
+
+        if (invert) {
+            setTextColor(color)
+        }
+    }
+
+    private fun bindOffer(
+        showOffer: Boolean,
+        invert: Boolean,
+        color: Int,
+    ) = binding.priceOff.apply {
+        isVisible = showOffer
+        if (invert) {
+            imageTintList = ColorStateList.valueOf(color)
+        }
+    }
+
+    private fun bindIcon(
+        theme: AppTheme,
+        @DrawableRes startIcon: Int?,
+    ) = binding.icon.apply {
+        isVisible = startIcon != null
+        if (startIcon != null) {
+            val tintColor = theme.palette.covered.toAndroidColor()
+            imageTintList = ColorStateList.valueOf(tintColor)
+            setImageResource(startIcon)
+        }
+    }
+
+    private fun setupFocusChangeListener(
+        theme: AppTheme,
+        label: TextView,
+        priceView: TextView,
+        iconView: ImageView,
+        offerView: ImageView,
+    ) {
+        binding.cardView.setOnFocusChangeListener { _, focused ->
+            val focusedBackgroundColor =
+                if (focused) {
+                    theme.palette.accent.toAndroidColor()
+                } else {
+                    theme.palette.background.toAndroidColor()
+                }
+
+            val inverted =
+                if (focused) {
+                    theme.palette.background.toAndroidColor()
+                } else {
+                    theme.palette.accent.toAndroidColor()
+                }
+
+            label.setTextColor(inverted)
+            priceView.setTextColor(inverted)
+            iconView.setColorFilter(inverted)
+            binding.cardView.setCardBackgroundColor(focusedBackgroundColor)
+            offerView.imageTintList = ColorStateList.valueOf(inverted)
+        }
+    }
+
     private fun bindView(
         theme: AppTheme,
         invert: Boolean = false,
@@ -73,77 +155,18 @@ class OfferCardButtonView : FrameLayout {
                 theme.palette.background.toAndroidColor()
             }
 
-        val label =
-            binding.label.apply {
-                this.text = text
-                if (centralize) {
-                    gravity = Gravity.CENTER_HORIZONTAL
-                }
-                setTextColor(color)
-            }
-
-        val priceView =
-            binding.price.apply {
-                isVisible = price != null
-                if (price != null) {
-                    this.text = price
-                }
-
-                if (invert) {
-                    setTextColor(color)
-                }
-            }
-
-        val offerView =
-            binding.priceOff.apply {
-                isVisible = showOffer
-                if (invert) {
-                    imageTintList = ColorStateList.valueOf(color)
-                }
-            }
-
-        val iconView =
-            binding.icon.apply {
-                isVisible = startIcon != null
-                if (startIcon != null) {
-                    val tintColor = theme.palette.covered.toAndroidColor()
-                    imageTintList = ColorStateList.valueOf(tintColor)
-                    setImageResource(startIcon)
-                }
-            }
+        val label = bindLabel(text, centralize, color)
+        val priceView = bindPrice(price, invert, color)
+        val offerView = bindOffer(showOffer, invert, color)
+        val iconView = bindIcon(theme, startIcon)
 
         binding.cardView.apply {
             setOnClickListener(onAction)
-            strokeColor =
-                if (!invert) {
-                    color
-                } else {
-                    backgroundColor
-                }
+            strokeColor = if (!invert) color else backgroundColor
             setCardBackgroundColor(backgroundColor)
             isSoundEffectsEnabled = false
-
-            setOnFocusChangeListener { _, focused ->
-                val focusedBackgroundColor =
-                    if (focused) {
-                        theme.palette.accent.toAndroidColor()
-                    } else {
-                        theme.palette.background.toAndroidColor()
-                    }
-
-                val inverted =
-                    if (focused) {
-                        theme.palette.background.toAndroidColor()
-                    } else {
-                        theme.palette.accent.toAndroidColor()
-                    }
-
-                label.setTextColor(inverted)
-                priceView.setTextColor(inverted)
-                iconView.setColorFilter(inverted)
-                setCardBackgroundColor(focusedBackgroundColor)
-                offerView.imageTintList = ColorStateList.valueOf(inverted)
-            }
         }
+
+        setupFocusChangeListener(theme, label, priceView, iconView, offerView)
     }
 }

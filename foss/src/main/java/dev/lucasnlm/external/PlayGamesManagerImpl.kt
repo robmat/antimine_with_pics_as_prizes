@@ -1,12 +1,9 @@
 package dev.lucasnlm.external
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 
-class PlayGamesManagerImpl(
-    context: Context,
-) : PlayGamesManager {
+class PlayGamesManagerImpl : PlayGamesManager {
     override suspend fun playerId(): String? = null
 
     override fun hasGooglePlayGames(): Boolean = false

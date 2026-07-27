@@ -2,9 +2,9 @@ package com.batodev.antimine.playgames.viewmodel
 
 import android.app.Activity
 import com.batodev.antimine.R
+import com.batodev.antimine.playgames.model.PlayGamesItem
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.core.viewmodel.StatelessViewModel
-import com.batodev.antimine.playgames.model.PlayGamesItem
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.PlayGamesManager
 import dev.lucasnlm.antimine.i18n.R as i18n

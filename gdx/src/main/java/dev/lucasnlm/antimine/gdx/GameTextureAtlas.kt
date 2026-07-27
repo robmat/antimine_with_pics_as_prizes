@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.GridPoint2
 
 object GameTextureAtlas {
     private const val TEXTURE_SIZE = 2048 / 8
+    private const val MAX_BACKGROUND_VARIANT_INDEX = 4
 
     private fun gp(
         x: Int,
@@ -46,7 +47,8 @@ object GameTextureAtlas {
                 AtlasNames.FILL_BOTTOM_LEFT to gp(x = 1, y = 4),
                 AtlasNames.FULL to gp(x = 7, y = 6),
                 AtlasNames.SINGLE to gp(x = 0, y = 2),
-                AtlasNames.SINGLE_BACKGROUND to gp(x = defaultBackground.coerceIn(0, 4), y = 7),
+                AtlasNames.SINGLE_BACKGROUND to
+                    gp(x = defaultBackground.coerceIn(0, MAX_BACKGROUND_VARIANT_INDEX), y = 7),
                 AtlasNames.NUMBER_1 to gp(x = 2, y = 2),
                 AtlasNames.NUMBER_2 to gp(x = 3, y = 2),
                 AtlasNames.NUMBER_3 to gp(x = 4, y = 2),

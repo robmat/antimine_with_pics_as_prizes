@@ -1,7 +1,6 @@
 package com.batodev.antimine
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 
 class SettingsHelper(context: Context) {
     private val sharedPreferences: SharedPreferences

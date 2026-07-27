@@ -1,5 +1,7 @@
 package dev.lucasnlm.antimine.control.view
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -59,13 +61,13 @@ class ControlAdapter(
 
         return ControlViewHolder(
             simpleItem =
-                viewType.inflateIf(SINGLE_LINE_CONTROL) {
-                    ViewControlItemSimpleBinding.inflate(layoutInflater, parent, false)
-                },
+            viewType.inflateIf(SINGLE_LINE_CONTROL) {
+                ViewControlItemSimpleBinding.inflate(layoutInflater, parent, false)
+            },
             controlItem =
-                viewType.inflateIf(TWO_LINES_CONTROL) {
-                    ViewControlItemBinding.inflate(layoutInflater, parent, false)
-                },
+            viewType.inflateIf(TWO_LINES_CONTROL) {
+                ViewControlItemBinding.inflate(layoutInflater, parent, false)
+            },
         )
     }
 
@@ -83,42 +85,50 @@ class ControlAdapter(
                 GR.attr.colorOnBackground,
             )?.withAlpha(BACKGROUND_SELECTED_ALPHA)
 
-        if (holder.simpleItem != null) {
-            holder.itemView.run {
-                holder.simpleItem.cardView.apply {
-                    isSoundEffectsEnabled = false
-                    setOnClickListener {
-                        onControlSelected(controlDetail.controlStyle)
-                    }
-                    backgroundTintList =
-                        if (isSelected) {
-                            selectedBackgroundColor
-                        } else {
-                            null
-                        }
-                }
-                holder.simpleItem.firstActionName.text = context.getString(controlDetail.firstActionId)
-            }
-        } else if (holder.controlItem != null) {
-            holder.itemView.run {
-                holder.controlItem.cardView.apply {
-                    isSoundEffectsEnabled = false
-                    setOnClickListener {
-                        onControlSelected(controlDetail.controlStyle)
-                    }
-                    backgroundTintList =
-                        if (isSelected) {
-                            selectedBackgroundColor
-                        } else {
-                            null
-                        }
-                }
-                holder.controlItem.firstActionName.text = context.getString(controlDetail.firstActionId)
-                holder.controlItem.firstActionResponse.text = context.getString(controlDetail.firstActionResponseId)
-                holder.controlItem.secondActionName.text = context.getString(controlDetail.secondActionId)
-                holder.controlItem.secondActionResponse.text = context.getString(controlDetail.secondActionResponseId)
-            }
+        val simpleItem = holder.simpleItem
+        val controlItem = holder.controlItem
+        if (simpleItem != null) {
+            bindSimpleItem(simpleItem, controlDetail, isSelected, selectedBackgroundColor, context)
+        } else if (controlItem != null) {
+            bindControlItem(controlItem, controlDetail, isSelected, selectedBackgroundColor, context)
         }
+    }
+
+    private fun bindSimpleItem(
+        simpleItem: ViewControlItemSimpleBinding,
+        controlDetail: ControlDetails,
+        isSelected: Boolean,
+        selectedBackgroundColor: ColorStateList?,
+        context: Context,
+    ) {
+        simpleItem.cardView.apply {
+            isSoundEffectsEnabled = false
+            setOnClickListener {
+                onControlSelected(controlDetail.controlStyle)
+            }
+            backgroundTintList = if (isSelected) selectedBackgroundColor else null
+        }
+        simpleItem.firstActionName.text = context.getString(controlDetail.firstActionId)
+    }
+
+    private fun bindControlItem(
+        controlItem: ViewControlItemBinding,
+        controlDetail: ControlDetails,
+        isSelected: Boolean,
+        selectedBackgroundColor: ColorStateList?,
+        context: Context,
+    ) {
+        controlItem.cardView.apply {
+            isSoundEffectsEnabled = false
+            setOnClickListener {
+                onControlSelected(controlDetail.controlStyle)
+            }
+            backgroundTintList = if (isSelected) selectedBackgroundColor else null
+        }
+        controlItem.firstActionName.text = context.getString(controlDetail.firstActionId)
+        controlItem.firstActionResponse.text = context.getString(controlDetail.firstActionResponseId)
+        controlItem.secondActionName.text = context.getString(controlDetail.secondActionId)
+        controlItem.secondActionResponse.text = context.getString(controlDetail.secondActionResponseId)
     }
 
     override fun getItemCount(): Int {

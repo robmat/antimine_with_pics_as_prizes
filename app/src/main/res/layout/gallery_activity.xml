@@ -20,7 +20,7 @@
         android:background="@drawable/none"
         android:onClick="leftClicked"
         android:padding="8dp"
-        android:text="&lt;"
+        android:text="@string/gallery_previous_arrow"
         android:textColor="@color/light_grey"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="@id/gallery_activity_background" />
@@ -32,7 +32,7 @@
         android:background="@drawable/none"
         android:onClick="rightClicked"
         android:padding="8dp"
-        android:text="&gt;"
+        android:text="@string/gallery_next_arrow"
         android:textColor="@color/light_grey"
         android:textSize="30sp"
         app:layout_constraintRight_toRightOf="@id/gallery_activity_background" />

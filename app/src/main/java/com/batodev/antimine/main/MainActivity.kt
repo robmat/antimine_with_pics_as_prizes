@@ -2,7 +2,6 @@ package com.batodev.antimine.main
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -12,12 +11,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.batodev.antimine.GalleryActivity
 import com.batodev.antimine.GameActivity
-import com.batodev.antimine.SettingsHelper
+import com.batodev.antimine.custom.CustomLevelDialogFragment
+import com.batodev.antimine.databinding.ActivityMainBinding
+import com.batodev.antimine.history.HistoryActivity
+import com.batodev.antimine.l10n.GameLocaleManager
+import com.batodev.antimine.main.viewmodel.MainEvent
+import com.batodev.antimine.main.viewmodel.MainViewModel
+import com.batodev.antimine.playgames.PlayGamesDialogFragment
+import com.batodev.antimine.preferences.PreferencesActivity
+import com.batodev.antimine.stats.StatsActivity
 import dev.lucasnlm.antimine.about.AboutActivity
 import dev.lucasnlm.antimine.common.level.database.models.SaveStatus
 import dev.lucasnlm.antimine.common.level.repository.MinefieldRepository
@@ -27,20 +35,16 @@ import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.core.models.Difficulty
 import dev.lucasnlm.antimine.core.repository.DimensionRepository
-import com.batodev.antimine.custom.CustomLevelDialogFragment
-import com.batodev.antimine.databinding.ActivityMainBinding
-import com.batodev.antimine.history.HistoryActivity
-import com.batodev.antimine.l10n.GameLocaleManager
-import com.batodev.antimine.main.viewmodel.MainEvent
-import com.batodev.antimine.main.viewmodel.MainViewModel
-import com.batodev.antimine.playgames.PlayGamesDialogFragment
-import com.batodev.antimine.preferences.PreferencesActivity
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.Minefield
-import com.batodev.antimine.stats.StatsActivity
 import dev.lucasnlm.antimine.themes.ThemeActivity
 import dev.lucasnlm.antimine.ui.ext.ThemedActivity
-import dev.lucasnlm.external.*
+import dev.lucasnlm.external.AnalyticsManager
+import dev.lucasnlm.external.BillingManager
+import dev.lucasnlm.external.FeatureFlagManager
+import dev.lucasnlm.external.InAppUpdateManager
+import dev.lucasnlm.external.InstantAppManager
+import dev.lucasnlm.external.PlayGamesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -202,7 +206,10 @@ class MainActivity : ThemedActivity() {
         }
 
         binding.moreGames.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/dev?id=8228670503574649511"))
+            val i = Intent(
+                Intent.ACTION_VIEW,
+                "https://play.google.com/store/apps/dev?id=8228670503574649511".toUri()
+            )
             startActivity(i)
         }
 
@@ -307,6 +314,16 @@ class MainActivity : ThemedActivity() {
      * Pushes a shortcut to the Home launcher.
      * @param difficulty The difficulty to be used as a shortcut.
      */
+    private fun shortcutLabelAndIconFor(difficulty: Difficulty): Pair<Int, Int>? =
+        when (difficulty) {
+            Difficulty.Beginner -> i18n.string.beginner to CR.mipmap.shortcut_one
+            Difficulty.Intermediate -> i18n.string.intermediate to CR.mipmap.shortcut_two
+            Difficulty.Expert -> i18n.string.expert to CR.mipmap.shortcut_three
+            Difficulty.Master -> i18n.string.master to CR.mipmap.shortcut_four
+            Difficulty.Legend -> i18n.string.legend to CR.mipmap.shortcut_four
+            else -> null
+        }
+
     private fun pushShortcutOf(difficulty: Difficulty) {
         if (instantAppManager.isEnabled(applicationContext)) {
             // Ignore. Instant App doesn't support shortcuts.
@@ -314,27 +331,9 @@ class MainActivity : ThemedActivity() {
         }
 
         val idLow = difficulty.id.lowercase()
-        val deeplink = Uri.parse("app://antimine/game?difficulty=$idLow")
+        val deeplink = "app://antimine/game?difficulty=$idLow".toUri()
 
-        val name =
-            when (difficulty) {
-                Difficulty.Beginner -> i18n.string.beginner
-                Difficulty.Intermediate -> i18n.string.intermediate
-                Difficulty.Expert -> i18n.string.expert
-                Difficulty.Master -> i18n.string.master
-                Difficulty.Legend -> i18n.string.legend
-                else -> return
-            }
-
-        val icon =
-            when (difficulty) {
-                Difficulty.Beginner -> CR.mipmap.shortcut_one
-                Difficulty.Intermediate -> CR.mipmap.shortcut_two
-                Difficulty.Expert -> CR.mipmap.shortcut_three
-                Difficulty.Master -> CR.mipmap.shortcut_four
-                Difficulty.Legend -> CR.mipmap.shortcut_four
-                else -> return
-            }
+        val (name, icon) = shortcutLabelAndIconFor(difficulty) ?: return
 
         val shortcut =
             ShortcutInfoCompat.Builder(applicationContext, difficulty.id)

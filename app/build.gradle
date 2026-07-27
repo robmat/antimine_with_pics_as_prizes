@@ -1,4 +1,5 @@
 plugins {
+    id 'io.gitlab.arturbosch.detekt'
     id 'com.github.triplet.play'
     id 'com.batodev.releasetools'
     id 'com.github.ben-manes.versions'
@@ -119,6 +120,8 @@ play {
 }
 
 dependencies {
+    detektPlugins libs.detekt.formatting
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':external')
     implementation project(':common')

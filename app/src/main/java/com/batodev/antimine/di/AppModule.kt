@@ -2,16 +2,16 @@ package com.batodev.antimine.di
 
 import com.batodev.antimine.BuildConfig
 import com.batodev.antimine.cloud.CloudSaveManagerImpl
+import com.batodev.antimine.l10n.GameLocaleManager
+import com.batodev.antimine.l10n.GameLocaleManagerImpl
+import com.batodev.antimine.support.AppVersionManagerImpl
+import com.batodev.antimine.support.IapHandler
 import dev.lucasnlm.antimine.core.AppVersionManager
 import dev.lucasnlm.antimine.core.analytics.DebugAnalyticsManager
 import dev.lucasnlm.antimine.core.analytics.ProdAnalyticsManager
 import dev.lucasnlm.antimine.core.cloud.CloudSaveManager
 import dev.lucasnlm.antimine.core.haptic.HapticFeedbackManager
 import dev.lucasnlm.antimine.core.haptic.HapticFeedbackManagerImpl
-import com.batodev.antimine.l10n.GameLocaleManager
-import com.batodev.antimine.l10n.GameLocaleManagerImpl
-import com.batodev.antimine.support.AppVersionManagerImpl
-import com.batodev.antimine.support.IapHandler
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.ExternalAnalyticsWrapperImpl
 import kotlinx.coroutines.CoroutineScope
@@ -41,7 +41,7 @@ val AppModule =
             if (BuildConfig.DEBUG) {
                 DebugAnalyticsManager()
             } else {
-                ProdAnalyticsManager(ExternalAnalyticsWrapperImpl(get()))
+                ProdAnalyticsManager(ExternalAnalyticsWrapperImpl())
             }
         } bind AnalyticsManager::class
     }

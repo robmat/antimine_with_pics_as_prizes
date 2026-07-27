@@ -39,8 +39,8 @@ fun Actor.drawAsset(
         setColor(color ?: WHITE)
         draw(
             texture,
-            x - width * (scale - 1.0f) * 0.5f,
-            y - height * (scale - 1.0f) * 0.5f,
+            x - width * (scale - 1.0f) * CENTER_OFFSET_FACTOR,
+            y - height * (scale - 1.0f) * CENTER_OFFSET_FACTOR,
             width * scale,
             height * scale,
         )
@@ -59,11 +59,11 @@ fun Int.toInverseBackOrWhite(alpha: Float? = 1.0f): Color {
         android.graphics.Color.red(this) +
             android.graphics.Color.green(this) +
             android.graphics.Color.blue(this)
-    )
+        )
 
     val value =
-        if (sumRgb > (160 * 3)) {
-            0.15f
+        if (sumRgb > (BRIGHT_CHANNEL_THRESHOLD * RGB_CHANNEL_COUNT)) {
+            DARK_INVERSE_VALUE
         } else {
             1.0f
         }
@@ -82,3 +82,8 @@ fun Color.dim(value: Float): Color {
     b *= value
     return this
 }
+
+private const val CENTER_OFFSET_FACTOR = 0.5f
+private const val BRIGHT_CHANNEL_THRESHOLD = 160
+private const val RGB_CHANNEL_COUNT = 3
+private const val DARK_INVERSE_VALUE = 0.15f

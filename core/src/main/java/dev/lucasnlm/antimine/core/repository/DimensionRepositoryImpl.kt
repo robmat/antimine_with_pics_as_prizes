@@ -88,7 +88,7 @@ class DimensionRepositoryImpl(
         // See AOSP `RenderSessionImpl.findNavigationBar` code for reference:
         // https://android.googlesource.com/platform/frameworks/base/+/android-4.2.2_r1/tools/layoutlib/bridge/src/com/android/layoutlib/bridge/impl/RenderSessionImpl.java
         if (orientation == Configuration.ORIENTATION_LANDSCAPE &&
-            context.resources.configuration.smallestScreenWidthDp < 600
+            context.resources.configuration.smallestScreenWidthDp < TABLET_SMALLEST_WIDTH_DP
         ) {
             return false
         }
@@ -164,5 +164,6 @@ class DimensionRepositoryImpl(
         private const val NAVIGATION_BAR_HEIGHT = "navigation_bar_height"
         private const val DEF_TYPE_DIMEN = "dimen"
         private const val DEF_PACKAGE = "android"
+        private const val TABLET_SMALLEST_WIDTH_DP = 600
     }
 }

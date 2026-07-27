@@ -8,7 +8,7 @@ import android.util.Log
 const val PRIZE_IMAGES = "prize-images"
 
 object ImageHelper {
-    fun randomImage(context: Context) : String {
+    fun randomImage(context: Context): String {
         val allImages = context.assets.list(PRIZE_IMAGES)!!.toMutableList()
         val uncoveredPics = SettingsHelper(context).preferences.uncoveredPics
         allImages.removeAll(uncoveredPics)

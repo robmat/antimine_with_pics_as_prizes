@@ -63,16 +63,16 @@ class ThemeAdapter(
             if (selected) {
                 holder.binding.label.apply {
                     text = context.getString(i18n.string.selected)
-                    setTextColor(theme.palette.background.toInvertedAndroidColor(200))
+                    setTextColor(theme.palette.background.toInvertedAndroidColor(LABEL_INVERTED_COLOR_ALPHA))
                     setBackgroundResource(android.R.color.transparent)
                     setCompoundDrawables(null, null, null, null)
                     isVisible = true
                 }
-                holder.binding.covered.alpha = 0.25f
+                holder.binding.covered.alpha = SELECTED_COVERED_ALPHA
             } else if (theme.name != null) {
                 holder.binding.label.apply {
                     text = context.getString(theme.name!!)
-                    setTextColor(theme.palette.background.toInvertedAndroidColor(200))
+                    setTextColor(theme.palette.background.toInvertedAndroidColor(LABEL_INVERTED_COLOR_ALPHA))
                     setBackgroundResource(android.R.color.transparent)
                     setCompoundDrawables(null, null, null, null)
                     isVisible = true
@@ -96,6 +96,11 @@ class ThemeAdapter(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val LABEL_INVERTED_COLOR_ALPHA = 200
+        const val SELECTED_COVERED_ALPHA = 0.25f
     }
 }
 

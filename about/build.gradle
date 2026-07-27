@@ -1,4 +1,5 @@
 plugins {
+    id 'io.gitlab.arturbosch.detekt'
     id 'com.android.library'
     id 'kotlin-android'
 }
@@ -37,6 +38,8 @@ android {
 }
 
 dependencies {
+    detektPlugins libs.detekt.formatting
+
     implementation project(':core')
     implementation project(':i18n')
     implementation project(':preferences')

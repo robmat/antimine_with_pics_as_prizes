@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.SpannedString
 import android.util.LayoutDirection
 import android.util.Log
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
@@ -39,6 +38,7 @@ import dev.lucasnlm.external.Leaderboard
 import dev.lucasnlm.external.PlayGamesManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -72,7 +72,7 @@ open class GameViewModel(
             duration = 0L,
             difficulty = Difficulty.Beginner,
             mineCount = null,
-            minefield = Minefield(9, 9, 9),
+            minefield = Minefield(DEFAULT_MINEFIELD_SIZE, DEFAULT_MINEFIELD_SIZE, DEFAULT_MINEFIELD_SIZE),
             seed = 0L,
             hints = tipRepository.getTotalTips(),
             isGameCompleted = false,
@@ -88,155 +88,164 @@ open class GameViewModel(
     override suspend fun mapEventToState(event: GameEvent): Flow<GameState> =
         flow {
             when (event) {
-                is GameEvent.CreatingGameEvent -> {
-                    val newState = state.copy(isCreatingGame = true)
-                    emit(newState)
-                }
-                is GameEvent.SetGameActivation -> {
-                    val newState = state.copy(isActive = event.active)
-                    emit(newState)
-                }
-                is GameEvent.ShowNewGameDialog -> {
-                    sendSideEffect(GameEvent.ShowNewGameDialog)
-                }
-                is GameEvent.GiveMoreTip -> {
-                    tipRepository.increaseTip(5)
-
-                    val newState =
-                        state.copy(
-                            hints = tipRepository.getTotalTips(),
-                        )
-
-                    emit(newState)
-                }
-                is GameEvent.ConsumeTip -> {
-                    if (tipRepository.removeTip()) {
-                        val newState =
-                            state.copy(
-                                field = gameController.field(),
-                                hints = tipRepository.getTotalTips(),
-                            )
-                        emit(newState)
-                    }
-                }
-                is GameEvent.UpdateSave -> {
-                    val newState = state.copy(saveId = event.saveId)
-                    emit(newState)
-                }
-                is GameEvent.NewGame -> {
-                    emit(event.newState)
-                }
-                is GameEvent.ContinueGame -> {
-                    onContinueFromGameOver()
-                    runClock()
-                    val newState =
-                        state.copy(
-                            isActive = !gameController.allMinesFound(),
-                            isGameCompleted = gameController.remainingMines() == 0,
-                        )
-                    emit(newState)
-                }
-                is GameEvent.EngineReady -> {
-                    emit(state.copy(isLoadingMap = false))
-
-                    if (!state.isGameCompleted && state.hasMines && !state.isLoadingMap) {
-                        if (
-                            !gameController.isGameOver() &&
-                            !gameController.isVictory() &&
-                            gameController.remainingMines() > 1
-                        ) {
-                            runClock()
-                        }
-                    } else {
-                        stopClock()
-                    }
-                }
-                is GameEvent.LoadingNewGame -> {
-                    stopClock()
-                    emit(state.copy(isLoadingMap = true, duration = 0L, isActive = false))
-                }
-                is GameEvent.UpdateTime -> {
-                    val newState = state.copy(duration = event.time)
-                    emit(newState)
-                }
-                is GameEvent.UpdateMinefield -> {
-                    val isVictory = gameController.isVictory()
-                    val isGameOver = gameController.isGameOver()
-                    val isComplete = isCompletedWithMistakes()
-                    val wasCompleted = state.isGameCompleted
-                    val hasMines = gameController.hasMines()
-
-                    var newState =
-                        state.copy(
-                            turn = state.turn + 1,
-                            field = event.field,
-                            mineCount = gameController.remainingMines(),
-                            isGameCompleted = isVictory || isGameOver || isComplete,
-                            hasMines = hasMines,
-                            isCreatingGame = false,
-                        )
-
-                    if (!wasCompleted) {
-                        when {
-                            isVictory && !gameController.hadMistakes() -> {
-                                onVictory(context)
-                                newState = newState.copy(field = gameController.field())
-
-                                val totalMines = gameController.mines().count()
-                                val sideEffect =
-                                    GameEvent.VictoryDialog(
-                                        delayToShow = 1500L,
-                                        totalMines = totalMines,
-                                        rightMines = totalMines,
-                                        timestamp = state.duration,
-                                        receivedTips = calcRewardHints(),
-                                    )
-                                sendSideEffect(sideEffect)
-                            }
-                            isComplete -> {
-                                onGameOver(false)
-                                newState = newState.copy(field = gameController.field())
-                                val sideEffect =
-                                    GameEvent.GameCompleteDialog(
-                                        delayToShow = 0L,
-                                        totalMines = gameController.mines().count(),
-                                        rightMines = gameController.mines().count { it.mark.isNotNone() },
-                                        timestamp = state.duration,
-                                        receivedTips = calcRewardHints(),
-                                        turn = state.turn,
-                                    )
-                                sendSideEffect(sideEffect)
-                            }
-                            isGameOver -> {
-                                onGameOver(true)
-                                newState = newState.copy(field = gameController.field())
-                                val sideEffect =
-                                    GameEvent.GameOverDialog(
-                                        delayToShow = explosionDelay(),
-                                        totalMines = gameController.mines().count(),
-                                        rightMines = gameController.mines().count { it.mark.isNotNone() },
-                                        timestamp = state.duration,
-                                        receivedTips = 0,
-                                        turn = state.turn,
-                                    )
-                                sendSideEffect(sideEffect)
-                            }
-                        }
-                    }
-
-                    if (!wasCompleted && hasMines && !newState.isLoadingMap) {
-                        runClock()
-                    } else {
-                        stopClock()
-                    }
-
-                    emit(newState)
-                }
+                is GameEvent.CreatingGameEvent -> emit(state.copy(isCreatingGame = true))
+                is GameEvent.SetGameActivation -> emit(state.copy(isActive = event.active))
+                is GameEvent.ShowNewGameDialog -> sendSideEffect(GameEvent.ShowNewGameDialog)
+                is GameEvent.GiveMoreTip -> onGiveMoreTip()
+                is GameEvent.ConsumeTip -> onConsumeTip()
+                is GameEvent.UpdateSave -> emit(state.copy(saveId = event.saveId))
+                is GameEvent.NewGame -> emit(event.newState)
+                is GameEvent.ContinueGame -> onContinueGame()
+                is GameEvent.EngineReady -> onEngineReady()
+                is GameEvent.LoadingNewGame -> onLoadingNewGame()
+                is GameEvent.UpdateTime -> emit(state.copy(duration = event.time))
+                is GameEvent.UpdateMinefield -> onUpdateMinefield(event)
                 else -> {
                     // Empty
                 }
             }
         }
+
+    private suspend fun FlowCollector<GameState>.onGiveMoreTip() {
+        tipRepository.increaseTip(TIP_INCREASE_AMOUNT)
+
+        val newState =
+            state.copy(
+                hints = tipRepository.getTotalTips(),
+            )
+
+        emit(newState)
+    }
+
+    private suspend fun FlowCollector<GameState>.onConsumeTip() {
+        if (tipRepository.removeTip()) {
+            val newState =
+                state.copy(
+                    field = gameController.field(),
+                    hints = tipRepository.getTotalTips(),
+                )
+            emit(newState)
+        }
+    }
+
+    private suspend fun FlowCollector<GameState>.onContinueGame() {
+        onContinueFromGameOver()
+        runClock()
+        val newState =
+            state.copy(
+                isActive = !gameController.allMinesFound(),
+                isGameCompleted = gameController.remainingMines() == 0,
+            )
+        emit(newState)
+    }
+
+    private suspend fun FlowCollector<GameState>.onEngineReady() {
+        emit(state.copy(isLoadingMap = false))
+
+        if (!state.isGameCompleted && state.hasMines && !state.isLoadingMap) {
+            if (
+                !gameController.isGameOver() &&
+                !gameController.isVictory() &&
+                gameController.remainingMines() > 1
+            ) {
+                runClock()
+            }
+        } else {
+            stopClock()
+        }
+    }
+
+    private suspend fun FlowCollector<GameState>.onLoadingNewGame() {
+        stopClock()
+        emit(state.copy(isLoadingMap = true, duration = 0L, isActive = false))
+    }
+
+    private suspend fun onVictoryCompletion() {
+        onVictory(context)
+
+        val totalMines = gameController.mines().count()
+        val sideEffect =
+            GameEvent.VictoryDialog(
+                delayToShow = 1500L,
+                totalMines = totalMines,
+                rightMines = totalMines,
+                timestamp = state.duration,
+                receivedTips = calcRewardHints(),
+            )
+        sendSideEffect(sideEffect)
+    }
+
+    private suspend fun onCompleteWithMistakesCompletion() {
+        onGameOver(false)
+        val sideEffect =
+            GameEvent.GameCompleteDialog(
+                delayToShow = 0L,
+                totalMines = gameController.mines().count(),
+                rightMines = gameController.mines().count { it.mark.isNotNone() },
+                timestamp = state.duration,
+                receivedTips = calcRewardHints(),
+                turn = state.turn,
+            )
+        sendSideEffect(sideEffect)
+    }
+
+    private suspend fun onGameOverCompletion() {
+        onGameOver(true)
+        val sideEffect =
+            GameEvent.GameOverDialog(
+                delayToShow = explosionDelay(),
+                totalMines = gameController.mines().count(),
+                rightMines = gameController.mines().count { it.mark.isNotNone() },
+                timestamp = state.duration,
+                receivedTips = 0,
+                turn = state.turn,
+            )
+        sendSideEffect(sideEffect)
+    }
+
+    private suspend fun handleMinefieldCompletion(
+        isVictory: Boolean,
+        isComplete: Boolean,
+        isGameOver: Boolean,
+    ): Boolean {
+        when {
+            isVictory && !gameController.hadMistakes() -> onVictoryCompletion()
+            isComplete -> onCompleteWithMistakesCompletion()
+            isGameOver -> onGameOverCompletion()
+            else -> return false
+        }
+        return true
+    }
+
+    private suspend fun FlowCollector<GameState>.onUpdateMinefield(event: GameEvent.UpdateMinefield) {
+        val isVictory = gameController.isVictory()
+        val isGameOver = gameController.isGameOver()
+        val isComplete = isCompletedWithMistakes()
+        val wasCompleted = state.isGameCompleted
+        val hasMines = gameController.hasMines()
+
+        var newState =
+            state.copy(
+                turn = state.turn + 1,
+                field = event.field,
+                mineCount = gameController.remainingMines(),
+                isGameCompleted = isVictory || isGameOver || isComplete,
+                hasMines = hasMines,
+                isCreatingGame = false,
+            )
+
+        if (!wasCompleted && handleMinefieldCompletion(isVictory, isComplete, isGameOver)) {
+            newState = newState.copy(field = gameController.field())
+        }
+
+        if (!wasCompleted && hasMines && !newState.isLoadingMap) {
+            runClock()
+        } else {
+            stopClock()
+        }
+
+        emit(newState)
+    }
 
     suspend fun startNewGame(
         context: Context,
@@ -466,30 +475,26 @@ open class GameViewModel(
     }
 
     suspend fun saveGame() {
-        if (initialized) {
-            gameController.let {
-                if (it.hasMines()) {
-                    savesRepository.saveGame(
-                        it.getSaveState(state.duration, state.difficulty),
-                    )?.let { id ->
-                        it.setCurrentSaveId(id.toInt())
-                        sendEvent(GameEvent.UpdateSave(id))
-                    }
-                }
-            }
+        if (!initialized || !gameController.hasMines()) {
+            return
         }
+
+        val id =
+            savesRepository.saveGame(
+                gameController.getSaveState(state.duration, state.difficulty),
+            ) ?: return
+
+        gameController.setCurrentSaveId(id.toInt())
+        sendEvent(GameEvent.UpdateSave(id))
     }
 
     private suspend fun saveStats() {
-        if (initialized) {
-            gameController.let {
-                if (it.hasMines()) {
-                    it.getStats(state.duration)?.let { stats ->
-                        statsRepository.addStats(stats)
-                    }
-                }
-            }
+        if (!initialized || !gameController.hasMines()) {
+            return
         }
+
+        val stats = gameController.getStats(state.duration) ?: return
+        statsRepository.addStats(stats)
     }
 
     fun resumeGame() {
@@ -800,63 +805,57 @@ open class GameViewModel(
         }
     }
 
-    private suspend fun checkVictoryAchievements() =
-        with(gameController) {
-            state.field.count { it.mark.isFlag() }.also {
-                if (it > 0) {
-                    withContext(Dispatchers.Main) {
-                        playGamesManager.incrementAchievement(Achievement.Flags, it)
-                    }
-                }
-            }
+    private fun difficultyLeaderboard(difficulty: Difficulty): Leaderboard? =
+        when (difficulty) {
+            Difficulty.Beginner -> Leaderboard.BeginnerBestTime
+            Difficulty.Intermediate -> Leaderboard.IntermediateBestTime
+            Difficulty.Expert -> Leaderboard.ExpertBestTime
+            Difficulty.Master -> Leaderboard.MasterBestTime
+            Difficulty.Legend -> Leaderboard.LegendaryBestTime
+            else -> null
+        }
 
-            val time = clock.time()
-            if (time > 1L && gameController.getActionsCount() > MIN_ACTION_TO_REWARD) {
-                val board =
-                    when (state.difficulty) {
-                        Difficulty.Beginner -> {
-                            Leaderboard.BeginnerBestTime
-                        }
-                        Difficulty.Intermediate -> {
-                            Leaderboard.IntermediateBestTime
-                        }
-                        Difficulty.Expert -> {
-                            Leaderboard.ExpertBestTime
-                        }
-                        Difficulty.Master -> {
-                            Leaderboard.MasterBestTime
-                        }
-                        Difficulty.Legend -> {
-                            Leaderboard.LegendaryBestTime
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-
-                board?.let {
-                    playGamesManager.submitLeaderboard(it, time)
-                }
-
-                statsRepository.getAllStats(0).count {
-                    it.victory == 1
-                }.also {
-                    if (it > 0) {
-                        viewModelScope.launch(Dispatchers.Main) {
-                            playGamesManager.setAchievementSteps(Achievement.Beginner, it)
-                        }
-
-                        viewModelScope.launch(Dispatchers.Main) {
-                            playGamesManager.setAchievementSteps(Achievement.Intermediate, it)
-                        }
-
-                        viewModelScope.launch(Dispatchers.Main) {
-                            playGamesManager.setAchievementSteps(Achievement.Expert, it)
-                        }
-                    }
-                }
+    private suspend fun incrementFlagsAchievementIfAny() {
+        val flaggedCount = state.field.count { it.mark.isFlag() }
+        if (flaggedCount > 0) {
+            withContext(Dispatchers.Main) {
+                playGamesManager.incrementAchievement(Achievement.Flags, flaggedCount)
             }
         }
+    }
+
+    private suspend fun updateVictoryStepAchievements() {
+        val victories = statsRepository.getAllStats(0).count { it.victory == 1 }
+        if (victories > 0) {
+            viewModelScope.launch(Dispatchers.Main) {
+                playGamesManager.setAchievementSteps(Achievement.Beginner, victories)
+            }
+
+            viewModelScope.launch(Dispatchers.Main) {
+                playGamesManager.setAchievementSteps(Achievement.Intermediate, victories)
+            }
+
+            viewModelScope.launch(Dispatchers.Main) {
+                playGamesManager.setAchievementSteps(Achievement.Expert, victories)
+            }
+        }
+    }
+
+    private suspend fun submitBestTimeIfEligible(time: Long) {
+        if (time > 1L && gameController.getActionsCount() > MIN_ACTION_TO_REWARD) {
+            val board = difficultyLeaderboard(state.difficulty)
+            board?.let {
+                playGamesManager.submitLeaderboard(it, time)
+            }
+
+            updateVictoryStepAchievements()
+        }
+    }
+
+    private suspend fun checkVictoryAchievements() {
+        incrementFlagsAchievementIfAny()
+        submitBestTimeIfEligible(clock.time())
+    }
 
     private fun checkGameOverAchievements() =
         with(gameController) {
@@ -895,91 +894,80 @@ open class GameViewModel(
         sendSideEffect(GameEvent.ShowNoGuessFailWarning)
     }
 
-    fun getControlDescription(context: Context): SpannedString? {
-        var openAction: String? = null
-        var openReaction: String? = null
-        var flagAction: String? = null
-        var flagReaction: String? = null
-        var result: SpannedString? = null
+    private data class ControlDescriptionLabels(
+        val openAction: String,
+        val openReaction: String,
+        val flagAction: String,
+        val flagReaction: String,
+    )
 
+    private fun controlDescriptionLabels(context: Context): ControlDescriptionLabels? =
         when (preferencesRepository.controlStyle()) {
-            ControlStyle.Standard -> {
-                openAction = context.getString(i18n.string.single_click)
-                openReaction = context.getString(i18n.string.open)
-                flagAction = context.getString(i18n.string.long_press)
-                flagReaction = context.getString(i18n.string.flag_tile)
-            }
-            ControlStyle.FastFlag -> {
-                openAction = context.getString(i18n.string.single_click)
-                openReaction = context.getString(i18n.string.flag_tile)
-                flagAction = context.getString(i18n.string.long_press)
-                flagReaction = context.getString(i18n.string.open)
-            }
-            ControlStyle.DoubleClick -> {
-                openAction = context.getString(i18n.string.single_click)
-                openReaction = context.getString(i18n.string.flag_tile)
-                flagAction = context.getString(i18n.string.double_click)
-                flagReaction = context.getString(i18n.string.open)
-            }
-            ControlStyle.DoubleClickInverted -> {
-                openAction = context.getString(i18n.string.single_click)
-                openReaction = context.getString(i18n.string.open)
-                flagAction = context.getString(i18n.string.double_click)
-                flagReaction = context.getString(i18n.string.flag_tile)
-            }
+            ControlStyle.Standard ->
+                ControlDescriptionLabels(
+                    openAction = context.getString(i18n.string.single_click),
+                    openReaction = context.getString(i18n.string.open),
+                    flagAction = context.getString(i18n.string.long_press),
+                    flagReaction = context.getString(i18n.string.flag_tile),
+                )
+            ControlStyle.FastFlag ->
+                ControlDescriptionLabels(
+                    openAction = context.getString(i18n.string.single_click),
+                    openReaction = context.getString(i18n.string.flag_tile),
+                    flagAction = context.getString(i18n.string.long_press),
+                    flagReaction = context.getString(i18n.string.open),
+                )
+            ControlStyle.DoubleClick ->
+                ControlDescriptionLabels(
+                    openAction = context.getString(i18n.string.single_click),
+                    openReaction = context.getString(i18n.string.flag_tile),
+                    flagAction = context.getString(i18n.string.double_click),
+                    flagReaction = context.getString(i18n.string.open),
+                )
+            ControlStyle.DoubleClickInverted ->
+                ControlDescriptionLabels(
+                    openAction = context.getString(i18n.string.single_click),
+                    openReaction = context.getString(i18n.string.open),
+                    flagAction = context.getString(i18n.string.double_click),
+                    flagReaction = context.getString(i18n.string.flag_tile),
+                )
             else -> {
                 // With switch button, it doesn't require toast
+                null
             }
         }
 
-        if (openAction != null) {
-            val isLTL = Locale.getDefault().layoutDirection == LayoutDirection.LTR
-
-            val first =
-                buildSpannedString {
-                    if (isLTL) {
-                        bold {
-                            append(openAction)
-                        }
-                        append(" - ")
-                        append(openReaction)
-                    } else {
-                        bold {
-                            append(openReaction)
-                        }
-                        append(" - ")
-                        append(openAction)
-                    }
-                }
-
-            val second =
-                buildSpannedString {
-                    if (isLTL) {
-                        bold {
-                            append(flagAction)
-                        }
-                        append(" - ")
-                        append(flagReaction)
-                    } else {
-                        bold {
-                            append(flagReaction)
-                        }
-                        append(" - ")
-                        append(flagAction)
-                    }
-                }
-
-            result =
-                buildSpannedString {
-                    append(first)
-                    appendLine()
-                    append(second)
-                    appendLine()
-                    append(context.getString(i18n.string.tap_to_customize))
-                }
+    private fun formatActionReaction(
+        action: String,
+        reaction: String,
+        isLeftToRight: Boolean,
+    ): SpannedString =
+        buildSpannedString {
+            if (isLeftToRight) {
+                bold { append(action) }
+                append(" - ")
+                append(reaction)
+            } else {
+                bold { append(reaction) }
+                append(" - ")
+                append(action)
+            }
         }
 
-        return result
+    fun getControlDescription(context: Context): SpannedString? {
+        val labels = controlDescriptionLabels(context) ?: return null
+        val isLeftToRight = Locale.getDefault().layoutDirection == LayoutDirection.LTR
+
+        val first = formatActionReaction(labels.openAction, labels.openReaction, isLeftToRight)
+        val second = formatActionReaction(labels.flagAction, labels.flagReaction, isLeftToRight)
+
+        return buildSpannedString {
+            append(first)
+            appendLine()
+            append(second)
+            appendLine()
+            append(context.getString(i18n.string.tap_to_customize))
+        }
     }
 
     private fun refreshField() {
@@ -994,5 +982,7 @@ open class GameViewModel(
         const val REWARD_RATIO_WITHOUT_MISTAKES = 0.05
         const val MIN_ACTION_TO_REWARD = 7
         const val MIN_ACTION_TO_NO_LUCK = 3
+        const val DEFAULT_MINEFIELD_SIZE = 9
+        const val TIP_INCREASE_AMOUNT = 5
     }
 }

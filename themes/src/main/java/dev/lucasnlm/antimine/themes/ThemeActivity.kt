@@ -21,6 +21,7 @@ import dev.lucasnlm.external.AdsManager
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.BillingManager
 import dev.lucasnlm.external.model.PurchaseInfo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,7 +52,14 @@ class ThemeActivity : ThemedActivity() {
         }
 
         bindToolbar(binding.toolbar)
+        bindUnlockAllButton()
 
+        lifecycleScope.launch {
+            setupThemeAndSkinGrids()
+        }
+    }
+
+    private fun bindUnlockAllButton() {
         if (preferencesRepository.isPremiumEnabled()) {
             binding.unlockAll.isVisible = false
         } else {
@@ -85,101 +93,94 @@ class ThemeActivity : ThemedActivity() {
                 }
             }
         }
+    }
 
-        lifecycleScope.launch {
-            val size = dimensionRepository.displaySize()
-            val themesColumns =
-                if (size.width > size.height) {
-                    5
-                } else {
-                    3
-                }
-            val skinsColumns =
-                if (size.width > size.height) {
-                    2
-                } else {
-                    5
-                }
-
-            val themeAdapter =
-                ThemeAdapter(
-                    themeViewModel = themeViewModel,
-                    preferencesRepository = preferencesRepository,
-                    onSelectTheme = { theme ->
-                        themeViewModel.sendEvent(ThemeEvent.ChangeTheme(theme))
-                        gameAudioManager.playClickSound()
-                    },
-                    onRequestPurchase = {
-                        lifecycleScope.launch {
-                            billingManager.charge(this@ThemeActivity)
-                        }
-                        gameAudioManager.playMonetization()
-                    },
-                )
-
-            val skinAdapter =
-                SkinAdapter(
-                    themeRepository = themeRepository,
-                    themeViewModel = themeViewModel,
-                    preferencesRepository = preferencesRepository,
-                    onSelectSkin = { skin ->
-                        themeViewModel.sendEvent(ThemeEvent.ChangeSkin(skin))
-                        gameAudioManager.playClickSound()
-                    },
-                    onRequestPurchase = {
-                        lifecycleScope.launch {
-                            billingManager.charge(this@ThemeActivity)
-                        }
-                        gameAudioManager.playMonetization()
-                    },
-                )
-
-            binding.themes.apply {
-                addItemDecoration(SpaceItemDecoration(R.dimen.theme_divider))
-                setHasFixedSize(true)
-                layoutManager = GridLayoutManager(context, themesColumns)
-                adapter = themeAdapter
-            }
-
-            binding.skins.apply {
-                addItemDecoration(SpaceItemDecoration(R.dimen.theme_divider))
-                setHasFixedSize(true)
-                layoutManager =
-                    object : GridLayoutManager(context, skinsColumns) {
-                        override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
-                            val lpSize = width / (skinsColumns + 1)
-                            lp?.height = lpSize
-                            lp?.width = lpSize
-                            return true
-                        }
-                    }
-                adapter = skinAdapter
-            }
-
-            if (!preferencesRepository.isPremiumEnabled()) {
+    private fun createThemeAdapter(): ThemeAdapter =
+        ThemeAdapter(
+            themeViewModel = themeViewModel,
+            preferencesRepository = preferencesRepository,
+            onSelectTheme = { theme ->
+                themeViewModel.sendEvent(ThemeEvent.ChangeTheme(theme))
+                gameAudioManager.playClickSound()
+            },
+            onRequestPurchase = {
                 lifecycleScope.launch {
-                    billingManager.listenPurchases().collect {
-                        if (it is PurchaseInfo.PurchaseResult && it.unlockStatus) {
-                            themeAdapter.notifyItemRangeChanged(0, themeAdapter.itemCount)
-                        }
+                    billingManager.charge(this@ThemeActivity)
+                }
+                gameAudioManager.playMonetization()
+            },
+        )
+
+    private fun createSkinAdapter(): SkinAdapter =
+        SkinAdapter(
+            themeRepository = themeRepository,
+            themeViewModel = themeViewModel,
+            preferencesRepository = preferencesRepository,
+            onSelectSkin = { skin ->
+                themeViewModel.sendEvent(ThemeEvent.ChangeSkin(skin))
+                gameAudioManager.playClickSound()
+            },
+            onRequestPurchase = {
+                lifecycleScope.launch {
+                    billingManager.charge(this@ThemeActivity)
+                }
+                gameAudioManager.playMonetization()
+            },
+        )
+
+    private suspend fun CoroutineScope.setupThemeAndSkinGrids() {
+        val size = dimensionRepository.displaySize()
+        val themesColumns = if (size.width > size.height) LANDSCAPE_THEME_COLUMNS else PORTRAIT_THEME_COLUMNS
+        val skinsColumns = if (size.width > size.height) LANDSCAPE_SKIN_COLUMNS else PORTRAIT_SKIN_COLUMNS
+
+        val themeAdapter = createThemeAdapter()
+        val skinAdapter = createSkinAdapter()
+
+        binding.themes.apply {
+            addItemDecoration(SpaceItemDecoration(R.dimen.theme_divider))
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(context, themesColumns)
+            adapter = themeAdapter
+        }
+
+        binding.skins.apply {
+            addItemDecoration(SpaceItemDecoration(R.dimen.theme_divider))
+            setHasFixedSize(true)
+            layoutManager =
+                object : GridLayoutManager(context, skinsColumns) {
+                    override fun checkLayoutParams(lp: RecyclerView.LayoutParams?): Boolean {
+                        val lpSize = width / (skinsColumns + 1)
+                        lp?.height = lpSize
+                        lp?.width = lpSize
+                        return true
+                    }
+                }
+            adapter = skinAdapter
+        }
+
+        if (!preferencesRepository.isPremiumEnabled()) {
+            lifecycleScope.launch {
+                billingManager.listenPurchases().collect {
+                    if (it is PurchaseInfo.PurchaseResult && it.unlockStatus) {
+                        themeAdapter.notifyItemRangeChanged(0, themeAdapter.itemCount)
                     }
                 }
             }
+        }
 
-            launch {
-                themeViewModel.observeEvent().collect {
-                    if (it is ThemeEvent.Unlock) {
-                        billingManager.charge(this@ThemeActivity)
-                    }
+        launch {
+            themeViewModel.observeEvent().collect {
+                if (it is ThemeEvent.Unlock) {
+                    billingManager.charge(this@ThemeActivity)
                 }
             }
+        }
 
-            launch {
-                themeViewModel.observeState().collect {
-                    if (usingTheme != it.currentTheme || usingSkin != it.currentAppSkin) {
-                        recreate()
-                        cloudSaveManager.uploadSave()
-                    }
+        launch {
+            themeViewModel.observeState().collect {
+                if (usingTheme != it.currentTheme || usingSkin != it.currentAppSkin) {
+                    recreate()
+                    cloudSaveManager.uploadSave()
                 }
             }
         }
@@ -201,5 +202,9 @@ class ThemeActivity : ThemedActivity() {
 
     companion object {
         const val SCROLL_VIEW_STATE = "SCROLL_VIEW_POSITION"
+        private const val LANDSCAPE_THEME_COLUMNS = 5
+        private const val PORTRAIT_THEME_COLUMNS = 3
+        private const val LANDSCAPE_SKIN_COLUMNS = 2
+        private const val PORTRAIT_SKIN_COLUMNS = 5
     }
 }

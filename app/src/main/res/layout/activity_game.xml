@@ -112,7 +112,6 @@
                     app:drawableLeftCompat="@drawable/timer"
                     app:drawableStartCompat="@drawable/timer"
                     app:drawableTint="?android:attr/textColorPrimary"
-                    tools:targetApi="m"
                     tools:text="10:00"
                     tools:visibility="visible" />
 
@@ -131,7 +130,6 @@
                     android:visibility="gone"
                     app:drawableStartCompat="@drawable/mine"
                     app:drawableTint="?android:attr/textColorPrimary"
-                    tools:targetApi="m"
                     tools:text="99"
                     tools:visibility="visible" />
             </LinearLayout>

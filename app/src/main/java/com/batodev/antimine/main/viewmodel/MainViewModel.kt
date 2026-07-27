@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.batodev.antimine.GameActivity
+import com.batodev.antimine.l10n.LocalizationActivity
+import com.batodev.antimine.main.MainActivity
 import dev.lucasnlm.antimine.common.level.database.models.Stats
 import dev.lucasnlm.antimine.common.level.repository.StatsRepository
 import dev.lucasnlm.antimine.core.models.Difficulty
 import dev.lucasnlm.antimine.core.viewmodel.StatelessViewModel
-import com.batodev.antimine.l10n.LocalizationActivity
-import com.batodev.antimine.main.MainActivity
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.ControlStyle
 import dev.lucasnlm.antimine.tutorial.TutorialActivity

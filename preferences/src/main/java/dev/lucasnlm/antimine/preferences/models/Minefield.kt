@@ -11,5 +11,9 @@ data class Minefield(
 ) {
     private fun ratio(): Double = mines.toDouble() / (width * height)
 
-    fun ratioPercent(): Int = (ratio() * 100.0).toInt()
+    fun ratioPercent(): Int = (ratio() * PERCENT_MULTIPLIER).toInt()
+
+    private companion object {
+        const val PERCENT_MULTIPLIER = 100.0
+    }
 }

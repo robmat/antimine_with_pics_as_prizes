@@ -23,11 +23,13 @@ class GameAudioManagerImpl(
 
     private fun buildMusicMediaPlayer(assetFileDescriptor: AssetFileDescriptor): MediaPlayer {
         return playWithMediaPlayer(
-            soundAsset = assetFileDescriptor,
-            volume = MUSIC_MAX_VOLUME,
-            repeat = true,
-            releaseOnComplete = false,
-            isMusic = true,
+            MediaPlayerRequest(
+                soundAsset = assetFileDescriptor,
+                volume = MUSIC_MAX_VOLUME,
+                repeat = true,
+                releaseOnComplete = false,
+                isMusic = true,
+            ),
         )
     }
 
@@ -141,24 +143,27 @@ class GameAudioManagerImpl(
         }.build()
     }
 
-    private fun playWithMediaPlayer(
-        soundAsset: AssetFileDescriptor,
-        volume: Float,
-        repeat: Boolean,
-        releaseOnComplete: Boolean,
-        isMusic: Boolean = false,
-        seekTo: Int? = null,
-    ): MediaPlayer {
+    private data class MediaPlayerRequest(
+        val soundAsset: AssetFileDescriptor,
+        val volume: Float,
+        val repeat: Boolean,
+        val releaseOnComplete: Boolean,
+        val isMusic: Boolean = false,
+        val seekTo: Int? = null,
+    )
+
+    private fun playWithMediaPlayer(request: MediaPlayerRequest): MediaPlayer {
         val mediaPlayer = MediaPlayer()
         runCatching {
             mediaPlayer.run {
+                val soundAsset = request.soundAsset
                 setDataSource(soundAsset.fileDescriptor, soundAsset.startOffset, soundAsset.length)
                 prepare()
-                setAudioAttributes(getAudioAttributes(isMusic))
-                setVolume(volume, volume)
-                seekTo?.let(::seekTo)
-                isLooping = repeat
-                if (releaseOnComplete) {
+                setAudioAttributes(getAudioAttributes(request.isMusic))
+                setVolume(request.volume, request.volume)
+                request.seekTo?.let(::seekTo)
+                isLooping = request.repeat
+                if (request.releaseOnComplete) {
                     setOnCompletionListener {
                         release()
                     }
@@ -175,12 +180,14 @@ class GameAudioManagerImpl(
         if (preferencesRepository.isSoundEffectsEnabled()) {
             tryOpenFd(fileName)?.use { soundAsset ->
                 playWithMediaPlayer(
-                    soundAsset = soundAsset,
-                    volume = SFX_MAX_VOLUME,
-                    repeat = false,
-                    releaseOnComplete = true,
-                    seekTo = 0,
-                    isMusic = false,
+                    MediaPlayerRequest(
+                        soundAsset = soundAsset,
+                        volume = SFX_MAX_VOLUME,
+                        repeat = false,
+                        releaseOnComplete = true,
+                        seekTo = 0,
+                        isMusic = false,
+                    ),
                 )
             }
         }
