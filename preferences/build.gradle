@@ -39,11 +39,11 @@ dependencies {
     // Dependencies must be hardcoded to support F-droid
 
     // AndroidX
-    implementation libs.androidx.appcompat
-    implementation libs.androidx.preference.ktx
+    implementation sharedLibs.androidx.appcompat
+    implementation sharedLibs.androidx.preference.ktx
 
     // Unit Tests
-    testImplementation libs.junit
+    testImplementation sharedLibs.junit
     testImplementation libs.mockito.core
     testImplementation libs.mockito.kotlin
     testImplementation libs.mockk

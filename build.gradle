@@ -5,7 +5,9 @@ buildscript {
     }
 
     dependencies {
-        classpath libs.android.gradle.plugin
+        // AGP genuinely matches the shared catalog's version - sourced dynamically
+        // since a Gradle version catalog can't reference another catalog's values.
+        classpath "com.android.tools.build:gradle:${sharedLibs.versions.agp.get()}"
         classpath libs.kotlin.gradle.plugin
         classpath libs.ksp.gradle.plugin
 
@@ -16,9 +18,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.github.triplet.play' version '4.0.0' apply false
-    id 'com.github.ben-manes.versions' version '0.54.0' apply false
-    id 'se.patrikerdes.use-latest-versions' version '0.2.19' apply false
+    alias(sharedLibs.plugins.triplet.play) apply false
     alias(sharedLibs.plugins.detekt) apply false
 }
 

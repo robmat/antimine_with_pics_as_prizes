@@ -2,8 +2,6 @@ plugins {
     id 'io.gitlab.arturbosch.detekt'
     id 'com.github.triplet.play'
     id 'com.batodev.releasetools'
-    id 'com.github.ben-manes.versions'
-    id 'se.patrikerdes.use-latest-versions'
 }
 
 apply plugin: 'com.android.application'
@@ -146,10 +144,10 @@ dependencies {
     googleInstantImplementation project(':audio-low')
 
     // AndroidX
-    implementation libs.androidx.appcompat
-    implementation libs.androidx.preference.ktx
+    implementation sharedLibs.androidx.appcompat
+    implementation sharedLibs.androidx.preference.ktx
     implementation libs.androidx.recyclerview
-    implementation libs.androidx.multidex
+    implementation sharedLibs.androidx.multidex
     implementation libs.androidx.activity.ktx
     implementation libs.androidx.fragment.ktx
 
@@ -163,7 +161,7 @@ dependencies {
     implementation libs.androidx.room.ktx
 
     // Constraint
-    implementation libs.androidx.constraintlayout
+    implementation sharedLibs.androidx.constraintlayout
 
     // Google
     implementation libs.google.material
@@ -182,31 +180,31 @@ dependencies {
     implementation libs.konfetti.xml
 
     // Photo view
-    implementation libs.photo.view
+    implementation sharedLibs.chrisbanes.photoview
 
     // Tests
-    testImplementation libs.junit
+    testImplementation sharedLibs.junit
     testImplementation libs.androidx.core.ktx
     testImplementation libs.androidx.test.core.ktx
-    testImplementation libs.androidx.test.rules
+    testImplementation sharedLibs.androidx.test.rules
     testImplementation libs.androidx.test.runner
-    testImplementation libs.androidx.test.espresso.core
+    testImplementation sharedLibs.androidx.test.espresso.core
     testImplementation libs.androidx.fragment.testing
     testImplementation libs.robolectric
-    testImplementation libs.androidx.test.ext.junit
+    testImplementation sharedLibs.androidx.test.ext.junit
     testImplementation libs.mockk
 
     // Core library
-    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation sharedLibs.androidx.test.core
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation sharedLibs.androidx.test.core
     androidTestImplementation libs.androidx.test.core.ktx
-    androidTestImplementation libs.androidx.test.espresso.core
-    androidTestImplementation libs.androidx.test.espresso.intents
-    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation sharedLibs.androidx.test.espresso.core
+    androidTestImplementation sharedLibs.androidx.test.espresso.intents
+    androidTestImplementation sharedLibs.androidx.test.ext.junit
     androidTestImplementation libs.androidx.test.runner
-    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation sharedLibs.androidx.test.rules
     androidTestUtil libs.androidx.test.orchestrator
 }
 

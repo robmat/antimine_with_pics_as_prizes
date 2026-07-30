@@ -51,7 +51,7 @@ dependencies {
     implementation libs.google.material
 
     // AndroidX
-    implementation libs.androidx.appcompat
+    implementation sharedLibs.androidx.appcompat
     implementation libs.androidx.activity.ktx
     implementation libs.androidx.fragment.ktx
 
@@ -59,7 +59,7 @@ dependencies {
     implementation libs.androidx.recyclerview
 
     // Constraint
-    implementation libs.androidx.constraintlayout
+    implementation sharedLibs.androidx.constraintlayout
 
     // Lifecycle
     implementation libs.androidx.lifecycle.viewmodel.ktx
@@ -78,7 +78,7 @@ dependencies {
     implementation libs.kotlinx.metadata.jvm
 
     // Unit Tests
-    testImplementation libs.junit
+    testImplementation sharedLibs.junit
     testImplementation libs.mockito.core
     testImplementation libs.mockito.kotlin
     testImplementation libs.mockk
