@@ -98,7 +98,7 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.7.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.androidx.test.rules
     androidTestUtil 'androidx.test:orchestrator:1.6.1'
 }

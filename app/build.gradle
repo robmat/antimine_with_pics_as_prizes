@@ -187,7 +187,7 @@ dependencies {
     testImplementation 'androidx.core:core-ktx:1.17.0'
     testImplementation 'androidx.test:core-ktx:1.7.0'
     testImplementation libs.androidx.test.rules
-    testImplementation 'androidx.test:runner:1.7.0'
+    testImplementation libs.androidx.test.runner
     testImplementation libs.androidx.test.espresso.core
     testImplementation 'androidx.fragment:fragment-testing:1.8.9'
     testImplementation 'org.robolectric:robolectric:4.16'
@@ -203,7 +203,7 @@ dependencies {
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.espresso.intents
     androidTestImplementation libs.androidx.test.ext.junit
-    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.androidx.test.rules
     androidTestUtil 'androidx.test:orchestrator:1.6.1'
 }
