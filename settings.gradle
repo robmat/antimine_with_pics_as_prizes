@@ -8,7 +8,7 @@ pluginManagement {
 }
 dependencyResolutionManagement {
     versionCatalogs {
-        sharedLibs {
+        libs {
             from(files("../release-tools/gradle/libs.versions.toml"))
         }
     }

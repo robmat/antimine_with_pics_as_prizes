@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
@@ -45,6 +45,6 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1'
 
     // Koin
-    implementation libs.koin.android.foss
-    testImplementation libs.koin.test.foss
+    implementation 'io.insert-koin:koin-android:4.1.1'
+    testImplementation 'io.insert-koin:koin-test:4.1.1'
 }

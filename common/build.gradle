@@ -34,7 +34,7 @@ android {
 
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
@@ -99,8 +99,8 @@ dependencies {
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.7.0'
-    androidTestImplementation sharedLibs.androidx.test.rules
-    androidTestUtil libs.androidx.test.orchestrator
+    androidTestImplementation libs.androidx.test.rules
+    androidTestUtil 'androidx.test:orchestrator:1.6.1'
 }
 
 tasks.withType(Test).configureEach {

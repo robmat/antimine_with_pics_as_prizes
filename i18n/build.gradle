@@ -34,13 +34,13 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
-    implementation sharedLibs.androidx.appcompat
-    implementation libs.google.material
-    testImplementation sharedLibs.junit
-    androidTestImplementation sharedLibs.androidx.test.ext.junit
-    androidTestImplementation sharedLibs.androidx.test.espresso.core
+    implementation libs.androidx.appcompat
+    implementation 'com.google.android.material:material:1.13.0'
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation libs.androidx.test.espresso.core
 }

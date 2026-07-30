@@ -7,19 +7,21 @@ buildscript {
     dependencies {
         // AGP genuinely matches the shared catalog's version - sourced dynamically
         // since a Gradle version catalog can't reference another catalog's values.
-        classpath "com.android.tools.build:gradle:${sharedLibs.versions.agp.get()}"
-        classpath libs.kotlin.gradle.plugin
-        classpath libs.ksp.gradle.plugin
+        classpath "com.android.tools.build:gradle:${libs.versions.agp.get()}"
+        // Kotlin/KSP intentionally not on the shared alias - this repo is ahead of
+        // the fleet-wide 2.2.10 at 2.2.20 (KSP-paired).
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.2.20-2.0.2"
 
         if (System.getenv('IS_GOOGLE_BUILD')) {
-            classpath libs.google.gms
+            classpath "com.google.gms:google-services:4.4.3"
         }
     }
 }
 
 plugins {
-    alias(sharedLibs.plugins.triplet.play) apply false
-    alias(sharedLibs.plugins.detekt) apply false
+    alias(libs.plugins.triplet.play) apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 allprojects {

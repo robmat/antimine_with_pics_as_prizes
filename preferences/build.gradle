@@ -34,17 +34,17 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
     // AndroidX
-    implementation sharedLibs.androidx.appcompat
-    implementation sharedLibs.androidx.preference.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.preference.ktx
 
     // Unit Tests
-    testImplementation sharedLibs.junit
-    testImplementation libs.mockito.core
-    testImplementation libs.mockito.kotlin
-    testImplementation libs.mockk
+    testImplementation libs.junit
+    testImplementation 'org.mockito:mockito-core:5.19.0'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    testImplementation 'io.mockk:mockk:1.14.5'
 }

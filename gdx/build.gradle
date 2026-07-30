@@ -46,23 +46,23 @@ android {
 configurations { natives }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     implementation project(':core')
     implementation project(':preferences')
     implementation project(':ui')
 
     // AndroidX
-    implementation sharedLibs.androidx.appcompat
-    implementation libs.androidx.activity.ktx
-    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.appcompat
+    implementation 'androidx.activity:activity-ktx:1.11.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'
 
     // Koin
-    implementation libs.koin.android
-    testImplementation libs.koin.test
+    implementation 'io.insert-koin:koin-android:4.1.1'
+    testImplementation 'io.insert-koin:koin-test:4.1.1'
 
     // LibGDX
-    api sharedLibs.gdx.backend.android
+    api libs.gdx.backend.android
     api 'com.badlogicgames.gdx:gdx:1.13.1'
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-armeabi-v7a'
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-arm64-v8a'

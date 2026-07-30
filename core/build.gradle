@@ -34,7 +34,7 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
@@ -56,6 +56,6 @@ dependencies {
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.3'
-    implementation libs.androidx.lifecycle.livedata.ktx
-    implementation libs.androidx.lifecycle.common.java8
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.3'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.9.3'
 }

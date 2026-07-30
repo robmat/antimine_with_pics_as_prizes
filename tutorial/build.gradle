@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
@@ -79,8 +79,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
 
     // Unit Tests
-    testImplementation sharedLibs.junit
+    testImplementation libs.junit
     testImplementation 'org.mockito:mockito-core:5.19.0'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation libs.mockk
+    testImplementation 'io.mockk:mockk:1.14.5'
 }

@@ -69,7 +69,7 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':external')
@@ -83,63 +83,63 @@ dependencies {
     implementation project(':i18n')
 
     // Wear OS
-    implementation libs.androidx.wear
+    implementation 'androidx.wear:wear:1.3.0'
 
     // AndroidX
-    implementation sharedLibs.androidx.appcompat
-    implementation sharedLibs.androidx.preference.ktx
-    implementation libs.androidx.recyclerview
-    implementation sharedLibs.androidx.multidex
-    implementation libs.androidx.activity.ktx
-    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.preference.ktx
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation libs.androidx.multidex
+    implementation 'androidx.activity:activity-ktx:1.11.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'
 
     // Lifecycle
-    implementation libs.androidx.lifecycle.viewmodel.ktx
-    implementation libs.androidx.lifecycle.runtime.ktx
-    implementation libs.androidx.lifecycle.livedata.ktx
-    implementation libs.androidx.lifecycle.common.java8
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.3'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.3'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.9.3'
 
     // Room
-    implementation libs.androidx.room.ktx
+    implementation 'androidx.room:room-ktx:2.8.0'
 
     // Constraint
-    implementation sharedLibs.androidx.constraintlayout
+    implementation libs.androidx.constraintlayout
 
     // Google
-    implementation libs.google.material
+    implementation 'com.google.android.material:material:1.13.0'
 
     // Koin
-    implementation libs.koin.android
-    testImplementation libs.koin.test
+    implementation 'io.insert-koin:koin-android:4.1.1'
+    testImplementation 'io.insert-koin:koin-test:4.1.1'
 
     // Kotlin
-    implementation libs.kotlinx.coroutines.android
-    implementation libs.kotlin.stdlib
-    implementation libs.kotlinx.metadata.jvm
-    testImplementation libs.kotlinx.coroutines.test
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.20'
+    implementation 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
 
     // Tests
-    testImplementation sharedLibs.junit
-    testImplementation libs.androidx.core.ktx
-    testImplementation libs.androidx.test.core.ktx
-    testImplementation sharedLibs.androidx.test.rules
-    testImplementation libs.androidx.test.runner
-    testImplementation sharedLibs.androidx.test.espresso.core
-    testImplementation libs.androidx.fragment.testing
-    testImplementation libs.robolectric
-    testImplementation sharedLibs.androidx.test.ext.junit
-    testImplementation libs.mockk
+    testImplementation libs.junit
+    testImplementation 'androidx.core:core-ktx:1.17.0'
+    testImplementation 'androidx.test:core-ktx:1.7.0'
+    testImplementation libs.androidx.test.rules
+    testImplementation 'androidx.test:runner:1.7.0'
+    testImplementation libs.androidx.test.espresso.core
+    testImplementation 'androidx.fragment:fragment-testing:1.8.9'
+    testImplementation 'org.robolectric:robolectric:4.16'
+    testImplementation libs.androidx.test.ext.junit
+    testImplementation 'io.mockk:mockk:1.14.5'
 
     // Core library
-    androidTestImplementation sharedLibs.androidx.test.core
+    androidTestImplementation libs.androidx.test.core
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation sharedLibs.androidx.test.core
-    androidTestImplementation libs.androidx.test.core.ktx
-    androidTestImplementation sharedLibs.androidx.test.espresso.core
-    androidTestImplementation libs.androidx.test.runner
-    androidTestImplementation sharedLibs.androidx.test.rules
-    androidTestUtil libs.androidx.test.orchestrator
+    androidTestImplementation libs.androidx.test.core
+    androidTestImplementation 'androidx.test:core-ktx:1.7.0'
+    androidTestImplementation libs.androidx.test.espresso.core
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation libs.androidx.test.rules
+    androidTestUtil 'androidx.test:orchestrator:1.6.1'
 }
 
 tasks.withType(Test).configureEach {

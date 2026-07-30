@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 
@@ -40,7 +40,7 @@ dependencies {
     // Kotlin
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.20'
-    implementation libs.kotlinx.metadata.jvm
-    testImplementation libs.kotlinx.coroutines.test
+    implementation 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
 }
 

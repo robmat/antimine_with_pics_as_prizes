@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    detektPlugins sharedLibs.detekt.formatting
+    detektPlugins libs.detekt.formatting
 
     implementation project(':core')
     implementation project(':external')
@@ -47,38 +47,38 @@ dependencies {
     implementation project(':ui')
 
     // AndroidX
-    implementation sharedLibs.androidx.appcompat
-    implementation libs.androidx.activity.ktx
-    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.appcompat
+    implementation 'androidx.activity:activity-ktx:1.11.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'
 
     // Google
-    implementation libs.google.material
+    implementation 'com.google.android.material:material:1.13.0'
 
     // RecyclerView
-    implementation libs.androidx.recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
 
     // Constraint
-    implementation sharedLibs.androidx.constraintlayout
+    implementation libs.androidx.constraintlayout
 
     // Lifecycle
-    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'
 
     // Koin
-    implementation libs.koin.android
-    testImplementation libs.koin.test
+    implementation 'io.insert-koin:koin-android:4.1.1'
+    testImplementation 'io.insert-koin:koin-test:4.1.1'
 
     // Coroutines
-    implementation libs.kotlinx.coroutines.core
-    implementation libs.kotlinx.coroutines.android
-    testImplementation libs.kotlinx.coroutines.test
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
 
     // Kotlin Lib
-    implementation libs.kotlin.stdlib
-    implementation libs.kotlinx.metadata.jvm
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.20'
+    implementation 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
 
     // Unit Tests
-    testImplementation sharedLibs.junit
-    testImplementation libs.mockito.core
-    testImplementation libs.mockito.kotlin
-    testImplementation libs.mockk
+    testImplementation libs.junit
+    testImplementation 'org.mockito:mockito-core:5.19.0'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    testImplementation 'io.mockk:mockk:1.14.5'
 }
