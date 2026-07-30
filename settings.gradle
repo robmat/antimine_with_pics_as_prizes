@@ -6,6 +6,13 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+dependencyResolutionManagement {
+    versionCatalogs {
+        sharedLibs {
+            from(files("../release-tools/gradle/libs.versions.toml"))
+        }
+    }
+}
 include ':app'
 include ':common'
 include ':proprietary'

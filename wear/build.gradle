@@ -69,7 +69,7 @@ android {
 }
 
 dependencies {
-    detektPlugins libs.detekt.formatting
+    detektPlugins sharedLibs.detekt.formatting
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':external')

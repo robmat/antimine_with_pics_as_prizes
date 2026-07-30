@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    detektPlugins libs.detekt.formatting
+    detektPlugins sharedLibs.detekt.formatting
 
     // Dependencies must be hardcoded to support F-droid
 

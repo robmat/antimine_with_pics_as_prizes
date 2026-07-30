@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-    detektPlugins libs.detekt.formatting
+    detektPlugins sharedLibs.detekt.formatting
 
     implementation libs.androidx.appcompat
     implementation libs.google.material
