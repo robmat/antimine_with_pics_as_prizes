@@ -49,12 +49,12 @@ dependencies {
     implementation project(':preferences')
 
     // Google
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation(libs.material) { version { strictly('1.13.0') } }
 
     // AndroidX
     implementation libs.androidx.appcompat
-    implementation 'androidx.activity:activity-ktx:1.11.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+    implementation(libs.androidx.activity.ktx) { version { strictly('1.11.0') } }
+    implementation(libs.androidx.fragment.ktx) { version { strictly('1.8.9') } }
 
     // RecyclerView
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
@@ -80,7 +80,7 @@ dependencies {
 
     // Unit Tests
     testImplementation libs.junit
-    testImplementation 'org.mockito:mockito-core:5.19.0'
+    testImplementation(libs.mockito.core) { version { strictly('5.19.0') } }
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'io.mockk:mockk:1.14.5'
 }

@@ -53,7 +53,7 @@ dependencies {
     detektPlugins libs.detekt.formatting
 
     implementation libs.androidx.appcompat
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation(libs.material) { version { strictly('1.13.0') } }
     androidTestImplementation libs.androidx.test.ext.junit
     androidTestImplementation libs.androidx.test.espresso.core
 }

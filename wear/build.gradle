@@ -90,12 +90,12 @@ dependencies {
     implementation libs.androidx.preference.ktx
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation libs.androidx.multidex
-    implementation 'androidx.activity:activity-ktx:1.11.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+    implementation(libs.androidx.activity.ktx) { version { strictly('1.11.0') } }
+    implementation(libs.androidx.fragment.ktx) { version { strictly('1.8.9') } }
 
     // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.9.3'
+    implementation(libs.androidx.lifecycle.runtime.ktx) { version { strictly('2.9.3') } }
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.3'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.9.3'
 
@@ -106,7 +106,7 @@ dependencies {
     implementation libs.androidx.constraintlayout
 
     // Google
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation(libs.material) { version { strictly('1.13.0') } }
 
     // Koin
     implementation 'io.insert-koin:koin-android:4.1.1'

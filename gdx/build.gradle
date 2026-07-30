@@ -54,8 +54,8 @@ dependencies {
 
     // AndroidX
     implementation libs.androidx.appcompat
-    implementation 'androidx.activity:activity-ktx:1.11.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+    implementation(libs.androidx.activity.ktx) { version { strictly('1.11.0') } }
+    implementation(libs.androidx.fragment.ktx) { version { strictly('1.8.9') } }
 
     // Koin
     implementation 'io.insert-koin:koin-android:4.1.1'

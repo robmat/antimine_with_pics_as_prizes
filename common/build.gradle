@@ -52,11 +52,11 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'androidx.activity:activity-ktx:1.11.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+    implementation(libs.androidx.activity.ktx) { version { strictly('1.11.0') } }
+    implementation(libs.androidx.fragment.ktx) { version { strictly('1.8.9') } }
 
     // Google
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation(libs.material) { version { strictly('1.13.0') } }
 
     // Constraint
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
@@ -90,7 +90,7 @@ dependencies {
 
     // Unit Tests
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.mockito:mockito-core:5.19.0'
+    testImplementation(libs.mockito.core) { version { strictly('5.19.0') } }
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
     testImplementation 'io.mockk:mockk:1.14.5'
 

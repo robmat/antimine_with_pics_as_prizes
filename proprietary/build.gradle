@@ -52,8 +52,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-instantapps:18.2.0'
     implementation libs.play.services.games.v2
     implementation 'com.google.android.gms:play-services-auth:21.4.0'
-    implementation 'com.google.android.gms:play-services-ads:24.6.0'
-    implementation 'com.google.android.play:review-ktx:2.0.2'
+    implementation(libs.play.services.ads) { version { strictly('24.6.0') } }
+    implementation libs.google.play.review.ktx
     implementation 'com.google.android.play:app-update-ktx:2.1.0'
 
     // Jetbrains
