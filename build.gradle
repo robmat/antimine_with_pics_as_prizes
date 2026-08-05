@@ -20,7 +20,6 @@ buildscript {
 }
 
 plugins {
-    alias(libs.plugins.triplet.play) apply false
     alias(libs.plugins.detekt) apply false
 }
 
