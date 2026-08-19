@@ -3,18 +3,20 @@ package dev.lucasnlm.antimine.common.level.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import dev.lucasnlm.antimine.common.databinding.SwitchButtonBinding
+import dev.lucasnlm.antimine.ui.view.BaseFrameLayout
 import com.google.android.material.R as GR
 
-class SwitchButtonView : FrameLayout {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
+class SwitchButtonView
+@JvmOverloads
+constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : BaseFrameLayout(context, attrs, defStyleAttr) {
     private val binding by lazy {
         val layoutInflater = LayoutInflater.from(context)
         SwitchButtonBinding.inflate(layoutInflater, this, true)

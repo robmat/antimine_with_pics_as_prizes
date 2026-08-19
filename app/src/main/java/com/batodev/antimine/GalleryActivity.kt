@@ -43,7 +43,7 @@ class GalleryActivity : Activity() {
         }
     }
 
-    fun leftClicked(view: View) {
+    fun leftClicked(ignored: View) {
         val indexOf = pics.indexOf(currentPic)
         if (indexOf > 0) {
             findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
@@ -55,7 +55,7 @@ class GalleryActivity : Activity() {
         showAD()
     }
 
-    fun rightClicked(view: View) {
+    fun rightClicked(ignored: View) {
         val indexOf = pics.indexOf(currentPic)
         if (indexOf < pics.size - 1) {
             findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
@@ -88,11 +88,11 @@ class GalleryActivity : Activity() {
         }
     }
 
-    fun backClicked(view: View) {
+    fun backClicked(ignored: View) {
         finish()
     }
 
-    fun shareClicked(view: View) {
+    fun shareClicked(ignored: View) {
         if (currentPic != "") {
             val imgFolder = PRIZE_IMAGES
             val inputStream = assets.open("${imgFolder}${File.separator}$currentPic")

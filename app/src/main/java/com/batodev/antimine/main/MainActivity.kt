@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.addCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,29 +14,20 @@ import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.batodev.antimine.GalleryActivity
 import com.batodev.antimine.GameActivity
 import com.batodev.antimine.custom.CustomLevelDialogFragment
 import com.batodev.antimine.databinding.ActivityMainBinding
-import com.batodev.antimine.history.HistoryActivity
 import com.batodev.antimine.l10n.GameLocaleManager
 import com.batodev.antimine.main.viewmodel.MainEvent
 import com.batodev.antimine.main.viewmodel.MainViewModel
-import com.batodev.antimine.playgames.PlayGamesDialogFragment
-import com.batodev.antimine.preferences.PreferencesActivity
-import com.batodev.antimine.stats.StatsActivity
-import dev.lucasnlm.antimine.about.AboutActivity
-import dev.lucasnlm.antimine.common.level.database.models.SaveStatus
 import dev.lucasnlm.antimine.common.level.repository.MinefieldRepository
 import dev.lucasnlm.antimine.common.level.repository.SavesRepository
 import dev.lucasnlm.antimine.control.ControlActivity
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
-import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.core.models.Difficulty
 import dev.lucasnlm.antimine.core.repository.DimensionRepository
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.Minefield
-import dev.lucasnlm.antimine.themes.ThemeActivity
 import dev.lucasnlm.antimine.ui.ext.ThemedActivity
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.BillingManager
@@ -45,36 +35,37 @@ import dev.lucasnlm.external.FeatureFlagManager
 import dev.lucasnlm.external.InAppUpdateManager
 import dev.lucasnlm.external.InstantAppManager
 import dev.lucasnlm.external.PlayGamesManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.lucasnlm.antimine.common.R as CR
 import dev.lucasnlm.antimine.i18n.R as i18n
 
 class MainActivity : ThemedActivity() {
-    private val viewModel: MainViewModel by viewModel()
-    private val playGamesManager: PlayGamesManager by inject()
-    private val preferencesRepository: PreferencesRepository by inject()
+    internal val viewModel: MainViewModel by viewModel()
+    internal val playGamesManager: PlayGamesManager by inject()
+    internal val preferencesRepository: PreferencesRepository by inject()
     private val minefieldRepository: MinefieldRepository by inject()
     private val dimensionRepository: DimensionRepository by inject()
-    private val analyticsManager: AnalyticsManager by inject()
-    private val featureFlagManager: FeatureFlagManager by inject()
-    private val billingManager: BillingManager by inject()
-    private val savesRepository: SavesRepository by inject()
-    private val inAppUpdateManager: InAppUpdateManager by inject()
+    internal val analyticsManager: AnalyticsManager by inject()
+    internal val featureFlagManager: FeatureFlagManager by inject()
+    internal val billingManager: BillingManager by inject()
+    internal val savesRepository: SavesRepository by inject()
+    internal val inAppUpdateManager: InAppUpdateManager by inject()
     private val instantAppManager: InstantAppManager by inject()
-    private val preferenceRepository: PreferencesRepository by inject()
-    private val soundManager: GameAudioManager by inject()
+    internal val preferenceRepository: PreferencesRepository by inject()
+    internal val soundManager: GameAudioManager by inject()
     private val gameLocaleManager: GameLocaleManager by inject()
 
-    private val binding: ActivityMainBinding by lazy {
+    internal val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private val playGamesFlow = PlayGamesFlow(this)
+    private val menuButtonsBinder = MenuButtonsBinder(this)
+
     private lateinit var viewPager: ViewPager2
-    private lateinit var googlePlayLauncher: ActivityResultLauncher<Intent>
+    internal lateinit var googlePlayLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,11 +78,11 @@ class MainActivity : ThemedActivity() {
         googlePlayLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    handlePlayGames(result.data)
+                    playGamesFlow.handleResult(result.data)
                 }
             }
 
-        bindMenuButtons()
+        menuButtonsBinder.bind()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && instantAppManager.isEnabled(applicationContext)) {
             listOf(
@@ -108,206 +99,13 @@ class MainActivity : ThemedActivity() {
                 .collect(::handleSideEffects)
         }
 
-        launchGooglePlayGames()
+        playGamesFlow.launch()
 
         onBackPressedDispatcher.addCallback {
             handleBackPressed()
         }
 
         redirectToGame()
-    }
-
-    private fun bindMenuButtons() {
-        binding.continueGame.apply {
-            if (preferencesRepository.showContinueGame()) {
-                setText(i18n.string.continue_game)
-            } else {
-                setText(i18n.string.start)
-            }
-
-            setOnClickListener {
-                soundManager.playClickSound()
-                viewModel.sendEvent(MainEvent.ContinueGameEvent)
-            }
-        }
-
-        if (!preferencesRepository.showContinueGame()) {
-            lifecycleScope.launch {
-                savesRepository.fetchCurrentSave()?.let {
-                    preferencesRepository.setContinueGameLabel(true)
-                    binding.continueGame.setText(i18n.string.continue_game)
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            if (preferencesRepository.showTutorialButton()) {
-                val shouldShowTutorial = savesRepository.getAllSaves().count { it.status == SaveStatus.VICTORY } < 2
-                preferencesRepository.setShowTutorialButton(shouldShowTutorial)
-                withContext(Dispatchers.Main) {
-                    binding.tutorial.isVisible = shouldShowTutorial
-                }
-            } else {
-                binding.tutorial.isVisible = false
-            }
-        }
-
-        binding.newGameShow.setOnClickListener {
-            soundManager.playClickSound()
-            binding.newGameShow.isVisible = false
-            binding.difficulties.isVisible = true
-        }
-
-        mapOf(
-            binding.standardSize to Difficulty.Standard,
-            binding.fixedSizeSize to Difficulty.FixedSize,
-            binding.beginnerSize to Difficulty.Beginner,
-            binding.intermediateSize to Difficulty.Intermediate,
-            binding.expertSize to Difficulty.Expert,
-            binding.masterSize to Difficulty.Master,
-            binding.legendSize to Difficulty.Legend,
-        ).onEach {
-            it.key.text = getDifficultyExtra(it.value)
-        }
-
-        mapOf(
-            binding.startStandard to Difficulty.Standard,
-            binding.startFixedSize to Difficulty.FixedSize,
-            binding.startBeginner to Difficulty.Beginner,
-            binding.startIntermediate to Difficulty.Intermediate,
-            binding.startExpert to Difficulty.Expert,
-            binding.startMaster to Difficulty.Master,
-            binding.startLegend to Difficulty.Legend,
-        ).forEach { (view, difficulty) ->
-            view.setOnClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    pushShortcutOf(difficulty)
-                }
-
-                soundManager.playClickSound()
-
-                viewModel.sendEvent(
-                    MainEvent.StartNewGameEvent(difficulty = difficulty),
-                )
-            }
-        }
-
-        binding.startCustom.setOnClickListener {
-            soundManager.playClickSound()
-            analyticsManager.sentEvent(Analytics.OpenCustom)
-            viewModel.sendEvent(MainEvent.ShowCustomDifficultyDialogEvent)
-        }
-
-        binding.settings.setOnClickListener {
-            soundManager.playClickSound()
-            analyticsManager.sentEvent(Analytics.OpenSettings)
-            val intent = Intent(this, PreferencesActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.moreGames.setOnClickListener {
-            val i = Intent(
-                Intent.ACTION_VIEW,
-                "https://play.google.com/store/apps/dev?id=8228670503574649511".toUri()
-            )
-            startActivity(i)
-        }
-
-        binding.themes.setOnClickListener {
-            soundManager.playClickSound()
-            val intent = Intent(this, ThemeActivity::class.java)
-            preferencesRepository.setNewThemesIcon(false)
-            startActivity(intent)
-        }
-
-        binding.newThemesIcon.isVisible = preferencesRepository.showNewThemesIcon()
-
-        binding.controls.setOnClickListener {
-            soundManager.playClickSound()
-            analyticsManager.sentEvent(Analytics.OpenControls)
-            viewModel.sendEvent(MainEvent.ShowControlsEvent)
-        }
-
-        if (featureFlagManager.isFoss) {
-            binding.picturesGallleryRoot.isVisible = true
-            binding.picturesGalllery.apply {
-                setOnClickListener {
-                    soundManager.playClickSound()
-                    startActivity(Intent(context, GalleryActivity::class.java))
-                }
-                text = getString(i18n.string.donation)
-                setIconResource(com.batodev.antimine.R.drawable.ic_round_gallery_24)
-            }
-        } else {
-            if (!preferencesRepository.isPremiumEnabled()) {
-                billingManager.start()
-
-                lifecycleScope.launch {
-                    bindPicturesGallery()
-
-                    billingManager.getPriceFlow().collect {
-                        bindPicturesGallery()
-                    }
-                }
-            }
-        }
-
-        if (featureFlagManager.isGameHistoryEnabled) {
-            binding.previousGames.setOnClickListener {
-                soundManager.playClickSound()
-                analyticsManager.sentEvent(Analytics.OpenSaveHistory)
-                val intent = Intent(this, HistoryActivity::class.java)
-                startActivity(intent)
-            }
-        } else {
-            binding.previousGames.isVisible = false
-        }
-
-        binding.tutorial.apply {
-            setText(i18n.string.tutorial)
-            setOnClickListener {
-                soundManager.playClickSound()
-                analyticsManager.sentEvent(Analytics.OpenTutorial)
-                viewModel.sendEvent(MainEvent.StartTutorialEvent)
-            }
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            binding.language.apply {
-                setText(i18n.string.language)
-                setOnClickListener {
-                    soundManager.playClickSound()
-                    analyticsManager.sentEvent(Analytics.OpenLanguage)
-                    viewModel.sendEvent(MainEvent.StartLanguageEvent)
-                }
-            }
-        } else {
-            binding.language.isVisible = false
-        }
-
-        binding.stats.setOnClickListener {
-            soundManager.playClickSound()
-            analyticsManager.sentEvent(Analytics.OpenStats)
-            val intent = Intent(this, StatsActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.about.setOnClickListener {
-            soundManager.playClickSound()
-            analyticsManager.sentEvent(Analytics.OpenAbout)
-            val intent = Intent(this, AboutActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (playGamesManager.hasGooglePlayGames()) {
-            binding.playGames.setOnClickListener {
-                soundManager.playClickSound()
-                analyticsManager.sentEvent(Analytics.OpenGooglePlayGames)
-                viewModel.sendEvent(MainEvent.ShowGooglePlayGamesEvent)
-            }
-        } else {
-            binding.playGames.isVisible = false
-        }
     }
 
     /**
@@ -324,7 +122,7 @@ class MainActivity : ThemedActivity() {
             else -> null
         }
 
-    private fun pushShortcutOf(difficulty: Difficulty) {
+    internal fun pushShortcutOf(difficulty: Difficulty) {
         if (instantAppManager.isEnabled(applicationContext)) {
             // Ignore. Instant App doesn't support shortcuts.
             return
@@ -354,7 +152,7 @@ class MainActivity : ThemedActivity() {
         }
     }
 
-    private fun getDifficultyExtra(difficulty: Difficulty): String {
+    internal fun getDifficultyExtra(difficulty: Difficulty): String {
         return minefieldRepository.fromDifficulty(
             difficulty,
             dimensionRepository,
@@ -362,14 +160,11 @@ class MainActivity : ThemedActivity() {
         ).toExtraString()
     }
 
-    private fun canOpenGameDirectly(): Boolean {
+    private fun redirectToGame() {
         val playGames = playGamesManager.hasGooglePlayGames()
         val openDirectly = preferencesRepository.openGameDirectly()
-        return (playGames && preferencesRepository.userId() != null || !playGames) && openDirectly
-    }
-
-    private fun redirectToGame() {
-        if (canOpenGameDirectly()) {
+        val canOpenGameDirectly = (playGames && preferencesRepository.userId() != null || !playGames) && openDirectly
+        if (canOpenGameDirectly) {
             Intent(this, GameActivity::class.java).run { startActivity(this) }
         }
     }
@@ -393,10 +188,10 @@ class MainActivity : ThemedActivity() {
                 viewPager.setCurrentItem(1, true)
             }
             is MainEvent.ShowControlsEvent -> {
-                showControlDialog()
+                startActivity(Intent(this, ControlActivity::class.java))
             }
             is MainEvent.ShowGooglePlayGamesEvent -> {
-                showGooglePlayGames()
+                playGamesFlow.show()
             }
             is MainEvent.Recreate -> {
                 finish()
@@ -412,111 +207,6 @@ class MainActivity : ThemedActivity() {
         if (supportFragmentManager.findFragmentByTag(CustomLevelDialogFragment.TAG) == null && !isFinishing) {
             CustomLevelDialogFragment().apply {
                 show(supportFragmentManager, CustomLevelDialogFragment.TAG)
-            }
-        }
-    }
-
-    private fun showControlDialog() {
-        val intent = Intent(this, ControlActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun showGooglePlayGames() {
-        if (playGamesManager.isLogged()) {
-            if (supportFragmentManager.findFragmentByTag(PlayGamesDialogFragment.TAG) == null && !isFinishing) {
-                PlayGamesDialogFragment().show(supportFragmentManager, PlayGamesDialogFragment.TAG)
-            }
-        } else {
-            playGamesManager.getLoginIntent()?.let {
-                googlePlayLauncher.launch(it)
-            }
-        }
-    }
-
-    private fun afterGooglePlayGames() {
-        playGamesManager.signInToFirebase(this)
-        inAppUpdateManager.checkUpdate(this)
-    }
-
-    private fun launchGooglePlayGames() {
-        if (playGamesManager.hasGooglePlayGames() &&
-            playGamesManager.shouldRequestLogin() &&
-            preferenceRepository.keepRequestPlayGames()
-        ) {
-            playGamesManager.keepRequestingLogin(false)
-
-            lifecycleScope.launch {
-                var logged = false
-
-                runCatching {
-                    withContext(Dispatchers.IO) {
-                        logged = playGamesManager.silentLogin()
-                        if (logged) {
-                            refreshUserId()
-                        }
-                        playGamesManager.showPlayPopUp(this@MainActivity)
-                    }
-                }.onFailure {
-                    Log.e(TAG, "Failed silent login", it)
-                }
-
-                if (!logged) {
-                    runCatching {
-                        playGamesManager.getLoginIntent()?.let {
-                            googlePlayLauncher.launch(it)
-                        }
-                    }.onFailure {
-                        Log.e(TAG, "User not logged or doesn't have Play Games", it)
-                    }
-                } else {
-                    afterGooglePlayGames()
-                }
-            }
-        } else {
-            afterGooglePlayGames()
-        }
-    }
-
-    private fun handlePlayGames(data: Intent?) {
-        playGamesManager.handleLoginResult(data)
-        lifecycleScope.launch {
-            refreshUserId()
-        }
-    }
-
-    private fun bindPicturesGallery() {
-        binding.picturesGallleryRoot.isVisible = true
-        binding.picturesGalllery.apply {
-            setOnClickListener {
-                soundManager.playClickSound()
-                startActivity(Intent(context, GalleryActivity::class.java))
-            }
-            setText(i18n.string.pictures_gallery)
-            setIconResource(com.batodev.antimine.R.drawable.ic_round_gallery_24)
-        }
-    }
-
-    private suspend fun refreshUserId() {
-        withContext(Dispatchers.Default) {
-            val lastId = preferencesRepository.userId()
-            val newId = playGamesManager.playerId()
-
-            if (lastId != newId && newId != null) {
-                preferencesRepository.setUserId(newId)
-
-                withContext(Dispatchers.Main) {
-                    migrateDataAndRecreate()
-                }
-            }
-        }
-    }
-
-    private fun migrateDataAndRecreate() {
-        lifecycleScope.launch {
-            if (!isFinishing) {
-                preferencesRepository.userId()?.let {
-                    viewModel.sendEvent(MainEvent.FetchCloudSave(it))
-                }
             }
         }
     }

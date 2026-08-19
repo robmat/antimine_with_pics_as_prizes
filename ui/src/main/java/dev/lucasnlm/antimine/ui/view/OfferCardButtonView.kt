@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
@@ -15,11 +14,29 @@ import dev.lucasnlm.antimine.ui.databinding.ViewOfferCardButtonBinding
 import dev.lucasnlm.antimine.ui.ext.toAndroidColor
 import dev.lucasnlm.antimine.ui.model.AppTheme
 
-class OfferCardButtonView : FrameLayout {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+/**
+ * Bundles [OfferCardButtonView.bind]'s arguments to keep its parameter count
+ * under detekt's threshold (a data class constructor is exempt from that
+ * check).
+ */
+data class OfferCardButtonConfig(
+    val theme: AppTheme,
+    val text: String,
+    val onAction: (View) -> Unit,
+    val invert: Boolean = false,
+    val price: String? = null,
+    val showOffer: Boolean = false,
+    val centralize: Boolean = false,
+    @DrawableRes val startIcon: Int? = null,
+)
 
+class OfferCardButtonView
+@JvmOverloads
+constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : BaseFrameLayout(context, attrs, defStyleAttr) {
     private val binding: ViewOfferCardButtonBinding by lazy {
         ViewOfferCardButtonBinding.bind(this)
     }
@@ -29,26 +46,8 @@ class OfferCardButtonView : FrameLayout {
         ViewOfferCardButtonBinding.inflate(layoutInflater, this, true)
     }
 
-    fun bind(
-        theme: AppTheme,
-        invert: Boolean = false,
-        text: String,
-        price: String? = null,
-        showOffer: Boolean = false,
-        onAction: (View) -> Unit,
-        centralize: Boolean = false,
-        @DrawableRes startIcon: Int? = null,
-    ) {
-        bindView(
-            theme = theme,
-            invert = invert,
-            text = text,
-            price = price,
-            showOffer = showOffer,
-            centralize = centralize,
-            onAction = onAction,
-            startIcon = startIcon,
-        )
+    fun bind(config: OfferCardButtonConfig) {
+        bindView(config)
     }
 
     private fun bindLabel(
@@ -131,16 +130,16 @@ class OfferCardButtonView : FrameLayout {
         }
     }
 
-    private fun bindView(
-        theme: AppTheme,
-        invert: Boolean = false,
-        text: String,
-        price: String? = null,
-        showOffer: Boolean,
-        centralize: Boolean = false,
-        onAction: (View) -> Unit,
-        @DrawableRes startIcon: Int? = null,
-    ) {
+    private fun bindView(config: OfferCardButtonConfig) {
+        val theme = config.theme
+        val text = config.text
+        val onAction = config.onAction
+        val invert = config.invert
+        val price = config.price
+        val showOffer = config.showOffer
+        val centralize = config.centralize
+        val startIcon = config.startIcon
+
         val color =
             if (invert || isFocused) {
                 theme.palette.background.toAndroidColor()

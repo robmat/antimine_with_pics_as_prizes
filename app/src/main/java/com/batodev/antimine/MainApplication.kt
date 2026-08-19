@@ -13,6 +13,7 @@ import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.external.AdsManager
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.FeatureFlagManager
+import dev.lucasnlm.external.di.CommonExternalModule
 import dev.lucasnlm.external.di.ExternalModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -37,7 +38,7 @@ open class MainApplication : MultiDexApplication() {
         stopKoin()
         startKoin {
             androidContext(applicationContext)
-            modules(AppModule, CommonModule, ExternalModule, LevelModule, ViewModelModule)
+            modules(AppModule, CommonModule, ExternalModule, CommonExternalModule, LevelModule, ViewModelModule)
         }
 
         appScope.launch {

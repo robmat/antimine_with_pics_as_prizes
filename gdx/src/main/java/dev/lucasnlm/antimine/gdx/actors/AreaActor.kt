@@ -1,7 +1,6 @@
 package dev.lucasnlm.antimine.gdx.actors
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -9,32 +8,35 @@ import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import dev.lucasnlm.antimine.core.getNeighborIdAtPos
 import dev.lucasnlm.antimine.core.models.Area
-import dev.lucasnlm.antimine.gdx.AtlasNames
 import dev.lucasnlm.antimine.gdx.GameContext
-import dev.lucasnlm.antimine.gdx.alpha
-import dev.lucasnlm.antimine.gdx.dim
-import dev.lucasnlm.antimine.gdx.drawAsset
-import dev.lucasnlm.antimine.gdx.drawRegion
 import dev.lucasnlm.antimine.gdx.events.GdxEvent
-import dev.lucasnlm.antimine.gdx.toGdxColor
-import dev.lucasnlm.antimine.gdx.toInverseBackOrWhite
 import dev.lucasnlm.antimine.ui.model.AppTheme
 import dev.lucasnlm.antimine.ui.model.minesAround
-import dev.lucasnlm.antimine.ui.repository.Themes
 
+/**
+ * [focusScale], [isPressed] and [pieces] used to be constructor parameters
+ * defaulted at every call site (nobody ever overrode them), which pushed the
+ * constructor's parameter count over threshold for no real benefit - they're
+ * internal actor state, not caller-supplied configuration, so they're plain
+ * fields instead. The actual drawing logic (drawBackground/drawCovered/etc.)
+ * was split out into extension functions in AreaActorRendering.kt, since this
+ * class's function count was over threshold; several fields are `internal`
+ * rather than `private` only because those extension functions, living
+ * outside the class body, need access to them.
+ */
 class AreaActor(
     size: Float,
     field: List<Area>,
     enableLigatures: Boolean,
-    private var area: Area,
-    private var focusScale: Float = 1.0f,
-    private var isPressed: Boolean = false,
-    private val pieces: MutableMap<String, Boolean> = mutableMapOf(),
-    private val theme: AppTheme,
+    internal var area: Area,
+    internal val theme: AppTheme,
     private val onInputEvent: (GdxEvent) -> Unit,
 ) : Actor() {
+    internal var focusScale: Float = 1.0f
+    internal var isPressed: Boolean = false
+    internal val pieces: MutableMap<String, Boolean> = mutableMapOf()
 
-    private var areaForm: Int? = null
+    internal var areaForm: Int? = null
 
     private val topId: Int
     private val bottomId: Int
@@ -111,14 +113,16 @@ class AreaActor(
             when {
                 area.isCovered && ligatureEnabled -> {
                     areaFormOf(
-                        top = field.getOrNull(topId)?.canLinkTo(area) == true,
-                        bottom = field.getOrNull(bottomId)?.canLinkTo(area) == true,
-                        left = field.getOrNull(leftId)?.canLinkTo(area) == true,
-                        right = field.getOrNull(rightId)?.canLinkTo(area) == true,
-                        topLeft = field.getOrNull(topLeftId)?.canLinkTo(area) == true,
-                        topRight = field.getOrNull(topRightId)?.canLinkTo(area) == true,
-                        bottomLeft = field.getOrNull(bottomLeftId)?.canLinkTo(area) == true,
-                        bottomRight = field.getOrNull(bottomRightId)?.canLinkTo(area) == true,
+                        NeighborLinks(
+                            top = field.getOrNull(topId)?.canLinkTo(area) == true,
+                            bottom = field.getOrNull(bottomId)?.canLinkTo(area) == true,
+                            left = field.getOrNull(leftId)?.canLinkTo(area) == true,
+                            right = field.getOrNull(rightId)?.canLinkTo(area) == true,
+                            topLeft = field.getOrNull(topLeftId)?.canLinkTo(area) == true,
+                            topRight = field.getOrNull(topRightId)?.canLinkTo(area) == true,
+                            bottomLeft = field.getOrNull(bottomLeftId)?.canLinkTo(area) == true,
+                            bottomRight = field.getOrNull(bottomRightId)?.canLinkTo(area) == true,
+                        ),
                     )
                 }
                 else -> {
@@ -155,214 +159,6 @@ class AreaActor(
         if (newFocusScale != focusScale) {
             focusScale = newFocusScale
             Gdx.graphics.requestRendering()
-        }
-    }
-
-    private fun drawBackground(
-        batch: Batch,
-        isOdd: Boolean,
-    ) {
-        if (!isOdd && !area.isCovered && GameContext.zoomLevelAlpha > 0.0f) {
-            GameContext.gameTextures?.areaBackground?.let {
-                batch.drawRegion(
-                    texture = it,
-                    x = x,
-                    y = y,
-                    width = width,
-                    height = height,
-                    blend = false,
-                    color = GameContext.backgroundColor,
-                )
-            }
-        }
-    }
-
-    private fun drawCovered(batch: Batch) {
-        val coverColor =
-            when {
-                !GameContext.canTintAreas -> GameContext.whiteColor
-                area.mark.isNotNone() -> GameContext.coveredMarkedAreaColor
-                else -> GameContext.coveredAreaColor
-            }
-
-        GameContext.atlas?.let { atlas ->
-            if (areaForm == AREA_FULL_FORM) {
-                batch.drawRegion(
-                    texture = atlas.findRegion(AtlasNames.FULL),
-                    x = x - 0.5f,
-                    y = y - 0.5f,
-                    width = width + 0.5f,
-                    height = height + 0.5f,
-                    color = coverColor,
-                    blend = false,
-                )
-            } else {
-                pieces.forEach { piece ->
-                    if (piece.value) {
-                        batch.drawRegion(
-                            texture = GameContext.gameTextures!!.pieces[piece.key]!!,
-                            x = x - 0.5f,
-                            y = y - 0.5f,
-                            width = width + 0.5f,
-                            height = height + 0.5f,
-                            color = coverColor,
-                            blend = false,
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    private fun drawMineBackground(batch: Batch) {
-        val coverColor = Color(MISTAKE_TINT_RED, MISTAKE_TINT_GREEN, MISTAKE_TINT_BLUE, 1.0f)
-
-        GameContext.atlas?.let { atlas ->
-            pieces.forEach { piece ->
-                if (piece.value) {
-                    batch.drawRegion(
-                        texture = atlas.findRegion(piece.key),
-                        x = x - 0.5f,
-                        y = y - 0.5f,
-                        width = width + 1.0f,
-                        height = height + 1.0f,
-                        color = coverColor,
-                        blend = false,
-                    )
-                }
-            }
-        }
-    }
-
-    private fun drawCoveredIcons(batch: Batch) {
-        val isAboveOthers = isPressed
-
-        GameContext.gameTextures?.let {
-            when {
-                area.mark.isFlag() -> {
-                    val color =
-                        if (area.mistake) {
-                            Color(MISTAKE_TINT_RED, MISTAKE_TINT_GREEN, MISTAKE_TINT_BLUE, 1.0f)
-                        } else {
-                            GameContext.markColor
-                        }
-
-                    drawAsset(
-                        batch = batch,
-                        texture = it.flag,
-                        color = color,
-                        scale = if (isAboveOthers) focusScale else BASE_ICON_SCALE,
-                    )
-                }
-                area.mark.isQuestion() -> {
-                    val color = GameContext.markColor
-
-                    drawAsset(
-                        batch = batch,
-                        texture = it.question,
-                        color = color,
-                        scale = if (isAboveOthers) focusScale else BASE_ICON_SCALE,
-                    )
-                }
-                area.revealed -> {
-                    val color = GameContext.markColor.cpy()
-
-                    drawAsset(
-                        batch = batch,
-                        texture = it.mine,
-                        color = color.alpha(REVEALED_MINE_ALPHA),
-                        scale = BASE_ICON_SCALE,
-                    )
-                }
-            }
-        }
-    }
-
-    private fun drawUncoveredIcons(batch: Batch) {
-        GameContext.gameTextures?.let {
-            if (area.minesAround > 0) {
-                drawAsset(
-                    batch = batch,
-                    texture = it.aroundMines[area.minesAround - 1],
-                    color =
-                    if (area.dimNumber) {
-                        theme.palette
-                            .minesAround(area.minesAround - 1)
-                            .toGdxColor(GameContext.zoomLevelAlpha * DIMMED_NUMBER_ALPHA_FACTOR)
-                            .dim(DIMMED_NUMBER_DIM_FACTOR)
-                    } else {
-                        theme.palette
-                            .minesAround(area.minesAround - 1)
-                            .toGdxColor(GameContext.zoomLevelAlpha)
-                    },
-                )
-            } else if (area.hasMine) {
-                val color = theme.palette.uncovered
-                drawAsset(
-                    batch = batch,
-                    texture = it.mine,
-                    color = color.toInverseBackOrWhite(1.0f),
-                    scale = BASE_ICON_SCALE,
-                )
-            }
-        }
-    }
-
-    private fun drawPressed(
-        batch: Batch,
-        isOdd: Boolean,
-    ) {
-        if ((isPressed || focusScale > 1.0f)) {
-            if (area.isCovered) {
-                val tint = GameContext.canTintAreas
-                val coverColor =
-                    when {
-                        tint ->
-                            if (isOdd) {
-                                theme.palette.coveredOdd
-                            } else {
-                                theme.palette.covered
-                            }
-                        else -> Themes.WHITE
-                    }.toGdxColor(PRESSED_COVER_ALPHA)
-
-                GameContext.gameTextures?.detailedArea?.let {
-                    batch.drawRegion(
-                        texture = it,
-                        x = x,
-                        y = y,
-                        width = width,
-                        height = height,
-                        color = coverColor,
-                        blend = true,
-                    )
-
-                    batch.drawRegion(
-                        texture = it,
-                        x = x - width * (focusScale - 1.0f) * 0.5f,
-                        y = y - height * (focusScale - 1.0f) * 0.5f,
-                        width = width * focusScale,
-                        height = height * focusScale,
-                        color = coverColor.dim(FOCUS_DIM_BASE - (focusScale - 1.0f)),
-                        blend = true,
-                    )
-                }
-            } else {
-                GameContext.gameTextures?.detailedArea?.let {
-                    val color = theme.palette.background
-                    batch.drawRegion(
-                        texture = it,
-                        x = x - width * (focusScale - 1.0f) * 0.5f,
-                        y = y - height * (focusScale - 1.0f) * 0.5f,
-                        width = width * focusScale,
-                        height = height * focusScale,
-                        color =
-                        color.toInverseBackOrWhite(PRESSED_UNCOVERED_ALPHA)
-                            .dim(FOCUS_DIM_BASE - (focusScale - 1.0f)),
-                        blend = true,
-                    )
-                }
-            }
         }
     }
 

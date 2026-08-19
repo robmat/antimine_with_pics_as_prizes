@@ -29,37 +29,18 @@ class MainViewModel(
         when (event) {
             is MainEvent.ContinueGameEvent -> continueGame()
             is MainEvent.StartNewGameEvent -> continueGame(event.difficulty)
-            is MainEvent.ShowCustomDifficultyDialogEvent -> showCustomDifficultyDialogEvent()
+            is MainEvent.ShowCustomDifficultyDialogEvent ->
+                sendSideEffect(MainEvent.ShowCustomDifficultyDialogEvent)
             is MainEvent.StartTutorialEvent -> startTutorial()
             is MainEvent.StartLanguageEvent -> startLocalization()
-            is MainEvent.GoToSettingsPageEvent -> goToSettingsPageEvent()
-            is MainEvent.GoToMainPageEvent -> goToMainPageEvent()
-            is MainEvent.ShowControlsEvent -> showControlsEvent()
-            is MainEvent.ShowGooglePlayGamesEvent -> showGooglePlayGames()
+            is MainEvent.GoToSettingsPageEvent -> sendSideEffect(MainEvent.GoToSettingsPageEvent)
+            is MainEvent.GoToMainPageEvent -> sendSideEffect(MainEvent.GoToMainPageEvent)
+            is MainEvent.ShowControlsEvent -> sendSideEffect(MainEvent.ShowControlsEvent)
+            is MainEvent.ShowGooglePlayGamesEvent -> sendSideEffect(MainEvent.ShowGooglePlayGamesEvent)
             is MainEvent.FetchCloudSave -> fetchCloudSave(event.playGamesId)
             else -> {
             }
         }
-    }
-
-    private fun showCustomDifficultyDialogEvent() {
-        sendSideEffect(MainEvent.ShowCustomDifficultyDialogEvent)
-    }
-
-    private fun goToSettingsPageEvent() {
-        sendSideEffect(MainEvent.GoToSettingsPageEvent)
-    }
-
-    private fun goToMainPageEvent() {
-        sendSideEffect(MainEvent.GoToMainPageEvent)
-    }
-
-    private fun showControlsEvent() {
-        sendSideEffect(MainEvent.ShowControlsEvent)
-    }
-
-    private fun showGooglePlayGames() {
-        sendSideEffect(MainEvent.ShowGooglePlayGamesEvent)
     }
 
     private fun fetchCloudSave(playGamesId: String) {

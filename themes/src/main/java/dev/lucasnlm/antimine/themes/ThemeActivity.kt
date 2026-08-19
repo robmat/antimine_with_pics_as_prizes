@@ -16,6 +16,7 @@ import dev.lucasnlm.antimine.themes.view.ThemeAdapter
 import dev.lucasnlm.antimine.themes.viewmodel.ThemeEvent
 import dev.lucasnlm.antimine.themes.viewmodel.ThemeViewModel
 import dev.lucasnlm.antimine.ui.ext.ThemedActivity
+import dev.lucasnlm.antimine.ui.view.OfferCardButtonConfig
 import dev.lucasnlm.antimine.ui.view.SpaceItemDecoration
 import dev.lucasnlm.external.AdsManager
 import dev.lucasnlm.external.AnalyticsManager
@@ -64,31 +65,35 @@ class ThemeActivity : ThemedActivity() {
             binding.unlockAll.isVisible = false
         } else {
             binding.unlockAll.bind(
-                theme = usingTheme,
-                invert = true,
-                text = getString(i18n.string.unlock_all),
-                onAction = {
-                    lifecycleScope.launch {
-                        billingManager.charge(this@ThemeActivity)
-                    }
-                    gameAudioManager.playClickSound()
-                },
+                OfferCardButtonConfig(
+                    theme = usingTheme,
+                    invert = true,
+                    text = getString(i18n.string.unlock_all),
+                    onAction = {
+                        lifecycleScope.launch {
+                            billingManager.charge(this@ThemeActivity)
+                        }
+                        gameAudioManager.playClickSound()
+                    },
+                ),
             )
 
             lifecycleScope.launch {
                 billingManager.getPriceFlow().collect {
                     binding.unlockAll.bind(
-                        theme = usingTheme,
-                        invert = true,
-                        text = getString(i18n.string.unlock_all),
-                        price = it.price,
-                        showOffer = it.offer,
-                        onAction = {
-                            lifecycleScope.launch {
-                                billingManager.charge(this@ThemeActivity)
-                            }
-                            gameAudioManager.playClickSound()
-                        },
+                        OfferCardButtonConfig(
+                            theme = usingTheme,
+                            invert = true,
+                            text = getString(i18n.string.unlock_all),
+                            price = it.price,
+                            showOffer = it.offer,
+                            onAction = {
+                                lifecycleScope.launch {
+                                    billingManager.charge(this@ThemeActivity)
+                                }
+                                gameAudioManager.playClickSound()
+                            },
+                        ),
                     )
                 }
             }

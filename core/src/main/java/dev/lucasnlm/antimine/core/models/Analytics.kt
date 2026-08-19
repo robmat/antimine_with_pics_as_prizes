@@ -2,6 +2,19 @@ package dev.lucasnlm.antimine.core.models
 
 import dev.lucasnlm.antimine.preferences.models.Minefield
 
+private fun minefieldExtras(
+    minefield: Minefield,
+    difficulty: Difficulty,
+    seed: Long,
+): Map<String, String> =
+    mapOf(
+        "Seed" to seed.toString(),
+        "Difficulty Preset" to difficulty.id,
+        "Width" to minefield.width.toString(),
+        "Height" to minefield.height.toString(),
+        "Mines" to minefield.mines.toString(),
+    )
+
 sealed class Analytics(
     val name: String,
     val extra: Map<String, String> = mapOf(),
@@ -14,14 +27,7 @@ sealed class Analytics(
         seed: Long,
     ) : Analytics(
         name = "New Game",
-        extra =
-        mapOf(
-            "Seed" to seed.toString(),
-            "Difficulty Preset" to difficulty.id,
-            "Width" to minefield.width.toString(),
-            "Height" to minefield.height.toString(),
-            "Mines" to minefield.mines.toString(),
-        ),
+        extra = minefieldExtras(minefield, difficulty, seed),
     )
 
     class RetryGame(
@@ -31,15 +37,7 @@ sealed class Analytics(
         firstOpen: Int,
     ) : Analytics(
         name = "Retry Game",
-        extra =
-        mapOf(
-            "Seed" to seed.toString(),
-            "Difficulty Preset" to difficulty.id,
-            "Width" to minefield.width.toString(),
-            "Height" to minefield.height.toString(),
-            "Mines" to minefield.mines.toString(),
-            "First Open" to firstOpen.toString(),
-        ),
+        extra = minefieldExtras(minefield, difficulty, seed) + ("First Open" to firstOpen.toString()),
     )
 
     data class ContinueGameAfterGameOver(

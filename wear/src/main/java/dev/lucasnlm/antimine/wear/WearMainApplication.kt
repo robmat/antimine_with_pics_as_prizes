@@ -11,6 +11,7 @@ import dev.lucasnlm.antimine.preferences.models.ControlStyle
 import dev.lucasnlm.antimine.wear.di.AppModule
 import dev.lucasnlm.antimine.wear.di.ViewModelModule
 import dev.lucasnlm.external.AnalyticsManager
+import dev.lucasnlm.external.di.CommonExternalModule
 import dev.lucasnlm.external.di.ExternalModule
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
@@ -31,7 +32,7 @@ open class WearMainApplication : MultiDexApplication() {
         stopKoin()
         startKoin {
             androidContext(applicationContext)
-            modules(AppModule, CommonModule, ExternalModule, LevelModule, ViewModelModule)
+            modules(AppModule, CommonModule, ExternalModule, CommonExternalModule, LevelModule, ViewModelModule)
         }
 
         if (!preferencesRepository.hasCustomControlStyle()) {

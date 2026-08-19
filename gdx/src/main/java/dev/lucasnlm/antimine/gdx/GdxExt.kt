@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 
 fun Batch.drawRegion(
     texture: TextureRegion,
-    x: Float,
-    y: Float,
-    width: Float,
-    height: Float,
+    bounds: DrawBounds,
     blend: Boolean,
     color: Color? = null,
 ) {
@@ -21,7 +18,7 @@ fun Batch.drawRegion(
     }
 
     setColor(color ?: WHITE)
-    draw(texture, x, y, width, height)
+    draw(texture, bounds.x, bounds.y, bounds.width, bounds.height)
 }
 
 fun Actor.drawAsset(

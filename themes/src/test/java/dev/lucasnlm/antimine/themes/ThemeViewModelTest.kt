@@ -1,9 +1,10 @@
 package dev.lucasnlm.antimine.themes
 
-import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.themes.viewmodel.ThemeEvent
 import dev.lucasnlm.antimine.themes.viewmodel.ThemeState
 import dev.lucasnlm.antimine.themes.viewmodel.ThemeViewModel
+import dev.lucasnlm.antimine.ui.R
+import dev.lucasnlm.antimine.ui.model.AppSkin
 import dev.lucasnlm.antimine.ui.model.AppTheme
 import dev.lucasnlm.antimine.ui.model.AreaPalette
 import dev.lucasnlm.antimine.ui.repository.ThemeRepository
@@ -13,7 +14,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -23,7 +24,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class ThemeViewModelTest {
-    private val dispatcher = TestCoroutineDispatcher()
+    private val dispatcher = UnconfinedTestDispatcher()
 
     @Before
     fun setup() {
@@ -39,6 +40,7 @@ class ThemeViewModelTest {
         AppTheme(
             id = 1L,
             theme = R.style.CustomLightTheme,
+            isDarkTheme = false,
             palette =
             AreaPalette(
                 accent = 0xD32F2F,
@@ -64,6 +66,7 @@ class ThemeViewModelTest {
         AppTheme(
             id = 2L,
             theme = R.style.CustomDarkTheme,
+            isDarkTheme = true,
             palette =
             AreaPalette(
                 accent = 0xFFFFFF,
@@ -89,6 +92,7 @@ class ThemeViewModelTest {
         AppTheme(
             id = 3L,
             theme = R.style.CustomGardenTheme,
+            isDarkTheme = false,
             palette =
             AreaPalette(
                 accent = 0x689f38,
@@ -117,20 +121,32 @@ class ThemeViewModelTest {
             gardenTheme,
         )
 
+    private val skin =
+        AppSkin(
+            id = 1L,
+            file = "default",
+            thumbnailImageRes = 0,
+            canTint = true,
+            isPremium = false,
+            hasPadding = false,
+        )
+
+    private val allSkins = listOf(skin)
+
     @Test
     fun testInitialValue() {
         val themeRepository =
             mockk<ThemeRepository> {
                 every { getAllThemes() } returns allThemes
                 every { getTheme() } returns gardenTheme
+                every { getSkin() } returns skin
+                every { getAllSkins() } returns allSkins
             }
-
-        val preferencesRepository = mockk<PreferencesRepository>()
 
         val analyticsManager = mockk<AnalyticsManager> { }
 
-        val viewModel = ThemeViewModel(themeRepository, preferencesRepository, analyticsManager)
-        assertEquals(ThemeState(gardenTheme, 3, 15, 0, allThemes), viewModel.singleState())
+        val viewModel = ThemeViewModel(themeRepository, analyticsManager)
+        assertEquals(ThemeState(gardenTheme, skin, allThemes, allSkins), viewModel.singleState())
     }
 
     @Test
@@ -139,12 +155,9 @@ class ThemeViewModelTest {
             mockk<ThemeRepository> {
                 every { getAllThemes() } returns allThemes
                 every { getTheme() } returns gardenTheme
+                every { getSkin() } returns skin
+                every { getAllSkins() } returns allSkins
                 every { setTheme(any()) } returns Unit
-            }
-
-        val preferencesRepository =
-            mockk<PreferencesRepository> {
-                every { isPremiumEnabled() } returns true
             }
 
         val analyticsManager =
@@ -153,11 +166,11 @@ class ThemeViewModelTest {
             }
 
         val state =
-            ThemeViewModel(themeRepository, preferencesRepository, analyticsManager).run {
+            ThemeViewModel(themeRepository, analyticsManager).run {
                 sendEvent(ThemeEvent.ChangeTheme(darkTheme))
                 singleState()
             }
-        assertEquals(ThemeState(darkTheme, 3, 15, 0, allThemes), state)
+        assertEquals(ThemeState(darkTheme, skin, allThemes, allSkins), state)
 
         verify { themeRepository.setTheme(darkTheme.id) }
     }
@@ -168,12 +181,9 @@ class ThemeViewModelTest {
             mockk<ThemeRepository> {
                 every { getAllThemes() } returns allThemes
                 every { getTheme() } returns gardenTheme
+                every { getSkin() } returns skin
+                every { getAllSkins() } returns allSkins
                 every { setTheme(any()) } returns Unit
-            }
-
-        val preferencesRepository =
-            mockk<PreferencesRepository> {
-                every { isPremiumEnabled() } returns false
             }
 
         val analyticsManager =
@@ -182,10 +192,10 @@ class ThemeViewModelTest {
             }
 
         val state =
-            ThemeViewModel(themeRepository, preferencesRepository, analyticsManager).run {
+            ThemeViewModel(themeRepository, analyticsManager).run {
                 sendEvent(ThemeEvent.ChangeTheme(gardenTheme))
                 singleState()
             }
-        assertEquals(ThemeState(gardenTheme, 3, 15, 0, allThemes), state)
+        assertEquals(ThemeState(gardenTheme, skin, allThemes, allSkins), state)
     }
 }

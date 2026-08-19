@@ -1,114 +1,14 @@
 package dev.lucasnlm.antimine.core.audio
 
 import android.content.Context
-import android.content.res.AssetFileDescriptor
-import android.media.AudioAttributes
-import android.media.MediaPlayer
-import android.os.Build
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 
 class GameAudioManagerImpl(
-    private val context: Context,
-    private val preferencesRepository: PreferencesRepository,
-) : GameAudioManager {
-    private var musicMediaPlayer: MediaPlayer? = null
-
-    override fun playBombExplosion() {
-        playSoundFromAssets(BOMB_EXPLOSION_FILE_NAME)
-    }
-
-    override fun playWin() {
-        playSoundFromAssets(WIN_FILE_NAME)
-    }
-
-    private fun buildMusicMediaPlayer(assetFileDescriptor: AssetFileDescriptor): MediaPlayer {
-        return playWithMediaPlayer(
-            MediaPlayerRequest(
-                soundAsset = assetFileDescriptor,
-                volume = MUSIC_MAX_VOLUME,
-                repeat = true,
-                releaseOnComplete = false,
-                isMusic = true,
-            ),
-        )
-    }
-
-    override fun playMusic() {
-        if (preferencesRepository.isMusicEnabled()) {
-            if (musicMediaPlayer == null) {
-                tryOpenFd(MUSIC_FILE_NAME)?.use { musicFd ->
-                    musicMediaPlayer = buildMusicMediaPlayer(musicFd)
-                }
-            } else {
-                musicMediaPlayer?.start()
-            }
-        } else {
-            stopMusic()
-        }
-    }
-
-    override fun isPlayingMusic(): Boolean {
-        return musicMediaPlayer?.isPlaying == true
-    }
-
-    override fun pauseMusic() {
-        runCatching {
-            if (musicMediaPlayer?.isPlaying == true) {
-                musicMediaPlayer?.pause()
-            }
-        }
-    }
-
-    override fun resumeMusic() {
-        if (preferencesRepository.isMusicEnabled()) {
-            if (musicMediaPlayer?.isPlaying == false) {
-                musicMediaPlayer?.start()
-            }
-        }
-    }
-
-    override fun stopMusic() {
-        musicMediaPlayer?.run {
-            stop()
-            release()
-        }
-
-        musicMediaPlayer = null
-    }
-
-    override fun playClickSound(index: Int) {
-        clickFileName()
-            .getOrNull(index)
-            ?.let(::playSoundFromAssets)
-    }
-
-    override fun playOpenArea() {
-        openAreaFiles().pickOneAndPlay()
-    }
-
-    override fun playPutFlag() {
-        putFlagFiles().pickOneAndPlay()
-    }
-
-    override fun playOpenMultipleArea() {
-        openMultipleFiles().pickOneAndPlay()
-    }
-
-    override fun playRevealBomb() {
-        revealBombFiles().pickOneAndPlay()
-    }
-
-    override fun playMonetization() {
-        revealBombFiles().pickOneAndPlay()
-    }
-
-    override fun playRevealBombReloaded() {
-        playSoundFromAssets(REVEAL_BOMB_RELOAD_FILE_NAME)
-    }
-
-    override fun playSwitchAction() {
-        playSoundFromAssets(REVEAL_BOMB_RELOAD_FILE_NAME)
-    }
+    context: Context,
+    preferencesRepository: PreferencesRepository,
+) : GameAudioManager,
+    MusicPlayback by MusicController(SoundAssetPlayer(context, preferencesRepository), preferencesRepository),
+    SoundEffects by SoundEffectPlayerImpl(SoundAssetPlayer(context, preferencesRepository)) {
 
     override fun free() {
         stopMusic()
@@ -123,92 +23,7 @@ class GameAudioManagerImpl(
         )
     }
 
-    private fun getAudioAttributes(isMusic: Boolean): AudioAttributes {
-        return AudioAttributes.Builder().apply {
-            setUsage(AudioAttributes.USAGE_GAME)
-
-            if (isMusic) {
-                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            } else {
-                setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                if (isMusic) {
-                    setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_NONE)
-                } else {
-                    setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_ALL)
-                }
-            }
-        }.build()
-    }
-
-    private data class MediaPlayerRequest(
-        val soundAsset: AssetFileDescriptor,
-        val volume: Float,
-        val repeat: Boolean,
-        val releaseOnComplete: Boolean,
-        val isMusic: Boolean = false,
-        val seekTo: Int? = null,
-    )
-
-    private fun playWithMediaPlayer(request: MediaPlayerRequest): MediaPlayer {
-        val mediaPlayer = MediaPlayer()
-        runCatching {
-            mediaPlayer.run {
-                val soundAsset = request.soundAsset
-                setDataSource(soundAsset.fileDescriptor, soundAsset.startOffset, soundAsset.length)
-                prepare()
-                setAudioAttributes(getAudioAttributes(request.isMusic))
-                setVolume(request.volume, request.volume)
-                request.seekTo?.let(::seekTo)
-                isLooping = request.repeat
-                if (request.releaseOnComplete) {
-                    setOnCompletionListener {
-                        release()
-                    }
-                }
-                start()
-            }
-        }.onFailure {
-            mediaPlayer.release()
-        }
-        return mediaPlayer
-    }
-
-    private fun playSoundFromAssets(fileName: String) {
-        if (preferencesRepository.isSoundEffectsEnabled()) {
-            tryOpenFd(fileName)?.use { soundAsset ->
-                playWithMediaPlayer(
-                    MediaPlayerRequest(
-                        soundAsset = soundAsset,
-                        volume = SFX_MAX_VOLUME,
-                        repeat = false,
-                        releaseOnComplete = true,
-                        seekTo = 0,
-                        isMusic = false,
-                    ),
-                )
-            }
-        }
-    }
-
-    private fun tryOpenFd(fileName: String): AssetFileDescriptor? {
-        return runCatching {
-            context.assets.openFd(fileName)
-        }.getOrNull()
-    }
-
-    private fun List<String>.pickOne() = this.shuffled().first()
-
-    private fun List<String>.pickOneAndPlay() {
-        pickOne().also(::playSoundFromAssets)
-    }
-
     companion object {
-        const val MUSIC_MAX_VOLUME = 0.3f
-        const val SFX_MAX_VOLUME = 0.7f
-
         private fun filesCount(count: Int) = (0 until count)
 
         private const val OPEN_AREA_COUNT = 4

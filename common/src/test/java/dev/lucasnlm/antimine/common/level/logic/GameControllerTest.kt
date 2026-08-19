@@ -27,6 +27,7 @@ class GameControllerTest {
                 minefield = minefield,
                 seed = 200L,
                 useSimonTatham = false,
+                prizeImage = "",
             )
         if (clickOnCreate) {
             runTest {

@@ -113,6 +113,12 @@ class PreferencesActivity :
     }
 
     private fun bindItems() {
+        bindGameplayPreferences()
+        bindNumberAssistPreferences()
+        bindSecondaryActions()
+    }
+
+    private fun bindGameplayPreferences() {
         binding.hapticFeedback.bindItem(
             initialValue = preferenceRepository.useHapticFeedback(),
             onChangeValue = {
@@ -169,7 +175,9 @@ class PreferencesActivity :
             initialValue = preferenceRepository.useSimonTathamAlgorithm(),
             onChangeValue = { preferenceRepository.setSimonTathamAlgorithm(it) },
         )
+    }
 
+    private fun bindNumberAssistPreferences() {
         binding.allowClickNumber.bindItem(
             initialValue = preferenceRepository.allowTapOnNumbers(),
             onChangeValue = {
@@ -193,7 +201,9 @@ class PreferencesActivity :
             initialValue = preferenceRepository.dimNumbers(),
             onChangeValue = { preferenceRepository.setDimNumbers(it) },
         )
+    }
 
+    private fun bindSecondaryActions() {
         if (playGamesManager.hasGooglePlayGames()) {
             binding.playGames.bindItem(
                 initialValue = preferenceRepository.keepRequestPlayGames(),
@@ -206,41 +216,11 @@ class PreferencesActivity :
         }
 
         binding.exportSettings.setOnClickListener {
-            val exportIntent =
-                Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    putExtra(Intent.EXTRA_TITLE, SettingsBackupManager.FILE_NAME)
-                    type = "application/json"
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val documentsDir =
-                            Environment.getExternalStoragePublicDirectory(
-                                Environment.DIRECTORY_DOCUMENTS,
-                            )
-                        putExtra(DocumentsContract.EXTRA_INITIAL_URI, documentsDir.toUri())
-                    }
-                }
-
-            exportResultLauncher.launch(exportIntent)
+            exportResultLauncher.launch(buildSettingsFileIntent(Intent.ACTION_CREATE_DOCUMENT))
         }
 
         binding.importSettings.setOnClickListener {
-            val exportIntent =
-                Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    putExtra(Intent.EXTRA_TITLE, SettingsBackupManager.FILE_NAME)
-                    type = "application/json"
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        val documentsDir =
-                            Environment.getExternalStoragePublicDirectory(
-                                Environment.DIRECTORY_DOCUMENTS,
-                            )
-                        putExtra(DocumentsContract.EXTRA_INITIAL_URI, documentsDir.toUri())
-                    }
-                }
-
-            importResultLauncher.launch(exportIntent)
+            importResultLauncher.launch(buildSettingsFileIntent(Intent.ACTION_OPEN_DOCUMENT))
         }
     }
 
@@ -251,6 +231,21 @@ class PreferencesActivity :
 
         preferenceManager.unregisterOnSharedPreferenceChangeListener(this)
     }
+
+    private fun buildSettingsFileIntent(action: String): Intent =
+        Intent(action).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_TITLE, SettingsBackupManager.FILE_NAME)
+            type = "application/json"
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val documentsDir =
+                    Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOCUMENTS,
+                    )
+                putExtra(DocumentsContract.EXTRA_INITIAL_URI, documentsDir.toUri())
+            }
+        }
 
     private fun bindToolbarAction(hasCustomizations: Boolean) {
         if (hasCustomizations) {

@@ -13,29 +13,36 @@ import dev.lucasnlm.antimine.core.models.Area
 import dev.lucasnlm.antimine.core.repository.DimensionRepository
 import dev.lucasnlm.antimine.gdx.controller.GameInputController
 import dev.lucasnlm.antimine.gdx.models.ActionSettings
-import dev.lucasnlm.antimine.gdx.models.GameTextures
-import dev.lucasnlm.antimine.gdx.models.InternalPadding
+import dev.lucasnlm.antimine.gdx.models.GameInputCallbacks
 import dev.lucasnlm.antimine.gdx.models.RenderSettings
 import dev.lucasnlm.antimine.gdx.stages.MinefieldStage
+import dev.lucasnlm.antimine.gdx.stages.bindSize
+import dev.lucasnlm.antimine.gdx.stages.onChangeGame
+import dev.lucasnlm.antimine.gdx.stages.scaleZoom
+import dev.lucasnlm.antimine.gdx.stages.setZoom
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.ControlStyle
 import dev.lucasnlm.antimine.preferences.models.Minefield
 import dev.lucasnlm.antimine.ui.ext.blue
 import dev.lucasnlm.antimine.ui.ext.green
 import dev.lucasnlm.antimine.ui.ext.red
-import dev.lucasnlm.antimine.ui.model.AppSkin
 import dev.lucasnlm.antimine.ui.repository.ThemeRepository
 
+/**
+ * [loadGameTextures] and [getInternalPadding] were split out into
+ * GameApplicationListenerTextures.kt since this class's function count was
+ * over threshold; [context] and [dimensionRepository] are `internal` rather
+ * than `private` only because that extraction needs access to them. The tap
+ * callbacks are bundled into [GameInputCallbacks] since the constructor's
+ * individual-callback parameter count was over threshold.
+ */
 class GameApplicationListener(
-    private val context: Context,
+    internal val context: Context,
     private val appVersion: AppVersionManager,
     private val preferencesRepository: PreferencesRepository,
     private val themeRepository: ThemeRepository,
-    private val dimensionRepository: DimensionRepository,
-    private val onSingleTap: (Int) -> Unit,
-    private val onDoubleTap: (Int) -> Unit,
-    private val onLongTap: (Int) -> Unit,
-    private val onEngineReady: () -> Unit,
+    internal val dimensionRepository: DimensionRepository,
+    private val callbacks: GameInputCallbacks,
 ) : ApplicationAdapter() {
     private var minefieldStage: MinefieldStage? = null
     private var boundAreas: List<Area> = listOf()
@@ -90,10 +97,7 @@ class GameApplicationListener(
                 screenHeight = height.toFloat(),
                 renderSettings = renderSettings,
                 actionSettings = actionSettings,
-                onSingleTap = onSingleTap,
-                onDoubleTap = onDoubleTap,
-                onLongTouch = onLongTap,
-                onEngineReady = onEngineReady,
+                callbacks = callbacks,
             ).apply {
                 bindField(boundAreas)
                 bindSize(boundMinefield)
@@ -103,59 +107,6 @@ class GameApplicationListener(
 
         Gdx.input.inputProcessor = InputMultiplexer(GestureDetector(minefieldInputController), minefieldStage)
         Gdx.graphics.isContinuousRendering = false
-    }
-
-    private fun loadGameTextures(currentSkin: AppSkin) {
-        GameContext.run {
-            canTintAreas = currentSkin.canTint
-
-            atlas =
-                GameTextureAtlas.loadTextureAtlas(
-                    skinFile = currentSkin.file,
-                    defaultBackground = currentSkin.background,
-                ).apply {
-                    gameTextures =
-                        GameTextures(
-                            areaBackground = findRegion(AtlasNames.SINGLE_BACKGROUND),
-                            aroundMines =
-                            listOf(
-                                AtlasNames.NUMBER_1,
-                                AtlasNames.NUMBER_2,
-                                AtlasNames.NUMBER_3,
-                                AtlasNames.NUMBER_4,
-                                AtlasNames.NUMBER_5,
-                                AtlasNames.NUMBER_6,
-                                AtlasNames.NUMBER_7,
-                                AtlasNames.NUMBER_8,
-                            ).map(::findRegion),
-                            pieces =
-                            listOf(
-                                AtlasNames.CORE,
-                                AtlasNames.BOTTOM,
-                                AtlasNames.TOP,
-                                AtlasNames.RIGHT,
-                                AtlasNames.LEFT,
-                                AtlasNames.CORNER_TOP_LEFT,
-                                AtlasNames.CORNER_TOP_RIGHT,
-                                AtlasNames.CORNER_BOTTOM_RIGHT,
-                                AtlasNames.CORNER_BOTTOM_LEFT,
-                                AtlasNames.BORDER_CORNER_RIGHT,
-                                AtlasNames.BORDER_CORNER_LEFT,
-                                AtlasNames.BORDER_CORNER_BOTTOM_RIGHT,
-                                AtlasNames.BORDER_CORNER_BOTTOM_LEFT,
-                                AtlasNames.FILL_TOP_LEFT,
-                                AtlasNames.FILL_TOP_RIGHT,
-                                AtlasNames.FILL_BOTTOM_RIGHT,
-                                AtlasNames.FILL_BOTTOM_LEFT,
-                                AtlasNames.FULL,
-                            ).associateWith(::findRegion),
-                            mine = findRegion(AtlasNames.MINE),
-                            flag = findRegion(AtlasNames.FLAG),
-                            question = findRegion(AtlasNames.QUESTION),
-                            detailedArea = findRegion(AtlasNames.SINGLE),
-                        )
-                }
-        }
     }
 
     override fun dispose() {
@@ -197,28 +148,6 @@ class GameApplicationListener(
 
             act()
             draw()
-        }
-    }
-
-    private fun getInternalPadding(): InternalPadding {
-        val padding = dimensionRepository.areaSize()
-        return when {
-            context.isPortrait() -> {
-                InternalPadding(
-                    start = padding,
-                    end = padding,
-                    bottom = padding,
-                    top = padding,
-                )
-            }
-            else -> {
-                InternalPadding(
-                    start = padding,
-                    end = padding,
-                    bottom = padding,
-                    top = padding,
-                )
-            }
         }
     }
 

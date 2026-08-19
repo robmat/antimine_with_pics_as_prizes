@@ -1,40 +1,54 @@
 package com.batodev.antimine.gameover
 
-import android.content.Context
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.Toast
+import android.view.WindowManager
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.lifecycleScope
-import com.batodev.antimine.R
+import androidx.lifecycle.viewModelScope
+import com.batodev.antimine.gameover.model.CommonDialogState
+import com.batodev.antimine.gameover.model.GameResult
+import com.batodev.antimine.gameover.viewmodel.EndGameDialogEvent
+import com.batodev.antimine.gameover.viewmodel.EndGameDialogState
+import com.batodev.antimine.gameover.viewmodel.EndGameDialogViewModel
 import com.batodev.antimine.preferences.PreferencesActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
+import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
+import dev.lucasnlm.antimine.common.level.viewmodel.revealMines
 import dev.lucasnlm.antimine.core.audio.GameAudioManagerImpl
-import dev.lucasnlm.antimine.core.dpToPx
 import dev.lucasnlm.antimine.core.models.Analytics
+import dev.lucasnlm.antimine.core.parcelable
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.external.AdsManager
 import dev.lucasnlm.external.AnalyticsManager
 import dev.lucasnlm.external.BillingManager
+import dev.lucasnlm.external.FeatureFlagManager
 import dev.lucasnlm.external.InstantAppManager
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import dev.lucasnlm.antimine.i18n.R as i18n
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 abstract class CommonGameDialogFragment : AppCompatDialogFragment() {
     private val adsManager: AdsManager by inject()
     private val gameAudioManager: GameAudioManagerImpl by inject()
     private val instantAppManager: InstantAppManager by inject()
-    private val analyticsManager: AnalyticsManager by inject()
+    protected val analyticsManager: AnalyticsManager by inject()
 
     protected val preferencesRepository: PreferencesRepository by inject()
     protected val billingManager: BillingManager by inject()
+    protected val featureFlagManager: FeatureFlagManager by inject()
+
+    protected val dialogViewModel by viewModel<EndGameDialogViewModel>()
+    protected val gameViewModel by activityViewModel<GameViewModel>()
 
     protected val isPremiumEnabled: Boolean by lazy {
         preferencesRepository.isPremiumEnabled()
@@ -48,12 +62,44 @@ abstract class CommonGameDialogFragment : AppCompatDialogFragment() {
         context?.let { instantAppManager.isEnabled(it) } == true
     }
 
+    protected val monetization: DialogMonetization by lazy {
+        DialogMonetization(
+            fragment = this,
+            adsManager = adsManager,
+            gameAudioManager = gameAudioManager,
+            preferencesRepository = preferencesRepository,
+            analyticsManager = analyticsManager,
+            billingManager = billingManager,
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (!preferencesRepository.isPremiumEnabled()) {
             billingManager.start()
         }
+
+        arguments
+            ?.parcelable<CommonDialogState>(DIALOG_STATE)
+            ?.run {
+                dialogViewModel.sendEvent(
+                    EndGameDialogEvent.BuildCustomEndGame(
+                        gameResult =
+                        if (totalMines > 0) {
+                            gameResult
+                        } else {
+                            GameResult.GameOver
+                        },
+                        showContinueButton = showContinueButton,
+                        time = time,
+                        rightMines = rightMines,
+                        totalMines = totalMines,
+                        received = received,
+                        turn = turn,
+                    ),
+                )
+            }
     }
 
     fun showAllowingStateLoss(
@@ -69,167 +115,66 @@ abstract class CommonGameDialogFragment : AppCompatDialogFragment() {
 
     abstract fun canShowMusicBanner(): Boolean
 
-    private fun openHexLink(context: Context) {
-        runCatching {
-            val hexUri = "https://play.google.com/store/apps/details?id=dev.lucasnlm.hexo"
-            val intent =
-                Intent(Intent.ACTION_VIEW, hexUri.toUri()).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-            context.startActivity(intent)
-        }.onFailure {
-            Toast.makeText(
-                context.applicationContext,
-                i18n.string.unknown_error,
-                Toast.LENGTH_SHORT,
-            ).show()
-        }
-    }
+    /** Updates the title/subtitle/emoji header shared by every end-game dialog. */
+    protected fun bindDialogHeader(
+        title: MaterialTextView,
+        subtitle: MaterialTextView,
+        titleEmoji: ImageView,
+        state: EndGameDialogState,
+    ) {
+        title.text = state.title
+        subtitle.text = state.message
 
-    private fun showHexBanner(adFrame: FrameLayout) {
-        val context = adFrame.context
-
-        val view = View.inflate(context, R.layout.hex_banner, null)
-        view.setOnClickListener {
-            openHexLink(context)
-        }
-
-        adFrame.apply {
-            addView(
-                view,
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    context.dpToPx(HEX_BANNER_HEIGHT_DP),
-                    Gravity.CENTER_HORIZONTAL,
-                ),
-            )
-        }
-    }
-
-    protected fun showMusicDialog(adFrame: FrameLayout) {
-        gameAudioManager.getComposerData().firstOrNull()?.let { composer ->
-            adFrame.isVisible = true
-
-            preferencesRepository.setLastMusicBanner(System.currentTimeMillis())
-
-            val view = View.inflate(context, R.layout.music_link, null)
-            view.run {
-                findViewById<MaterialTextView>(R.id.music_by).text =
-                    getString(i18n.string.music_by, composer.composer)
-
-                setOnClickListener {
-                    analyticsManager.sentEvent(
-                        Analytics.OpenMusicLink(from = "End Game"),
-                    )
-                    preferencesRepository.setShowMusicBanner(false)
-                    gameAudioManager.playMonetization()
-                    openComposer(composer.composerLink)
-                }
-            }
-
-            adFrame.addView(
-                view,
-                FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    Gravity.CENTER_HORIZONTAL,
-                ),
-            )
-        }
-    }
-
-    private fun openComposer(composerLink: String) {
-        val context = requireContext()
-
-        runCatching {
-            val intent =
-                Intent(Intent.ACTION_VIEW, composerLink.toUri()).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-            context.startActivity(intent)
-        }.onFailure {
-            Toast.makeText(
-                context.applicationContext,
-                i18n.string.unknown_error,
-                Toast.LENGTH_SHORT,
-            ).show()
-        }
-    }
-
-    protected fun showAdBannerDialog(adFrame: FrameLayout) {
-        adFrame.apply {
-            isVisible = true
-
-            post {
-                addView(
-                    adsManager.createBannerAd(
-                        requireContext(),
-                        onError = {
-                            showHexBanner(this)
-                        },
-                    ),
-                    FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                    ),
+        titleEmoji.apply {
+            setImageResource(state.titleEmoji)
+            setOnClickListener {
+                analyticsManager.sentEvent(Analytics.ClickEmoji)
+                dialogViewModel.sendEvent(
+                    EndGameDialogEvent.ChangeEmoji(state.gameResult, state.titleEmoji),
                 )
+            }
+        }
+    }
+
+    /**
+     * Wires the "back reveals mines" key listener and the blurred-window behavior shared
+     * by every end-game dialog, then creates and returns the [Dialog].
+     */
+    protected fun MaterialAlertDialogBuilder.finalizeGameDialog(rootView: View): Dialog {
+        setOnKeyListener { _, _, keyEvent ->
+            if (keyEvent.keyCode == KeyEvent.KEYCODE_BACK) {
+                activity?.let {
+                    if (!it.isFinishing) {
+                        gameViewModel.viewModelScope.launch {
+                            gameViewModel.revealMines()
+                        }
+                    }
+                }
+                dismissAllowingStateLoss()
+                true
+            } else {
+                false
+            }
+        }
+
+        setView(rootView)
+
+        return create().apply {
+            setCanceledOnTouchOutside(false)
+
+            window?.apply {
+                setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+                    attributes?.blurBehindRadius = BACKGROUND_BLUR_RADIUS
+                }
             }
         }
     }
 
     protected fun showSettings() {
         startActivity(Intent(requireContext(), PreferencesActivity::class.java))
-    }
-
-    protected fun showDonationDialog(adFrame: FrameLayout) {
-        adFrame.isVisible = true
-
-        val view = View.inflate(context, R.layout.donation_request, null)
-        view.apply {
-            setOnClickListener {
-                gameAudioManager.playMonetization()
-                activity?.let {
-                    lifecycleScope.launch {
-                        billingManager.charge(it)
-                        preferencesRepository.setRequestDonation(false)
-                    }
-                }
-            }
-        }
-
-        adFrame.addView(
-            view,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER_HORIZONTAL,
-            ),
-        )
-    }
-
-    protected fun showAdsAndContinue() {
-        activity?.let { activity ->
-            if (!activity.isFinishing) {
-                adsManager.showRewardedAd(
-                    activity,
-                    skipIfFrequent = false,
-                    onRewarded = {
-                        continueGame()
-                    },
-                    onFail = {
-                        adsManager.showInterstitialAd(
-                            activity,
-                            onDismiss = {
-                                continueGame()
-                            },
-                            onError = {
-                                Toast.makeText(context, i18n.string.no_network, Toast.LENGTH_SHORT).show()
-                            },
-                        )
-                    },
-                )
-            }
-        }
     }
 
     companion object {

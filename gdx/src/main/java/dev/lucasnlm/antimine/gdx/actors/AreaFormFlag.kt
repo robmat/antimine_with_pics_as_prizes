@@ -1,7 +1,5 @@
 package dev.lucasnlm.antimine.gdx.actors
 
-import dev.lucasnlm.antimine.gdx.AtlasNames
-
 object AreaFormFlag {
     const val TOP = 0b00000001
     const val BOTTOM = 0b00000010
@@ -33,73 +31,53 @@ fun Int.bottomLeft(): Boolean = checkForm(AreaFormFlag.BOTTOM_LEFT)
 
 fun Int.bottomRight(): Boolean = checkForm(AreaFormFlag.BOTTOM_RIGHT)
 
-fun areaFormOf(
-    top: Boolean,
-    bottom: Boolean,
-    left: Boolean,
-    right: Boolean,
-    topLeft: Boolean = false,
-    topRight: Boolean = false,
-    bottomLeft: Boolean = false,
-    bottomRight: Boolean = false,
-): Int {
+data class NeighborLinks(
+    val top: Boolean,
+    val bottom: Boolean,
+    val left: Boolean,
+    val right: Boolean,
+    val topLeft: Boolean = false,
+    val topRight: Boolean = false,
+    val bottomLeft: Boolean = false,
+    val bottomRight: Boolean = false,
+)
+
+fun areaFormOf(links: NeighborLinks): Int {
     var result = 0x00
 
-    if (top) {
+    if (links.top) {
         result = result or AreaFormFlag.TOP
     }
 
-    if (bottom) {
+    if (links.bottom) {
         result = result or AreaFormFlag.BOTTOM
     }
 
-    if (left) {
+    if (links.left) {
         result = result or AreaFormFlag.LEFT
     }
 
-    if (right) {
+    if (links.right) {
         result = result or AreaFormFlag.RIGHT
     }
 
-    if (topLeft) {
+    if (links.topLeft) {
         result = result or AreaFormFlag.TOP_LEFT
     }
 
-    if (topRight) {
+    if (links.topRight) {
         result = result or AreaFormFlag.TOP_RIGHT
     }
 
-    if (bottomLeft) {
+    if (links.bottomLeft) {
         result = result or AreaFormFlag.BOTTOM_LEFT
     }
 
-    if (bottomRight) {
+    if (links.bottomRight) {
         result = result or AreaFormFlag.BOTTOM_RIGHT
     }
 
     return result
-}
-
-fun Int.toAtlasNames(): Map<String, Boolean> {
-    return mapOf(
-        AtlasNames.CORE to true,
-        AtlasNames.TOP to top(),
-        AtlasNames.LEFT to left(),
-        AtlasNames.BOTTOM to bottom(),
-        AtlasNames.RIGHT to right(),
-        AtlasNames.CORNER_TOP_LEFT to (!top() && !left()),
-        AtlasNames.CORNER_TOP_RIGHT to (!top() && !right()),
-        AtlasNames.CORNER_BOTTOM_LEFT to (!bottom() && !left()),
-        AtlasNames.CORNER_BOTTOM_RIGHT to (!bottom() && !right()),
-        AtlasNames.BORDER_CORNER_RIGHT to (top() && right() && !topRight()),
-        AtlasNames.BORDER_CORNER_LEFT to (top() && left() && !topLeft()),
-        AtlasNames.BORDER_CORNER_BOTTOM_RIGHT to (bottom() && right() && !bottomRight()),
-        AtlasNames.BORDER_CORNER_BOTTOM_LEFT to (bottom() && left() && !bottomLeft()),
-        AtlasNames.FILL_TOP_LEFT to (top() && left() && topLeft()),
-        AtlasNames.FILL_TOP_RIGHT to (top() && right() && topRight()),
-        AtlasNames.FILL_BOTTOM_LEFT to (bottom() && left() && bottomLeft()),
-        AtlasNames.FILL_BOTTOM_RIGHT to (bottom() && right() && bottomRight()),
-    )
 }
 
 const val AREA_NO_FORM = 0b00000000

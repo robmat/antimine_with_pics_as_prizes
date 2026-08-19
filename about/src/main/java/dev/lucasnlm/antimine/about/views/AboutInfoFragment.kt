@@ -1,10 +1,8 @@
 package dev.lucasnlm.antimine.about.views
 
-import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +16,7 @@ import dev.lucasnlm.antimine.about.viewmodel.AboutEvent
 import dev.lucasnlm.antimine.about.viewmodel.AboutViewModel
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.core.models.Analytics
+import dev.lucasnlm.antimine.core.openExternalLink
 import dev.lucasnlm.external.AnalyticsManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -116,17 +115,10 @@ class AboutInfoFragment : Fragment() {
 
     private fun openComposer(composerLink: String) {
         val context = requireContext()
-        runCatching {
-            analyticsManager.sentEvent(
-                Analytics.OpenMusicLink(from = "About"),
-            )
-
-            val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(composerLink)).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }
-            context.startActivity(intent)
-        }.onFailure {
+        context.openExternalLink(
+            composerLink,
+            beforeLaunch = { analyticsManager.sentEvent(Analytics.OpenMusicLink(from = "About")) },
+        ) {
             Toast.makeText(
                 context.applicationContext,
                 i18n.string.unknown_error,

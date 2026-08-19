@@ -14,11 +14,14 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
 import dev.lucasnlm.antimine.common.level.viewmodel.GameEvent
 import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
+import dev.lucasnlm.antimine.common.level.viewmodel.changeSwitchControlAction
+import dev.lucasnlm.antimine.common.level.viewmodel.saveGame
 import dev.lucasnlm.antimine.core.AppVersionManager
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.core.dpToPx
 import dev.lucasnlm.antimine.core.repository.DimensionRepository
 import dev.lucasnlm.antimine.gdx.GameApplicationListener
+import dev.lucasnlm.antimine.gdx.models.GameInputCallbacks
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
 import dev.lucasnlm.antimine.preferences.models.Action
 import dev.lucasnlm.antimine.preferences.models.ControlStyle
@@ -50,26 +53,29 @@ open class GameRenderFragment : AndroidFragmentApplication() {
             themeRepository = themeRepository,
             preferencesRepository = preferencesRepository,
             dimensionRepository = dimensionRepository,
-            onSingleTap = {
-                lifecycleScope.launch {
-                    gameViewModel.onSingleClick(it)
-                }
-            },
-            onDoubleTap = {
-                lifecycleScope.launch {
-                    gameViewModel.onDoubleClick(it)
-                }
-            },
-            onLongTap = {
-                lifecycleScope.launch {
-                    gameViewModel.onLongClick(it)
-                }
-            },
-            onEngineReady = {
-                lifecycleScope.launch {
-                    gameViewModel.sendEvent(GameEvent.EngineReady)
-                }
-            },
+            callbacks =
+            GameInputCallbacks(
+                onSingleTap = {
+                    lifecycleScope.launch {
+                        gameViewModel.onSingleClick(it)
+                    }
+                },
+                onDoubleTap = {
+                    lifecycleScope.launch {
+                        gameViewModel.onDoubleClick(it)
+                    }
+                },
+                onLongTap = {
+                    lifecycleScope.launch {
+                        gameViewModel.onLongClick(it)
+                    }
+                },
+                onEngineReady = {
+                    lifecycleScope.launch {
+                        gameViewModel.sendEvent(GameEvent.EngineReady)
+                    }
+                },
+            ),
         )
     }
 

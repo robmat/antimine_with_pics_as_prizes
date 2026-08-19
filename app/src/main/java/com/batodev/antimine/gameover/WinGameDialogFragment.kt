@@ -1,68 +1,26 @@
 package com.batodev.antimine.gameover
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.WindowManager
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.batodev.antimine.GalleryActivity
 import com.batodev.antimine.R
 import com.batodev.antimine.databinding.WinDialogBinding
 import com.batodev.antimine.gameover.model.CommonDialogState
 import com.batodev.antimine.gameover.model.GameResult
-import com.batodev.antimine.gameover.viewmodel.EndGameDialogEvent
-import com.batodev.antimine.gameover.viewmodel.EndGameDialogViewModel
+import com.batodev.antimine.gameover.viewmodel.EndGameDialogState
 import com.batodev.antimine.stats.StatsActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
+import dev.lucasnlm.antimine.common.level.viewmodel.startNewGame
 import dev.lucasnlm.antimine.core.models.Analytics
-import dev.lucasnlm.antimine.core.parcelable
-import dev.lucasnlm.external.AnalyticsManager
-import dev.lucasnlm.external.FeatureFlagManager
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import dev.lucasnlm.antimine.i18n.R as i18n
 
 class WinGameDialogFragment : CommonGameDialogFragment() {
-    private val analyticsManager: AnalyticsManager by inject()
-    private val dialogViewModel by viewModel<EndGameDialogViewModel>()
-    private val gameViewModel by activityViewModel<GameViewModel>()
-    private val featureFlagManager: FeatureFlagManager by inject()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments
-            ?.parcelable<CommonDialogState>(DIALOG_STATE)
-            ?.run {
-                dialogViewModel.sendEvent(
-                    EndGameDialogEvent.BuildCustomEndGame(
-                        gameResult =
-                        if (totalMines > 0) {
-                            gameResult
-                        } else {
-                            GameResult.GameOver
-                        },
-                        showContinueButton = showContinueButton,
-                        time = time,
-                        rightMines = rightMines,
-                        totalMines = totalMines,
-                        received = received,
-                        turn = turn,
-                    ),
-                )
-            }
-    }
-
     override fun continueGame() {
         val context = requireContext()
         activity?.let { _ ->
@@ -79,131 +37,102 @@ class WinGameDialogFragment : CommonGameDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
-        return MaterialAlertDialogBuilder(context).apply {
-            val layoutInflater = LayoutInflater.from(context)
-            val binding = WinDialogBinding.inflate(layoutInflater, null, false)
+        val binding = WinDialogBinding.inflate(LayoutInflater.from(context), null, false)
+        val builder = MaterialAlertDialogBuilder(context)
 
-            binding.run {
-                lifecycleScope.launch {
-                    dialogViewModel.observeState().collect { state ->
-                        title.text = state.title
-                        subtitle.text = state.message
+        binding.run {
+            lifecycleScope.launch {
+                dialogViewModel.observeState().collect { state ->
+                    bindDialogHeader(title, subtitle, titleEmoji, state)
+                    bindStatsButton(context, state)
+                    bindNewGameButton()
+                    bindMonetizationBanner(state)
+                    bindSettingsButton()
+                    bindGalleryButton(context)
+                    bindReceivedMessage(state)
+                }
+            }
+        }
 
-                        titleEmoji.apply {
-                            setImageResource(state.titleEmoji)
-                            setOnClickListener {
-                                analyticsManager.sentEvent(Analytics.ClickEmoji)
-                                dialogViewModel.sendEvent(
-                                    EndGameDialogEvent.ChangeEmoji(state.gameResult, state.titleEmoji),
-                                )
-                            }
-                        }
+        return builder.finalizeGameDialog(binding.root)
+    }
 
-                        stats.setOnClickListener {
-                            analyticsManager.sentEvent(Analytics.OpenStats)
-                            Intent(context, StatsActivity::class.java).apply {
-                                startActivity(this)
-                            }
-                        }
+    private fun WinDialogBinding.bindStatsButton(context: Context, state: EndGameDialogState) {
+        stats.setOnClickListener {
+            analyticsManager.sentEvent(Analytics.OpenStats)
+            Intent(context, StatsActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
 
-                        newGame.setOnClickListener {
-                            if (featureFlagManager.isAdsOnContinueEnabled && !isPremiumEnabled) {
-                                showAdsAndContinue()
-                            } else {
-                                continueGame()
-                            }
-                        }
+        if (state.gameResult == GameResult.Victory || state.gameResult == GameResult.Completed) {
+            close.setOnClickListener {
+                dismissAllowingStateLoss()
+            }
+            stats.isVisible = true
+        }
+    }
 
-                        if (!isPremiumEnabled && featureFlagManager.isAdsOnContinueEnabled
-                        ) {
-                            newGame.compoundDrawablePadding = 0
-                            newGame.setCompoundDrawablesWithIntrinsicBounds(
-                                R.drawable.watch_ads_icon,
-                                0,
-                                0,
-                                0,
-                            )
-                        }
+    private fun WinDialogBinding.bindNewGameButton() {
+        newGame.setOnClickListener {
+            if (featureFlagManager.isAdsOnContinueEnabled && !isPremiumEnabled) {
+                monetization.showAdsAndContinue()
+            } else {
+                continueGame()
+            }
+        }
 
-                        if (featureFlagManager.isFoss && canRequestDonation) {
-                            showDonationDialog(adFrame)
-                        } else if (!isPremiumEnabled && featureFlagManager.isBannerAdEnabled) {
-                            showAdBannerDialog(adFrame)
-                        } else if (state.showMusicDialog) {
-                            showMusicDialog(adFrame)
-                        }
+        if (!isPremiumEnabled && featureFlagManager.isAdsOnContinueEnabled) {
+            newGame.compoundDrawablePadding = 0
+            newGame.setCompoundDrawablesWithIntrinsicBounds(
+                R.drawable.watch_ads_icon,
+                0,
+                0,
+                0,
+            )
+        }
+    }
 
-                        settings.setOnClickListener {
-                            analyticsManager.sentEvent(Analytics.OpenSettings)
-                            showSettings()
-                        }
+    private fun WinDialogBinding.bindMonetizationBanner(state: EndGameDialogState) {
+        if (featureFlagManager.isFoss && canRequestDonation) {
+            monetization.showDonationDialog(adFrame)
+        } else if (!isPremiumEnabled && featureFlagManager.isBannerAdEnabled) {
+            monetization.showAdBannerDialog(adFrame)
+        } else if (state.showMusicDialog) {
+            monetization.showMusicDialog(adFrame)
+        }
+    }
 
-                        if (state.gameResult == GameResult.Victory || state.gameResult == GameResult.Completed) {
-                            close.setOnClickListener {
-                                dismissAllowingStateLoss()
-                            }
-                            stats.isVisible = true
-                        }
+    private fun WinDialogBinding.bindSettingsButton() {
+        settings.setOnClickListener {
+            analyticsManager.sentEvent(Analytics.OpenSettings)
+            showSettings()
+        }
+    }
 
-                        if (!isPremiumEnabled &&
-                            !isInstantMode &&
-                            featureFlagManager.isGameOverAdEnabled
-                        ) {
-                            activity?.let { activity ->
-                                val label = context.getString(i18n.string.pictures_gallery)
-                                picturesGalllery.apply {
-                                    isVisible = true
-                                    text = label
-                                    setOnClickListener {
-                                        startActivity(Intent(context, GalleryActivity::class.java))
-                                    }
-                                }
-                            }
-                        }
-
-                        receivedMessage.apply {
-                            if (state.received > 0 &&
-                                state.gameResult == GameResult.Victory &&
-                                preferencesRepository.useHelp() &&
-                                isPremiumEnabled
-                            ) {
-                                isVisible = true
-                                text = getString(i18n.string.you_have_received, state.received)
-                            } else {
-                                isVisible = false
-                            }
-                        }
+    private fun WinDialogBinding.bindGalleryButton(context: Context) {
+        if (!isPremiumEnabled && !isInstantMode && featureFlagManager.isGameOverAdEnabled) {
+            activity?.let {
+                val label = context.getString(i18n.string.pictures_gallery)
+                picturesGalllery.apply {
+                    isVisible = true
+                    text = label
+                    setOnClickListener {
+                        startActivity(Intent(context, GalleryActivity::class.java))
                     }
                 }
             }
+        }
+    }
 
-            setOnKeyListener { _, _, keyEvent ->
-                if (keyEvent.keyCode == KeyEvent.KEYCODE_BACK) {
-                    activity?.let {
-                        if (!it.isFinishing) {
-                            gameViewModel.viewModelScope.launch {
-                                gameViewModel.revealMines()
-                            }
-                        }
-                    }
-                    dismissAllowingStateLoss()
-                    true
-                } else {
-                    false
-                }
-            }
-
-            setView(binding.root)
-        }.create().apply {
-            setCanceledOnTouchOutside(false)
-
-            window?.apply {
-                setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
-                    attributes?.blurBehindRadius = BACKGROUND_BLUR_RADIUS
-                }
+    private fun WinDialogBinding.bindReceivedMessage(state: EndGameDialogState) {
+        val wonHelpReward = state.received > 0 && state.gameResult == GameResult.Victory
+        receivedMessage.apply {
+            if (wonHelpReward && preferencesRepository.useHelp() && isPremiumEnabled) {
+                isVisible = true
+                text = getString(i18n.string.you_have_received, state.received)
+            } else {
+                isVisible = false
             }
         }
     }

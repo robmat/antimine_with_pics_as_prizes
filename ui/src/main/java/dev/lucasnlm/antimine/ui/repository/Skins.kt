@@ -3,6 +3,13 @@ package dev.lucasnlm.antimine.ui.repository
 import dev.lucasnlm.antimine.ui.R
 import dev.lucasnlm.antimine.ui.model.AppSkin
 
+/**
+ * Some of the skin builders used to live here directly, but that pushed this
+ * object's function count over detekt's threshold. The `square*`, `stone2`
+ * and `defaultNoJoin` builders now live as extension functions in
+ * SkinsExtra.kt instead, called from [getAllSkins] via the implicit
+ * [Skins] receiver.
+ */
 object Skins {
     private fun default() =
         AppSkin(
@@ -12,37 +19,6 @@ object Skins {
             isPremium = false,
             hasPadding = true,
             thumbnailImageRes = R.drawable.skin_standard,
-        )
-
-    private fun square() =
-        AppSkin(
-            id = 1,
-            file = "square.png",
-            canTint = true,
-            isPremium = true,
-            hasPadding = true,
-            thumbnailImageRes = R.drawable.skin_square,
-        )
-
-    private fun square2() =
-        AppSkin(
-            id = 2,
-            file = "square-2.png",
-            canTint = true,
-            isPremium = true,
-            hasPadding = true,
-            thumbnailImageRes = R.drawable.skin_square_2,
-        )
-
-    private fun square3() =
-        AppSkin(
-            id = 3,
-            file = "square-3.png",
-            canTint = true,
-            isPremium = true,
-            hasPadding = false,
-            thumbnailImageRes = R.drawable.skin_square_3,
-            showPadding = false,
         )
 
     private fun classic() =
@@ -86,28 +62,6 @@ object Skins {
             hasPadding = true,
             thumbnailImageRes = R.drawable.skin_stone,
             background = 4,
-        )
-
-    private fun stone2() =
-        AppSkin(
-            id = 8,
-            file = "stone-2.png",
-            canTint = true,
-            isPremium = true,
-            hasPadding = true,
-            thumbnailImageRes = R.drawable.skin_stone_2,
-            background = 4,
-        )
-
-    private fun defaultNoJoin() =
-        AppSkin(
-            id = 9,
-            file = "standard.png",
-            canTint = true,
-            isPremium = true,
-            hasPadding = false,
-            thumbnailImageRes = R.drawable.skin_standard_no_connection,
-            showPadding = false,
         )
 
     fun getAllSkins() =

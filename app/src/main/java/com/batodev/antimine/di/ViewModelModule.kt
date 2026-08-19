@@ -8,7 +8,6 @@ import com.batodev.antimine.main.viewmodel.MainViewModel
 import com.batodev.antimine.playgames.viewmodel.PlayGamesViewModel
 import com.batodev.antimine.stats.viewmodel.StatsViewModel
 import dev.lucasnlm.antimine.about.viewmodel.AboutViewModel
-import dev.lucasnlm.antimine.common.level.viewmodel.GameViewModel
 import dev.lucasnlm.antimine.control.viewmodel.ControlViewModel
 import dev.lucasnlm.antimine.licenses.viewmodel.LicenseViewModel
 import dev.lucasnlm.antimine.themes.viewmodel.ThemeViewModel
@@ -28,9 +27,4 @@ val ViewModelModule =
         viewModel { ThemeViewModel(get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get()) }
         viewModel { LocalizationViewModel(get(), get()) }
-        viewModel {
-            GameViewModel(
-                get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
-            )
-        }
     }

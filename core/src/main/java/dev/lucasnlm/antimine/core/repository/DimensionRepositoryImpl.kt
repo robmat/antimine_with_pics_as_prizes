@@ -11,6 +11,38 @@ import android.view.ViewConfiguration
 import dev.lucasnlm.antimine.core.R
 import dev.lucasnlm.antimine.core.models.MinefieldSize
 
+/** Pure device-signal check, doesn't need to be a member of [DimensionRepositoryImpl]. */
+private fun isEmulator(): Boolean {
+    val emulatorBrand =
+        listOf(
+            Build.BRAND.startsWith("generic"),
+            Build.DEVICE.startsWith("generic"),
+            Build.FINGERPRINT.startsWith("generic"),
+            Build.FINGERPRINT.startsWith("unknown"),
+            Build.HARDWARE.contains("goldfish"),
+            Build.HARDWARE.contains("ranchu"),
+            Build.MANUFACTURER.contains("Genymotion"),
+        ).any()
+
+    val emulatorModel =
+        listOf(
+            "google_sdk",
+            "Emulator",
+            "Android SDK built for x86",
+            "sdk_google",
+            "google_sdk",
+            "sdk",
+            "sdk_x86",
+            "vbox86p",
+            "emulator",
+            "simulator",
+        ).any {
+            Build.MODEL.contains(it) || Build.PRODUCT.contains(it)
+        }
+
+    return emulatorBrand || emulatorModel
+}
+
 class DimensionRepositoryImpl(
     private val context: Context,
 ) : DimensionRepository {
@@ -97,7 +129,7 @@ class DimensionRepositoryImpl(
 
     override fun navigationBarHeight(): Int {
         var navHeight = 0
-        if (hasNavBar()) {
+        if (hasNavBar) {
             val resources = context.resources
             val resourceId: Int =
                 resources.getIdentifier(
@@ -124,39 +156,6 @@ class DimensionRepositoryImpl(
             return navigationBarHeight()
         }
         return 0
-    }
-
-    private fun hasNavBar(): Boolean = hasNavBar
-
-    private fun isEmulator(): Boolean {
-        val emulatorBrand =
-            listOf(
-                Build.BRAND.startsWith("generic"),
-                Build.DEVICE.startsWith("generic"),
-                Build.FINGERPRINT.startsWith("generic"),
-                Build.FINGERPRINT.startsWith("unknown"),
-                Build.HARDWARE.contains("goldfish"),
-                Build.HARDWARE.contains("ranchu"),
-                Build.MANUFACTURER.contains("Genymotion"),
-            ).any()
-
-        val emulatorModel =
-            listOf(
-                "google_sdk",
-                "Emulator",
-                "Android SDK built for x86",
-                "sdk_google",
-                "google_sdk",
-                "sdk",
-                "sdk_x86",
-                "vbox86p",
-                "emulator",
-                "simulator",
-            ).any {
-                Build.MODEL.contains(it) || Build.PRODUCT.contains(it)
-            }
-
-        return emulatorBrand || emulatorModel
     }
 
     companion object {

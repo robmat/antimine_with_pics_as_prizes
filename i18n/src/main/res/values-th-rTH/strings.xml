@@ -101,7 +101,7 @@
     <string name="language">Language</string>
     <string name="licenses">ใบอนุญาต</string>
     <string name="google_play_games">Google Play เกม</string>
-    <string name="loading">กำลังโหลด...</string>
+    <string name="loading">กำลังโหลด…</string>
     <string name="creating_valid_game">Creating valid game…</string>
     <string name="connect">เชื่อมต่อ</string>
     <string name="connecting">กำลังเชื่อมต่อ…</string>

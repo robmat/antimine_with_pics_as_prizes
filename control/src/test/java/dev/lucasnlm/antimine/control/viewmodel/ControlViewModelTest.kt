@@ -9,7 +9,7 @@ import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -19,7 +19,7 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class ControlViewModelTest {
-    private val dispatcher = TestCoroutineDispatcher()
+    private val dispatcher = UnconfinedTestDispatcher()
     private val hapticFeedbackManager: HapticFeedbackManager = mock()
 
     @Before
@@ -40,6 +40,8 @@ class ControlViewModelTest {
                 every { touchSensibility() } returns 10
                 every { customLongPressTimeout() } returns 500L
                 every { getDoubleClickTimeout() } returns 500L
+                every { getHapticFeedbackLevel() } returns 0
+                every { hasControlCustomizations() } returns false
             }
 
         val viewModel = ControlViewModel(preferenceRepository, hapticFeedbackManager)

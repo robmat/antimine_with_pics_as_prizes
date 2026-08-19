@@ -3,14 +3,16 @@ package com.batodev.antimine.playgames.view
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.FrameLayout
 import com.batodev.antimine.databinding.ViewPlayGamesButtonBinding
+import dev.lucasnlm.antimine.ui.view.BaseFrameLayout
 
-class PlayGamesButtonView : FrameLayout {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
+class PlayGamesButtonView
+@JvmOverloads
+constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0,
+) : BaseFrameLayout(context, attrs, defStyleAttr) {
     val binding: ViewPlayGamesButtonBinding
     init {
         val layoutInflater = LayoutInflater.from(context)
