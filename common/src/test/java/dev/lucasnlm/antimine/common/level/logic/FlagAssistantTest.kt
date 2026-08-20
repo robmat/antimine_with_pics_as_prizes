@@ -5,7 +5,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.util.*
+import java.util.Random
 
 @ExperimentalCoroutinesApi
 class FlagAssistantTest {
