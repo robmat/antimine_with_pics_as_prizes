@@ -25,17 +25,15 @@ class StatsSizeClassifier(
     val beginnerSize = sizeOf(Difficulty.Beginner)
     val standardSize = minefieldRepository.baseStandardSize(dimensionRepository, 0)
 
-    private fun sizeOf(difficulty: Difficulty): Minefield {
-        return minefieldRepository.fromDifficulty(
+    private fun sizeOf(difficulty: Difficulty): Minefield =
+        minefieldRepository.fromDifficulty(
             difficulty,
             dimensionRepository,
             preferenceRepository,
         )
-    }
 
-    private fun Stats.isSizeOf(minefield: Minefield): Boolean {
-        return this.mines == minefield.mines && this.width == minefield.width && this.height == minefield.height
-    }
+    private fun Stats.isSizeOf(minefield: Minefield): Boolean =
+        this.mines == minefield.mines && this.width == minefield.width && this.height == minefield.height
 
     fun isExpert(stats: Stats) = stats.isSizeOf(expertSize)
 

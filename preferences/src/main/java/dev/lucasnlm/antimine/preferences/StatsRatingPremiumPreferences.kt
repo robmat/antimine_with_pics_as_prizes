@@ -53,8 +53,7 @@ internal class StatsRatingPremiumPreferencesImpl(
 
     override fun getProgressiveValue(): Int = preferencesManager.getInt(PreferenceKeys.PREFERENCE_PROGRESSIVE_VALUE, 0)
 
-    override fun isRequestRatingEnabled(): Boolean =
-        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_RATING, true)
+    override fun isRequestRatingEnabled(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_RATING, true)
 
     override fun disableRequestRating() {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_REQUEST_RATING, false)

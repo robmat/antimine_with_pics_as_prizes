@@ -32,7 +32,8 @@ val LevelModule =
         }
 
         single {
-            Room.databaseBuilder(get(), AppDataBase::class.java, AppDataBase.DATA_BASE_NAME)
+            Room
+                .databaseBuilder(get(), AppDataBase::class.java, AppDataBase.DATA_BASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
         }

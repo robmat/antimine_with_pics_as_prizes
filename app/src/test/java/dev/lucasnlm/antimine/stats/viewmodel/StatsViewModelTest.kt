@@ -19,7 +19,6 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class StatsViewModelTest : IntentViewModelTest() {
-
     private val listOfStats =
         listOf(
             // Standard

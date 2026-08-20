@@ -31,9 +31,7 @@ class WinGameDialogFragment : CommonGameDialogFragment() {
         }
     }
 
-    override fun canShowMusicBanner(): Boolean {
-        return dialogViewModel.singleState().showMusicDialog
-    }
+    override fun canShowMusicBanner(): Boolean = dialogViewModel.singleState().showMusicDialog
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val context = requireContext()
@@ -57,7 +55,10 @@ class WinGameDialogFragment : CommonGameDialogFragment() {
         return builder.finalizeGameDialog(binding.root)
     }
 
-    private fun WinDialogBinding.bindStatsButton(context: Context, state: EndGameDialogState) {
+    private fun WinDialogBinding.bindStatsButton(
+        context: Context,
+        state: EndGameDialogState,
+    ) {
         stats.setOnClickListener {
             analyticsManager.sentEvent(Analytics.OpenStats)
             Intent(context, StatsActivity::class.java).apply {

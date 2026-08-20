@@ -55,11 +55,12 @@ class DonationActivity : ThemedActivity() {
                 }
             context.startActivity(intent)
         }.onFailure {
-            Toast.makeText(
-                context.applicationContext,
-                i18n.string.unknown_error,
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    context.applicationContext,
+                    i18n.string.unknown_error,
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 
@@ -77,11 +78,10 @@ class DonationActivity : ThemedActivity() {
         openLink(paypalLink)
     }
 
-    private fun hasBrazilLocale(): Boolean {
-        return LocaleListCompat.getAdjustedDefault().run {
+    private fun hasBrazilLocale(): Boolean =
+        LocaleListCompat.getAdjustedDefault().run {
             (0..size()).any { get(it)?.country == "BR" }
         }
-    }
 
     private fun copyPixKey() {
         val pixKey = "1e91c4c3-e1b4-4aeb-a964-f2e07334b7dd"
@@ -96,7 +96,8 @@ class DonationActivity : ThemedActivity() {
 
         Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
 
-        ShareCompat.IntentBuilder(this)
+        ShareCompat
+            .IntentBuilder(this)
             .setText(pixKey)
             .setType("text/plain")
             .setChooserTitle(title)

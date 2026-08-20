@@ -28,7 +28,6 @@ import dev.lucasnlm.antimine.i18n.R as i18n
 class PreferencesActivity :
     ThemedActivity(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
     private val audioManager: GameAudioManager by inject()
     private val playGamesManager: PlayGamesManager by inject()
     private val preferenceRepository: PreferencesRepository by inject()

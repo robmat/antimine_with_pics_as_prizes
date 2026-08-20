@@ -6,9 +6,7 @@ import dev.lucasnlm.antimine.core.repository.DimensionRepository
 class FixedDimensionRepository : DimensionRepository {
     override fun areaSize(): Float = 50.0f
 
-    override fun areaSizeWithPadding(): Float {
-        return areaSize() + 2 * areaSeparator()
-    }
+    override fun areaSizeWithPadding(): Float = areaSize() + 2 * areaSeparator()
 
     override fun areaSeparator(): Float = 1.0f
 

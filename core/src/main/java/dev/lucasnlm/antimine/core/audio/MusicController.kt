@@ -26,9 +26,7 @@ class MusicController(
         }
     }
 
-    override fun isPlayingMusic(): Boolean {
-        return musicMediaPlayer?.isPlaying == true
-    }
+    override fun isPlayingMusic(): Boolean = musicMediaPlayer?.isPlaying == true
 
     override fun pauseMusic() {
         runCatching {

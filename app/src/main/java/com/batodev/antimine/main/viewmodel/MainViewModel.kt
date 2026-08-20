@@ -27,17 +27,46 @@ class MainViewModel(
 ) : StatelessViewModel<MainEvent>() {
     override fun onEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.ContinueGameEvent -> continueGame()
-            is MainEvent.StartNewGameEvent -> continueGame(event.difficulty)
-            is MainEvent.ShowCustomDifficultyDialogEvent ->
+            is MainEvent.ContinueGameEvent -> {
+                continueGame()
+            }
+
+            is MainEvent.StartNewGameEvent -> {
+                continueGame(event.difficulty)
+            }
+
+            is MainEvent.ShowCustomDifficultyDialogEvent -> {
                 sendSideEffect(MainEvent.ShowCustomDifficultyDialogEvent)
-            is MainEvent.StartTutorialEvent -> startTutorial()
-            is MainEvent.StartLanguageEvent -> startLocalization()
-            is MainEvent.GoToSettingsPageEvent -> sendSideEffect(MainEvent.GoToSettingsPageEvent)
-            is MainEvent.GoToMainPageEvent -> sendSideEffect(MainEvent.GoToMainPageEvent)
-            is MainEvent.ShowControlsEvent -> sendSideEffect(MainEvent.ShowControlsEvent)
-            is MainEvent.ShowGooglePlayGamesEvent -> sendSideEffect(MainEvent.ShowGooglePlayGamesEvent)
-            is MainEvent.FetchCloudSave -> fetchCloudSave(event.playGamesId)
+            }
+
+            is MainEvent.StartTutorialEvent -> {
+                startTutorial()
+            }
+
+            is MainEvent.StartLanguageEvent -> {
+                startLocalization()
+            }
+
+            is MainEvent.GoToSettingsPageEvent -> {
+                sendSideEffect(MainEvent.GoToSettingsPageEvent)
+            }
+
+            is MainEvent.GoToMainPageEvent -> {
+                sendSideEffect(MainEvent.GoToMainPageEvent)
+            }
+
+            is MainEvent.ShowControlsEvent -> {
+                sendSideEffect(MainEvent.ShowControlsEvent)
+            }
+
+            is MainEvent.ShowGooglePlayGamesEvent -> {
+                sendSideEffect(MainEvent.ShowGooglePlayGamesEvent)
+            }
+
+            is MainEvent.FetchCloudSave -> {
+                fetchCloudSave(event.playGamesId)
+            }
+
             else -> {
             }
         }
@@ -78,27 +107,28 @@ class MainViewModel(
                 setTimerVisible(timerVisible != 0)
             }
 
-            cloudSave.stats.mapNotNull {
-                runCatching {
-                    Stats(
-                        uid = it["uid"]!!.toInt(),
-                        duration = it["duration"]!!.toLong(),
-                        mines = it["mines"]!!.toInt(),
-                        victory = it["victory"]!!.toInt(),
-                        width = it["width"]!!.toInt(),
-                        height = it["height"]!!.toInt(),
-                        openArea = it["openArea"]!!.toInt(),
-                    )
-                }.getOrNull()
-            }.distinctBy {
-                it.uid
-            }.also {
-                runCatching {
-                    statsRepository.addAllStats(it)
-                }.onFailure {
-                    Log.e(MainActivity.TAG, "Fail to insert stats on DB")
+            cloudSave.stats
+                .mapNotNull {
+                    runCatching {
+                        Stats(
+                            uid = it["uid"]!!.toInt(),
+                            duration = it["duration"]!!.toLong(),
+                            mines = it["mines"]!!.toInt(),
+                            victory = it["victory"]!!.toInt(),
+                            width = it["width"]!!.toInt(),
+                            height = it["height"]!!.toInt(),
+                            openArea = it["openArea"]!!.toInt(),
+                        )
+                    }.getOrNull()
+                }.distinctBy {
+                    it.uid
+                }.also {
+                    runCatching {
+                        statsRepository.addAllStats(it)
+                    }.onFailure {
+                        Log.e(MainActivity.TAG, "Fail to insert stats on DB")
+                    }
                 }
-            }
         }
 
     private fun continueGame(difficulty: Difficulty? = null) {

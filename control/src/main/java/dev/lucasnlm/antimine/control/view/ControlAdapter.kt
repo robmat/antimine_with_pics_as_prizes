@@ -17,7 +17,6 @@ class ControlAdapter(
     private val controls: MutableList<ControlDetails>,
     private val onControlSelected: (ControlStyle) -> Unit,
 ) : RecyclerView.Adapter<ControlViewHolder>() {
-
     init {
         setHasStableIds(true)
     }
@@ -34,24 +33,19 @@ class ControlAdapter(
         notifyItemRangeChanged(0, controls.size)
     }
 
-    override fun getItemId(position: Int): Long {
-        return controls[position].id
-    }
+    override fun getItemId(position: Int): Long = controls[position].id
 
-    override fun getItemViewType(position: Int): Int {
-        return if (position == SINGLE_LINE_ID) SINGLE_LINE_CONTROL else TWO_LINES_CONTROL
-    }
+    override fun getItemViewType(position: Int): Int = if (position == SINGLE_LINE_ID) SINGLE_LINE_CONTROL else TWO_LINES_CONTROL
 
     private fun <T> Int.inflateIf(
         type: Int,
         action: () -> T,
-    ): T? {
-        return if (this == type) {
+    ): T? =
+        if (this == type) {
             action()
         } else {
             null
         }
-    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -61,13 +55,13 @@ class ControlAdapter(
 
         return ControlViewHolder(
             simpleItem =
-            viewType.inflateIf(SINGLE_LINE_CONTROL) {
-                ViewControlItemSimpleBinding.inflate(layoutInflater, parent, false)
-            },
+                viewType.inflateIf(SINGLE_LINE_CONTROL) {
+                    ViewControlItemSimpleBinding.inflate(layoutInflater, parent, false)
+                },
             controlItem =
-            viewType.inflateIf(TWO_LINES_CONTROL) {
-                ViewControlItemBinding.inflate(layoutInflater, parent, false)
-            },
+                viewType.inflateIf(TWO_LINES_CONTROL) {
+                    ViewControlItemBinding.inflate(layoutInflater, parent, false)
+                },
         )
     }
 
@@ -80,10 +74,11 @@ class ControlAdapter(
         val context = holder.itemView.context
 
         val selectedBackgroundColor =
-            MaterialColors.getColorStateListOrNull(
-                context,
-                GR.attr.colorOnBackground,
-            )?.withAlpha(BACKGROUND_SELECTED_ALPHA)
+            MaterialColors
+                .getColorStateListOrNull(
+                    context,
+                    GR.attr.colorOnBackground,
+                )?.withAlpha(BACKGROUND_SELECTED_ALPHA)
 
         val simpleItem = holder.simpleItem
         val controlItem = holder.controlItem
@@ -131,9 +126,7 @@ class ControlAdapter(
         controlItem.secondActionResponse.text = context.getString(controlDetail.secondActionResponseId)
     }
 
-    override fun getItemCount(): Int {
-        return controls.size
-    }
+    override fun getItemCount(): Int = controls.size
 
     companion object {
         private const val TWO_LINES_CONTROL = 0

@@ -2,7 +2,9 @@ package com.batodev.antimine
 import android.content.Context
 import android.content.SharedPreferences
 
-class SettingsHelper(context: Context) {
+class SettingsHelper(
+    context: Context,
+) {
     private val sharedPreferences: SharedPreferences
     val preferences: Preferences
 
@@ -31,5 +33,5 @@ class SettingsHelper(context: Context) {
 
 data class Preferences(
     var uncoveredPics: MutableList<String>,
-    var lastSeenGalleryPic: Int = 0
+    var lastSeenGalleryPic: Int = 0,
 )

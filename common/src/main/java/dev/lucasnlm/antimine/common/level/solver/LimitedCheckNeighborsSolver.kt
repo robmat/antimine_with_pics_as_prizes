@@ -10,12 +10,9 @@ package dev.lucasnlm.antimine.common.level.solver
 class LimitedCheckNeighborsSolver(
     private val maxAttemptTime: Long = DEFAULT_BRUTE_FORCE_TIMEOUT,
 ) : CheckNeighborsSolver() {
-
     private val initialTime = System.currentTimeMillis()
 
-    override fun keepTrying(): Boolean {
-        return (System.currentTimeMillis() - initialTime) <= maxAttemptTime
-    }
+    override fun keepTrying(): Boolean = (System.currentTimeMillis() - initialTime) <= maxAttemptTime
 
     companion object {
         const val DEFAULT_BRUTE_FORCE_TIMEOUT = 1000L

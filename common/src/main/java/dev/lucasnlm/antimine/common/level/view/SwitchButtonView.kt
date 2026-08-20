@@ -11,93 +11,93 @@ import dev.lucasnlm.antimine.ui.view.BaseFrameLayout
 import com.google.android.material.R as GR
 
 class SwitchButtonView
-@JvmOverloads
-constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-) : BaseFrameLayout(context, attrs, defStyleAttr) {
-    private val binding by lazy {
-        val layoutInflater = LayoutInflater.from(context)
-        SwitchButtonBinding.inflate(layoutInflater, this, true)
-    }
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : BaseFrameLayout(context, attrs, defStyleAttr) {
+        private val binding by lazy {
+            val layoutInflater = LayoutInflater.from(context)
+            SwitchButtonBinding.inflate(layoutInflater, this, true)
+        }
 
-    private var currentSelected: MaterialButton? = null
+        private var currentSelected: MaterialButton? = null
 
-    private val selectedIconTint =
-        MaterialColors.getColorStateListOrNull(
-            context,
-            GR.attr.colorOnPrimary,
-        )
-    private val selectedBackgroundTint =
-        MaterialColors.getColorStateListOrNull(
-            context,
-            GR.attr.colorPrimarySurface,
-        )
-    private val unselectedIconTint = binding.flagButton.iconTint
-    private val unselectedBackgroundTint = binding.flagButton.backgroundTintList
+        private val selectedIconTint =
+            MaterialColors.getColorStateListOrNull(
+                context,
+                GR.attr.colorOnPrimary,
+            )
+        private val selectedBackgroundTint =
+            MaterialColors.getColorStateListOrNull(
+                context,
+                GR.attr.colorPrimarySurface,
+            )
+        private val unselectedIconTint = binding.flagButton.iconTint
+        private val unselectedBackgroundTint = binding.flagButton.backgroundTintList
 
-    fun setQuestionButtonVisibility(visible: Boolean) {
-        binding.questionButton.isVisible = visible
-    }
+        fun setQuestionButtonVisibility(visible: Boolean) {
+            binding.questionButton.isVisible = visible
+        }
 
-    private fun updateMaterialButtonState(
-        target: MaterialButton,
-        selected: Boolean,
-    ) {
-        target.apply {
-            if (selected) {
-                currentSelected = target
-                iconTint = selectedIconTint
-                backgroundTintList = selectedBackgroundTint
-            } else {
-                iconTint = unselectedIconTint
-                backgroundTintList = unselectedBackgroundTint
+        private fun updateMaterialButtonState(
+            target: MaterialButton,
+            selected: Boolean,
+        ) {
+            target.apply {
+                if (selected) {
+                    currentSelected = target
+                    iconTint = selectedIconTint
+                    backgroundTintList = selectedBackgroundTint
+                } else {
+                    iconTint = unselectedIconTint
+                    backgroundTintList = unselectedBackgroundTint
+                }
             }
         }
-    }
 
-    fun setOnFlagClickListener(listener: OnClickListener?) {
-        binding.flagButton.isSoundEffectsEnabled = false
-        binding.flagButton.setOnClickListener {
-            listener?.onClick(it)
-            selectFlag()
+        fun setOnFlagClickListener(listener: OnClickListener?) {
+            binding.flagButton.isSoundEffectsEnabled = false
+            binding.flagButton.setOnClickListener {
+                listener?.onClick(it)
+                selectFlag()
+            }
         }
-    }
 
-    fun setOnOpenClickListener(listener: OnClickListener?) {
-        binding.openButton.isSoundEffectsEnabled = false
-        binding.openButton.setOnClickListener {
-            listener?.onClick(it)
-            selectOpen()
+        fun setOnOpenClickListener(listener: OnClickListener?) {
+            binding.openButton.isSoundEffectsEnabled = false
+            binding.openButton.setOnClickListener {
+                listener?.onClick(it)
+                selectOpen()
+            }
         }
-    }
 
-    fun setOnQuestionClickListener(listener: OnClickListener?) {
-        binding.questionButton.isSoundEffectsEnabled = false
-        binding.questionButton.setOnClickListener {
-            listener?.onClick(it)
-            selectQuestionMark()
+        fun setOnQuestionClickListener(listener: OnClickListener?) {
+            binding.questionButton.isSoundEffectsEnabled = false
+            binding.questionButton.setOnClickListener {
+                listener?.onClick(it)
+                selectQuestionMark()
+            }
         }
-    }
 
-    private fun selectQuestionMark() {
-        updateMaterialButtonState(binding.flagButton, false)
-        updateMaterialButtonState(binding.questionButton, true)
-        updateMaterialButtonState(binding.openButton, false)
-    }
+        private fun selectQuestionMark() {
+            updateMaterialButtonState(binding.flagButton, false)
+            updateMaterialButtonState(binding.questionButton, true)
+            updateMaterialButtonState(binding.openButton, false)
+        }
 
-    private fun selectOpen() {
-        updateMaterialButtonState(binding.flagButton, false)
-        updateMaterialButtonState(binding.questionButton, false)
-        updateMaterialButtonState(binding.openButton, true)
-    }
+        private fun selectOpen() {
+            updateMaterialButtonState(binding.flagButton, false)
+            updateMaterialButtonState(binding.questionButton, false)
+            updateMaterialButtonState(binding.openButton, true)
+        }
 
-    private fun selectFlag() {
-        updateMaterialButtonState(binding.flagButton, true)
-        updateMaterialButtonState(binding.questionButton, false)
-        updateMaterialButtonState(binding.openButton, false)
-    }
+        private fun selectFlag() {
+            updateMaterialButtonState(binding.flagButton, true)
+            updateMaterialButtonState(binding.questionButton, false)
+            updateMaterialButtonState(binding.openButton, false)
+        }
 
-    fun selectDefault() = selectFlag()
-}
+        fun selectDefault() = selectFlag()
+    }

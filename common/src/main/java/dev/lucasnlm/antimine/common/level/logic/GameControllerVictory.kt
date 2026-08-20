@@ -6,9 +6,7 @@ package dev.lucasnlm.antimine.common.level.logic
  */
 fun GameController.hasFlaggedAllMines(): Boolean = rightFlags() == minefield.mines
 
-fun GameController.hasIsolatedAllMines(): Boolean {
-    return field.count { area -> !area.hasMine && area.isCovered } == 0
-}
+fun GameController.hasIsolatedAllMines(): Boolean = field.count { area -> !area.hasMine && area.isCovered } == 0
 
 fun GameController.rightFlags() = mines().count { it.mark.isFlag() }
 
@@ -16,9 +14,7 @@ fun GameController.isVictory(): Boolean = hasMines() && hasIsolatedAllMines() &&
 
 fun GameController.isGameOver(): Boolean = hasIsolatedAllMines() || (explodedMinesCount() > errorTolerance)
 
-fun GameController.allMinesFound(): Boolean {
-    return mines().count { !it.isCovered || it.mark.isNotNone() } == mines().count()
-}
+fun GameController.allMinesFound(): Boolean = mines().count { !it.isCovered || it.mark.isNotNone() } == mines().count()
 
 fun GameController.remainingMines(): Int {
     val flagsCount = field.count { it.isCovered && it.mark.isFlag() }
@@ -27,6 +23,4 @@ fun GameController.remainingMines(): Int {
     return (minesCount - flagsCount - openMinesCount)
 }
 
-fun GameController.almostAchievement(): Boolean {
-    return mines().count() - mines().count { it.isCovered && it.mark.isFlag() } == 1
-}
+fun GameController.almostAchievement(): Boolean = mines().count() - mines().count { it.isCovered && it.mark.isFlag() } == 1

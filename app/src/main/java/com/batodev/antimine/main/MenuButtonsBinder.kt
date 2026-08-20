@@ -26,7 +26,9 @@ import dev.lucasnlm.antimine.i18n.R as i18n
  * function count (and, on its own, exceeded detekt's long-method/complexity
  * limits).
  */
-class MenuButtonsBinder(private val activity: MainActivity) {
+class MenuButtonsBinder(
+    private val activity: MainActivity,
+) {
     fun bind() =
         with(activity) {
             bindContinueButton()
@@ -130,10 +132,11 @@ class MenuButtonsBinder(private val activity: MainActivity) {
         }
 
         binding.moreGames.setOnClickListener {
-            val i = Intent(
-                Intent.ACTION_VIEW,
-                "https://play.google.com/store/apps/dev?id=8228670503574649511".toUri()
-            )
+            val i =
+                Intent(
+                    Intent.ACTION_VIEW,
+                    "https://play.google.com/store/apps/dev?id=8228670503574649511".toUri(),
+                )
             startActivity(i)
         }
 

@@ -54,28 +54,28 @@ open class GameRenderFragment : AndroidFragmentApplication() {
             preferencesRepository = preferencesRepository,
             dimensionRepository = dimensionRepository,
             callbacks =
-            GameInputCallbacks(
-                onSingleTap = {
-                    lifecycleScope.launch {
-                        gameViewModel.onSingleClick(it)
-                    }
-                },
-                onDoubleTap = {
-                    lifecycleScope.launch {
-                        gameViewModel.onDoubleClick(it)
-                    }
-                },
-                onLongTap = {
-                    lifecycleScope.launch {
-                        gameViewModel.onLongClick(it)
-                    }
-                },
-                onEngineReady = {
-                    lifecycleScope.launch {
-                        gameViewModel.sendEvent(GameEvent.EngineReady)
-                    }
-                },
-            ),
+                GameInputCallbacks(
+                    onSingleTap = {
+                        lifecycleScope.launch {
+                            gameViewModel.onSingleClick(it)
+                        }
+                    },
+                    onDoubleTap = {
+                        lifecycleScope.launch {
+                            gameViewModel.onDoubleClick(it)
+                        }
+                    },
+                    onLongTap = {
+                        lifecycleScope.launch {
+                            gameViewModel.onLongClick(it)
+                        }
+                    },
+                    onEngineReady = {
+                        lifecycleScope.launch {
+                            gameViewModel.sendEvent(GameEvent.EngineReady)
+                        }
+                    },
+                ),
         )
     }
 
@@ -143,7 +143,8 @@ open class GameRenderFragment : AndroidFragmentApplication() {
         }
 
         lifecycleScope.launch {
-            gameViewModel.observeState()
+            gameViewModel
+                .observeState()
                 .map { it.seed }
                 .distinctUntilChanged()
                 .collect {
@@ -168,20 +169,21 @@ open class GameRenderFragment : AndroidFragmentApplication() {
 
     private fun getSwitchControlLayoutParams(): FrameLayout.LayoutParams {
         val context = requireContext()
-        return FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-        ).apply {
-            val navHeight = dimensionRepository.navigationBarHeight()
-            val bottomMargin =
-                if (navHeight == 0) {
-                    context.dpToPx(BOTTOM_MARGIN_WITHOUT_NAV_DP)
-                } else {
-                    context.dpToPx(BOTTOM_MARGIN_WITH_NAV_DP)
-                }
-            gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-            setMargins(0, 0, 0, bottomMargin)
-        }
+        return FrameLayout
+            .LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+            ).apply {
+                val navHeight = dimensionRepository.navigationBarHeight()
+                val bottomMargin =
+                    if (navHeight == 0) {
+                        context.dpToPx(BOTTOM_MARGIN_WITHOUT_NAV_DP)
+                    } else {
+                        context.dpToPx(BOTTOM_MARGIN_WITH_NAV_DP)
+                    }
+                gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+                setMargins(0, 0, 0, bottomMargin)
+            }
     }
 
     private fun bindControlSwitcherIfNeeded(
@@ -198,36 +200,37 @@ open class GameRenderFragment : AndroidFragmentApplication() {
                     if (preferencesRepository.controlStyle() == ControlStyle.SwitchMarkOpen && !isParentFinishing) {
                         (view.parent as? FrameLayout)?.apply {
                             this@GameRenderFragment.controlSwitcher =
-                                SwitchButtonView(context).apply {
-                                    alpha = 0f
-                                    animate().apply {
-                                        alpha(1.0f)
-                                        duration = DELAY_TO_CONTROL_DISPLAY
-                                        start()
+                                SwitchButtonView(context)
+                                    .apply {
+                                        alpha = 0f
+                                        animate().apply {
+                                            alpha(1.0f)
+                                            duration = DELAY_TO_CONTROL_DISPLAY
+                                            start()
+                                        }
+
+                                        isVisible = true
+                                        layoutParams = getSwitchControlLayoutParams()
+
+                                        setQuestionButtonVisibility(preferencesRepository.useQuestionMark())
+
+                                        setOnFlagClickListener {
+                                            gameViewModel.changeSwitchControlAction(Action.SwitchMark)
+                                            gameAudioManager.playSwitchAction()
+                                        }
+
+                                        setOnOpenClickListener {
+                                            gameViewModel.changeSwitchControlAction(Action.OpenTile)
+                                            gameAudioManager.playSwitchAction()
+                                        }
+
+                                        setOnQuestionClickListener {
+                                            gameViewModel.changeSwitchControlAction(Action.QuestionMark)
+                                            gameAudioManager.playSwitchAction()
+                                        }
+                                    }.also {
+                                        it.selectDefault()
                                     }
-
-                                    isVisible = true
-                                    layoutParams = getSwitchControlLayoutParams()
-
-                                    setQuestionButtonVisibility(preferencesRepository.useQuestionMark())
-
-                                    setOnFlagClickListener {
-                                        gameViewModel.changeSwitchControlAction(Action.SwitchMark)
-                                        gameAudioManager.playSwitchAction()
-                                    }
-
-                                    setOnOpenClickListener {
-                                        gameViewModel.changeSwitchControlAction(Action.OpenTile)
-                                        gameAudioManager.playSwitchAction()
-                                    }
-
-                                    setOnQuestionClickListener {
-                                        gameViewModel.changeSwitchControlAction(Action.QuestionMark)
-                                        gameAudioManager.playSwitchAction()
-                                    }
-                                }.also {
-                                    it.selectDefault()
-                                }
 
                             lifecycleScope.launch {
                                 gameViewModel

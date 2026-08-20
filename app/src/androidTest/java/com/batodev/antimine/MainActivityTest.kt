@@ -22,12 +22,14 @@ import org.junit.runner.RunWith
 // mechanic this app was customized for.
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
-
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        context.getSharedPreferences("SettingsHelper", android.content.Context.MODE_PRIVATE)
-            .edit().clear().apply()
+        context
+            .getSharedPreferences("SettingsHelper", android.content.Context.MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
     }
 
     @Test

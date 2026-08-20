@@ -37,7 +37,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  * because those extension functions, living outside the class body, need
  * access to them.
  */
-class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks {
+class WearGameActivity :
+    ThemedActivity(),
+    AndroidFragmentApplication.Callbacks {
     internal lateinit var binding: ActivityGameBinding
 
     internal val gameViewModel by viewModel<GameViewModel>()
@@ -94,9 +96,7 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
         return handledByView || binding.levelContainer.dispatchTouchEvent(event)
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return true
-    }
+    override fun onTouchEvent(event: MotionEvent?): Boolean = true
 
     override fun onResume() {
         super.onResume()
@@ -153,18 +153,22 @@ class WearGameActivity : ThemedActivity(), AndroidFragmentApplication.Callbacks 
                     val difficulty = extras.serializableNonSafe<Difficulty>(DIFFICULTY)
                     gameViewModel.startNewGame(this@WearGameActivity, difficulty)
                 }
+
                 extras.containsKey(NEW_GAME) -> {
                     intent.removeExtra(NEW_GAME)
                     gameViewModel.startNewGame(this@WearGameActivity)
                 }
+
                 extras.containsKey(RETRY_GAME) -> {
                     val uid = extras.getInt(RETRY_GAME)
                     gameViewModel.retryGame(uid, this@WearGameActivity)
                 }
+
                 extras.containsKey(START_GAME) -> {
                     val uid = extras.getInt(START_GAME)
                     gameViewModel.loadGame(uid, this@WearGameActivity)
                 }
+
                 else -> {
                     gameViewModel.loadLastGame(this@WearGameActivity)
                 }

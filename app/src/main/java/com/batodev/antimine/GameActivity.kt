@@ -63,7 +63,6 @@ internal fun Int.toL10nString(): String = String.format(Locale.getDefault(), "%d
 class GameActivity :
     ThemedActivity(),
     AndroidFragmentApplication.Callbacks {
-
     internal val gameViewModel by viewModel<GameViewModel>()
     private val appScope: CoroutineScope by inject()
     internal val preferencesRepository: PreferencesRepository by inject()
@@ -214,14 +213,17 @@ class GameActivity :
                     val difficulty = extras.serializableNonSafe<Difficulty>(DIFFICULTY)
                     gameViewModel.startNewGame(this@GameActivity, difficulty)
                 }
+
                 extras.containsKey(RETRY_GAME) -> {
                     val uid = extras.getInt(RETRY_GAME)
                     gameViewModel.retryGame(uid, this@GameActivity)
                 }
+
                 extras.containsKey(START_GAME) -> {
                     val uid = extras.getInt(START_GAME)
                     gameViewModel.loadGame(uid, this@GameActivity)
                 }
+
                 else -> {
                     gameViewModel.loadLastGame(this@GameActivity)
                 }
@@ -232,7 +234,7 @@ class GameActivity :
     internal fun bindPrizeImage() {
         if (gameViewModel.prizeImage != "") {
             binding.gameBackground?.setImageBitmap(
-                BitmapFactory.decodeStream(assets.open("$PRIZE_IMAGES/${gameViewModel.prizeImage}"))
+                BitmapFactory.decodeStream(assets.open("$PRIZE_IMAGES/${gameViewModel.prizeImage}")),
             )
         } else {
             Log.d(TAG, "gameViewModel.prizeImage: ${gameViewModel.prizeImage}")
@@ -241,8 +243,7 @@ class GameActivity :
 
     override fun onResume() {
         super.onResume()
-        if (hasFloatingButton != (preferencesRepository.controlStyle() == ControlStyle.SwitchMarkOpen)
-        ) {
+        if (hasFloatingButton != (preferencesRepository.controlStyle() == ControlStyle.SwitchMarkOpen)) {
             // If used changed any currently rendered settings, we
             // must recreate the activity to force all sprites are updated.
             recreate()

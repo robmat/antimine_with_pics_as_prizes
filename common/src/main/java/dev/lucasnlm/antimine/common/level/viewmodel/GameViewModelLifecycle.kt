@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
  */
 suspend fun GameViewModel.startNewGame(
     context: Context,
-    newDifficulty: Difficulty = gameState.difficulty
+    newDifficulty: Difficulty = gameState.difficulty,
 ): Minefield {
     clock.reset()
     initialized = false
@@ -48,7 +48,7 @@ suspend fun GameViewModel.startNewGame(
                 useSimonTatham = preferencesRepository.useSimonTathamAlgorithm(),
                 onCreateUnsafeLevel = { onCreateUnsafeLevel() },
                 saveId = null,
-                prizeImage = prizeImage
+                prizeImage = prizeImage,
             )
 
         val newGameState =
@@ -86,8 +86,8 @@ suspend fun GameViewModel.startNewGame(
     return minefield
 }
 
-internal fun GameViewModel.baseGameStateFromSave(save: Save): GameState {
-    return GameState(
+internal fun GameViewModel.baseGameStateFromSave(save: Save): GameState =
+    GameState(
         saveId = save.uid.toLong(),
         duration = save.duration,
         seed = save.seed,
@@ -104,7 +104,6 @@ internal fun GameViewModel.baseGameStateFromSave(save: Save): GameState {
         isLoadingMap = true,
         showTutorial = preferencesRepository.showTutorialButton(),
     )
-}
 
 internal fun GameViewModel.resumeGameFromSave(save: Save): Minefield {
     clock.reset(save.duration)
@@ -149,7 +148,7 @@ internal fun GameViewModel.retryGameFromSave(save: Save) {
             useSimonTatham = preferencesRepository.useSimonTathamAlgorithm(),
             saveId = save.uid,
             onCreateUnsafeLevel = ::onCreateUnsafeLevel,
-            prizeImage = prizeImage
+            prizeImage = prizeImage,
         )
     initialized = true
     refreshUserPreferences()
@@ -171,7 +170,10 @@ internal fun GameViewModel.retryGameFromSave(save: Save) {
     )
 }
 
-suspend fun GameViewModel.loadGame(uid: Int, context: AppCompatActivity): Minefield =
+suspend fun GameViewModel.loadGame(
+    uid: Int,
+    context: AppCompatActivity,
+): Minefield =
     withContext(Dispatchers.IO) {
         val lastGame = savesRepository.loadFromId(uid)
 

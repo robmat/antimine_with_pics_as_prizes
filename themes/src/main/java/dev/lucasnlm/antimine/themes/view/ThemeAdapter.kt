@@ -19,7 +19,6 @@ class ThemeAdapter(
     private val onSelectTheme: (AppTheme) -> Unit,
     private val onRequestPurchase: () -> Unit,
 ) : RecyclerView.Adapter<ThemeViewHolder>() {
-
     private val themes: List<AppTheme> = themeViewModel.singleState().themes
 
     init {

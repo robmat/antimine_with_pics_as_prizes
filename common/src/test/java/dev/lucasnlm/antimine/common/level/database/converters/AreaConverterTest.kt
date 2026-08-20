@@ -62,15 +62,19 @@ class AreaConverterTest {
               "dimNumber":true
            }
         ]
-        """.trimIndent().replace(
-            " ",
-            "",
-        ).replace("\n", "")
+        """.trimIndent()
+            .replace(
+                " ",
+                "",
+            ).replace("\n", "")
 
     private val areaList =
         listOf(
             Area(
-                1, 2, 3, 5,
+                1,
+                2,
+                3,
+                5,
                 hasMine = false,
                 mistake = false,
                 isCovered = true,
@@ -79,7 +83,10 @@ class AreaConverterTest {
                 neighborsIds = listOf(),
             ),
             Area(
-                2, 5, 3, 0,
+                2,
+                5,
+                3,
+                0,
                 hasMine = true,
                 mistake = true,
                 isCovered = false,
@@ -88,7 +95,10 @@ class AreaConverterTest {
                 neighborsIds = listOf(),
             ),
             Area(
-                3, 1, 1, 3,
+                3,
+                1,
+                1,
+                3,
                 hasMine = true,
                 mistake = false,
                 isCovered = true,
@@ -97,7 +107,10 @@ class AreaConverterTest {
                 neighborsIds = listOf(),
             ),
             Area(
-                4, 0, 0, 6,
+                4,
+                0,
+                0,
+                6,
                 hasMine = false,
                 mistake = false,
                 isCovered = true,

@@ -41,9 +41,7 @@ class AdMobAdsManager(
 
     private var initialized = false
 
-    override fun isAvailable(): Boolean {
-        return initialized
-    }
+    override fun isAvailable(): Boolean = initialized
 
     override fun start(context: Context) {
         if (!initialized) {
@@ -92,6 +90,7 @@ class AdMobAdsManager(
                         }
                     }
                 }
+
                 rewardedAd != null -> {
                     onStart?.invoke()
                     rewardedAd.show(activity) {
@@ -104,6 +103,7 @@ class AdMobAdsManager(
                         }
                     }
                 }
+
                 else -> {
                     val message = failErrorCause?.let { "Fail to load Ad\n$it" } ?: "Fail to load Ad"
                     crashReporter.sendError(message)

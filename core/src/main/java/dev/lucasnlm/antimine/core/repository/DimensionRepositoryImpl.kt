@@ -46,7 +46,6 @@ private fun isEmulator(): Boolean {
 class DimensionRepositoryImpl(
     private val context: Context,
 ) : DimensionRepository {
-
     private val hasNavBar: Boolean by lazy {
         val resources = context.resources
         val id = resources.getIdentifier(NAVIGATION_BAR_CONFIG, "bool", "android")
@@ -59,17 +58,11 @@ class DimensionRepositoryImpl(
         }
     }
 
-    override fun areaSize(): Float {
-        return context.resources.getDimension(R.dimen.field_size)
-    }
+    override fun areaSize(): Float = context.resources.getDimension(R.dimen.field_size)
 
-    override fun areaSeparator(): Float {
-        return context.resources.getDimension(R.dimen.field_padding)
-    }
+    override fun areaSeparator(): Float = context.resources.getDimension(R.dimen.field_padding)
 
-    override fun areaSizeWithPadding(): Float {
-        return areaSize() + 2 * areaSeparator()
-    }
+    override fun areaSizeWithPadding(): Float = areaSize() + 2 * areaSeparator()
 
     override fun displaySize(): MinefieldSize =
         with(Resources.getSystem().displayMetrics) {

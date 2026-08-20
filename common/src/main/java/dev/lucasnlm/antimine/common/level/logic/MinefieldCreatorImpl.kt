@@ -8,12 +8,10 @@ class MinefieldCreatorImpl(
     private val minefield: Minefield,
     private val seed: Long,
 ) : MinefieldCreator {
-    override fun createEmpty(): List<Area> {
-        return minefield.createEmptyAreas()
-    }
+    override fun createEmpty(): List<Area> = minefield.createEmptyAreas()
 
-    override suspend fun create(safeIndex: Int): List<Area> {
-        return minefield.createEmptyAreas().toMutableList().apply {
+    override suspend fun create(safeIndex: Int): List<Area> =
+        minefield.createEmptyAreas().toMutableList().apply {
             filterNotNeighborsOf(safeIndex)
                 .shuffled(Random(seed))
                 .take(minefield.mines)
@@ -25,10 +23,8 @@ class MinefieldCreatorImpl(
                                 minesAround = neighbor.minesAround + 1,
                             )
                     }
-                }
-                .onEach {
+                }.onEach {
                     this[it.id] = this[it.id].copy(hasMine = true, minesAround = 0)
                 }
         }
-    }
 }

@@ -34,33 +34,25 @@ internal class OnboardingPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_FIRST_USE, false)
     }
 
-    override fun isTutorialCompleted(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_TUTORIAL_COMPLETED, false)
-    }
+    override fun isTutorialCompleted(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_TUTORIAL_COMPLETED, false)
 
     override fun setCompleteTutorial(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_TUTORIAL_COMPLETED, value)
     }
 
-    override fun showTutorialButton(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOULD_SHOW_TUTORIAL_BUTTON, true)
-    }
+    override fun showTutorialButton(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOULD_SHOW_TUTORIAL_BUTTON, true)
 
     override fun setShowTutorialButton(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_SHOULD_SHOW_TUTORIAL_BUTTON, value)
     }
 
-    override fun showMusicBanner(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_MUSIC_BANNER, true)
-    }
+    override fun showMusicBanner(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_MUSIC_BANNER, true)
 
     override fun setShowMusicBanner(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_MUSIC_BANNER, value)
     }
 
-    override fun lastMusicBanner(): Long {
-        return preferencesManager.getLong(PreferenceKeys.PREFERENCE_MUSIC_BANNER_LAST, 0L)
-    }
+    override fun lastMusicBanner(): Long = preferencesManager.getLong(PreferenceKeys.PREFERENCE_MUSIC_BANNER_LAST, 0L)
 
     override fun setLastMusicBanner(value: Long) {
         preferencesManager.putLong(PreferenceKeys.PREFERENCE_MUSIC_BANNER_LAST, value)

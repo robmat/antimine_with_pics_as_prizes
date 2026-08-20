@@ -54,8 +54,8 @@ class SoundAssetPlayer(
     }
 
     /** Opens [fileName] as a looping, non-releasing background-music track. */
-    fun startMusic(fileName: String): MediaPlayer? {
-        return tryOpenFd(fileName)?.use { musicFd ->
+    fun startMusic(fileName: String): MediaPlayer? =
+        tryOpenFd(fileName)?.use { musicFd ->
             playWithMediaPlayer(
                 MediaPlayerRequest(
                     soundAsset = musicFd,
@@ -66,27 +66,27 @@ class SoundAssetPlayer(
                 ),
             )
         }
-    }
 
-    private fun getAudioAttributes(isMusic: Boolean): AudioAttributes {
-        return AudioAttributes.Builder().apply {
-            setUsage(AudioAttributes.USAGE_GAME)
+    private fun getAudioAttributes(isMusic: Boolean): AudioAttributes =
+        AudioAttributes
+            .Builder()
+            .apply {
+                setUsage(AudioAttributes.USAGE_GAME)
 
-            if (isMusic) {
-                setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-            } else {
-                setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 if (isMusic) {
-                    setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_NONE)
+                    setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 } else {
-                    setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_ALL)
+                    setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 }
-            }
-        }.build()
-    }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    if (isMusic) {
+                        setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_NONE)
+                    } else {
+                        setAllowedCapturePolicy(AudioAttributes.ALLOW_CAPTURE_BY_ALL)
+                    }
+                }
+            }.build()
 
     private fun playWithMediaPlayer(request: MediaPlayerRequest): MediaPlayer {
         val mediaPlayer = MediaPlayer()
@@ -112,9 +112,8 @@ class SoundAssetPlayer(
         return mediaPlayer
     }
 
-    private fun tryOpenFd(fileName: String): AssetFileDescriptor? {
-        return runCatching {
+    private fun tryOpenFd(fileName: String): AssetFileDescriptor? =
+        runCatching {
             context.assets.openFd(fileName)
         }.getOrNull()
-    }
 }

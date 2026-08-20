@@ -58,11 +58,11 @@ class GameApplicationListener(
             navigationBarHeight = dimensionRepository.navigationBarHeight().toFloat(),
             appBarWithStatusHeight = dimensionRepository.actionBarSizeWithStatus().toFloat(),
             appBarHeight =
-            if (context.isPortrait()) {
-                dimensionRepository.actionBarSize().toFloat()
-            } else {
-                0f
-            },
+                if (context.isPortrait()) {
+                    dimensionRepository.actionBarSize().toFloat()
+                } else {
+                    0f
+                },
             joinAreas = themeRepository.getSkin().hasPadding,
         )
 

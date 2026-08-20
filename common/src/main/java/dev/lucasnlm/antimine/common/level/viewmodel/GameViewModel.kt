@@ -58,8 +58,8 @@ open class GameViewModel(
 
     internal fun postSideEffect(event: GameEvent) = sendSideEffect(event)
 
-    override fun initialState(): GameState {
-        return GameState(
+    override fun initialState(): GameState =
+        GameState(
             turn = 0,
             field = listOf(),
             duration = 0L,
@@ -76,23 +76,58 @@ open class GameViewModel(
             isLoadingMap = true,
             showTutorial = preferencesRepository.showTutorialButton(),
         )
-    }
 
     override suspend fun mapEventToState(event: GameEvent): Flow<GameState> =
         flow {
             when (event) {
-                is GameEvent.CreatingGameEvent -> emit(state.copy(isCreatingGame = true))
-                is GameEvent.SetGameActivation -> emit(state.copy(isActive = event.active))
-                is GameEvent.ShowNewGameDialog -> sendSideEffect(GameEvent.ShowNewGameDialog)
-                is GameEvent.GiveMoreTip -> onGiveMoreTip(this)
-                is GameEvent.ConsumeTip -> onConsumeTip(this)
-                is GameEvent.UpdateSave -> emit(state.copy(saveId = event.saveId))
-                is GameEvent.NewGame -> emit(event.newState)
-                is GameEvent.ContinueGame -> onContinueGame(this)
-                is GameEvent.EngineReady -> onEngineReady(this)
-                is GameEvent.LoadingNewGame -> onLoadingNewGame(this)
-                is GameEvent.UpdateTime -> emit(state.copy(duration = event.time))
-                is GameEvent.UpdateMinefield -> onUpdateMinefield(this, event)
+                is GameEvent.CreatingGameEvent -> {
+                    emit(state.copy(isCreatingGame = true))
+                }
+
+                is GameEvent.SetGameActivation -> {
+                    emit(state.copy(isActive = event.active))
+                }
+
+                is GameEvent.ShowNewGameDialog -> {
+                    sendSideEffect(GameEvent.ShowNewGameDialog)
+                }
+
+                is GameEvent.GiveMoreTip -> {
+                    onGiveMoreTip(this)
+                }
+
+                is GameEvent.ConsumeTip -> {
+                    onConsumeTip(this)
+                }
+
+                is GameEvent.UpdateSave -> {
+                    emit(state.copy(saveId = event.saveId))
+                }
+
+                is GameEvent.NewGame -> {
+                    emit(event.newState)
+                }
+
+                is GameEvent.ContinueGame -> {
+                    onContinueGame(this)
+                }
+
+                is GameEvent.EngineReady -> {
+                    onEngineReady(this)
+                }
+
+                is GameEvent.LoadingNewGame -> {
+                    onLoadingNewGame(this)
+                }
+
+                is GameEvent.UpdateTime -> {
+                    emit(state.copy(duration = event.time))
+                }
+
+                is GameEvent.UpdateMinefield -> {
+                    onUpdateMinefield(this, event)
+                }
+
                 else -> {
                     // Empty
                 }

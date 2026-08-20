@@ -62,7 +62,6 @@ class StatsActivity : ThemedActivity() {
                     statsViewModel.sendEvent(StatsEvent.DeleteStats)
                 }
                 setTopBarAction(null)
-            }
-            .show()
+            }.show()
     }
 }

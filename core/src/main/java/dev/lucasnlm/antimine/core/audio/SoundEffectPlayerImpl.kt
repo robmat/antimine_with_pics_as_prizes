@@ -5,7 +5,9 @@ package dev.lucasnlm.antimine.core.audio
  * what used to be `GameAudioManagerImpl` directly, since that class's function
  * count was over threshold. Delegated into `GameAudioManagerImpl` via `by`.
  */
-class SoundEffectPlayerImpl(private val assetPlayer: SoundAssetPlayer) : SoundEffects {
+class SoundEffectPlayerImpl(
+    private val assetPlayer: SoundAssetPlayer,
+) : SoundEffects {
     override fun playWin() {
         assetPlayer.playSfx(GameAudioManagerImpl.WIN_FILE_NAME)
     }

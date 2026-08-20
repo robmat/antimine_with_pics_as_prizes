@@ -13,7 +13,6 @@ class PlayGamesViewModel(
     private val playGamesManager: PlayGamesManager,
     private val analyticsManager: AnalyticsManager,
 ) : StatelessViewModel<PlayGamesEvent>() {
-
     val playGamesItems =
         listOf(
             PlayGamesItem(

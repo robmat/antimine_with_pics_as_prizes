@@ -13,7 +13,6 @@ import java.util.Locale
 class StatsAdapter(
     private val statsList: List<StatsModel>,
 ) : RecyclerView.Adapter<StatsViewHolder>() {
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,

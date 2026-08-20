@@ -13,17 +13,18 @@ class AboutViewModel(
     private val application: Application,
     private val audioManager: GameAudioManager,
 ) : StatelessViewModel<AboutEvent>() {
-
     override fun onEvent(event: AboutEvent) {
         when (event) {
             AboutEvent.ThirdPartyLicenses -> {
                 playClickSound()
                 openLicensesActivity()
             }
+
             AboutEvent.SourceCode -> {
                 playClickSound()
                 openSourceCode()
             }
+
             AboutEvent.Translators -> {
                 playClickSound()
                 openCrowdin()

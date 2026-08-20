@@ -28,11 +28,13 @@ class ThemeViewModel(
                     analyticsManager.sentEvent(Analytics.ClickTheme(event.newTheme.id))
                     emit(state.copy(currentTheme = event.newTheme))
                 }
+
                 is ThemeEvent.ChangeSkin -> {
                     setSkin(event.newSkin)
                     analyticsManager.sentEvent(Analytics.ClickSkin(event.newSkin.id))
                     emit(state.copy(currentAppSkin = event.newSkin))
                 }
+
                 else -> {
                     // Ignore
                 }

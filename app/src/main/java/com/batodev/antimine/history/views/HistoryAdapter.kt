@@ -34,13 +34,9 @@ class HistoryAdapter(
         )
     }
 
-    override fun getItemId(position: Int): Long {
-        return saveHistory[position].uid.toLong()
-    }
+    override fun getItemId(position: Int): Long = saveHistory[position].uid.toLong()
 
-    override fun getItemCount(): Int {
-        return saveHistory.size
-    }
+    override fun getItemCount(): Int = saveHistory.size
 
     private fun difficultyStringRes(difficulty: Difficulty): Int =
         when (difficulty) {
@@ -93,10 +89,11 @@ class HistoryAdapter(
         val save = saveHistory[position]
         val context = holder.itemView.context
         val buttonBackgroundColor =
-            MaterialColors.getColorStateListOrNull(
-                context,
-                GR.attr.colorOnBackground,
-            )?.withAlpha(BUTTON_BACKGROUND_ALPHA)
+            MaterialColors
+                .getColorStateListOrNull(
+                    context,
+                    GR.attr.colorOnBackground,
+                )?.withAlpha(BUTTON_BACKGROUND_ALPHA)
 
         val difficultyText = context.getString(difficultyStringRes(save.difficulty))
         val gameNameText = "$difficultyText #${save.uid}"

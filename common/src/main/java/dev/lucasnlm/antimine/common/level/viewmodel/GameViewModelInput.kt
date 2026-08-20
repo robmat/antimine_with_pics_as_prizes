@@ -20,7 +20,10 @@ import dev.lucasnlm.antimine.preferences.models.GameControl
  */
 internal fun GameViewModel.playActionSound(actionCompleted: ActionCompleted) {
     when (actionCompleted.action) {
-        Action.OpenTile -> soundManager.playOpenArea()
+        Action.OpenTile -> {
+            soundManager.playOpenArea()
+        }
+
         Action.OpenOrMark -> {
             if (preferencesRepository.getSwitchControlAction() == Action.OpenTile) {
                 soundManager.playOpenArea()
@@ -28,8 +31,15 @@ internal fun GameViewModel.playActionSound(actionCompleted: ActionCompleted) {
                 soundManager.playPutFlag()
             }
         }
-        Action.SwitchMark, Action.QuestionMark -> soundManager.playPutFlag()
-        Action.OpenNeighbors -> soundManager.playOpenMultipleArea()
+
+        Action.SwitchMark, Action.QuestionMark -> {
+            soundManager.playPutFlag()
+        }
+
+        Action.OpenNeighbors -> {
+            soundManager.playOpenMultipleArea()
+        }
+
         else -> {
             // No sound
         }
@@ -57,15 +67,19 @@ internal fun GameViewModel.onFeedbackAnalytics(
             Action.OpenTile -> {
                 analyticsManager.sentEvent(Analytics.OpenTile(index))
             }
+
             Action.SwitchMark -> {
                 analyticsManager.sentEvent(Analytics.SwitchMark(index))
             }
+
             Action.OpenNeighbors -> {
                 analyticsManager.sentEvent(Analytics.OpenNeighbors(index))
             }
+
             Action.OpenOrMark -> {
                 analyticsManager.sentEvent(Analytics.OpenOrFlagTile(index))
             }
+
             Action.QuestionMark -> {
                 analyticsManager.sentEvent(Analytics.QuestionMark(index))
             }
@@ -78,6 +92,7 @@ internal fun GameViewModel.updateGameState() {
         gameController.isGameOver() -> {
             sendEvent(GameEvent.SetGameActivation(false))
         }
+
         else -> {
             sendEvent(GameEvent.SetGameActivation(true))
         }

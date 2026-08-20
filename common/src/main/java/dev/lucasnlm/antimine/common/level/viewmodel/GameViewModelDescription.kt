@@ -23,34 +23,42 @@ private data class ControlDescriptionLabels(
 
 private fun GameViewModel.controlDescriptionLabels(context: Context): ControlDescriptionLabels? =
     when (preferencesRepository.controlStyle()) {
-        ControlStyle.Standard ->
+        ControlStyle.Standard -> {
             ControlDescriptionLabels(
                 openAction = context.getString(i18n.string.single_click),
                 openReaction = context.getString(i18n.string.open),
                 flagAction = context.getString(i18n.string.long_press),
                 flagReaction = context.getString(i18n.string.flag_tile),
             )
-        ControlStyle.FastFlag ->
+        }
+
+        ControlStyle.FastFlag -> {
             ControlDescriptionLabels(
                 openAction = context.getString(i18n.string.single_click),
                 openReaction = context.getString(i18n.string.flag_tile),
                 flagAction = context.getString(i18n.string.long_press),
                 flagReaction = context.getString(i18n.string.open),
             )
-        ControlStyle.DoubleClick ->
+        }
+
+        ControlStyle.DoubleClick -> {
             ControlDescriptionLabels(
                 openAction = context.getString(i18n.string.single_click),
                 openReaction = context.getString(i18n.string.flag_tile),
                 flagAction = context.getString(i18n.string.double_click),
                 flagReaction = context.getString(i18n.string.open),
             )
-        ControlStyle.DoubleClickInverted ->
+        }
+
+        ControlStyle.DoubleClickInverted -> {
             ControlDescriptionLabels(
                 openAction = context.getString(i18n.string.single_click),
                 openReaction = context.getString(i18n.string.open),
                 flagAction = context.getString(i18n.string.double_click),
                 flagReaction = context.getString(i18n.string.flag_tile),
             )
+        }
+
         else -> {
             // With switch button, it doesn't require toast
             null

@@ -29,8 +29,8 @@ internal fun GameViewModel.showAllEmptyAreas() {
     gameController.revealAllEmptyAreas()
 }
 
-fun GameViewModel.revealRandomMine(consume: Boolean = true): Int? {
-    return if (initialized) {
+fun GameViewModel.revealRandomMine(consume: Boolean = true): Int? =
+    if (initialized) {
         val result = gameController.revealRandomMine()
 
         if (result != null) {
@@ -44,14 +44,10 @@ fun GameViewModel.revealRandomMine(consume: Boolean = true): Int? {
     } else {
         null
     }
-}
 
-internal fun GameViewModel.explosionDelay() =
-    if (preferencesRepository.useAnimations()) GameViewModel.EXPLOSION_DELAY else 0L
+internal fun GameViewModel.explosionDelay() = if (preferencesRepository.useAnimations()) GameViewModel.EXPLOSION_DELAY else 0L
 
-fun GameViewModel.hasUnknownMines(): Boolean {
-    return !gameController.hasIsolatedAllMines() && gameController.remainingMines() > 1
-}
+fun GameViewModel.hasUnknownMines(): Boolean = !gameController.hasIsolatedAllMines() && gameController.remainingMines() > 1
 
 fun GameViewModel.revealMines() {
     if (initialized) {

@@ -34,9 +34,10 @@ fun Minefield.createEmptyAreas(): List<Area> {
 }
 
 fun List<Area>.filterNeighborsOf(area: Area) =
-    this.filter {
-        ((it.posX - area.posX).absoluteValue <= 1 && (it.posY - area.posY).absoluteValue <= 1)
-    }.filterNot { area.id == it.id }
+    this
+        .filter {
+            ((it.posX - area.posX).absoluteValue <= 1 && (it.posY - area.posY).absoluteValue <= 1)
+        }.filterNot { area.id == it.id }
 
 fun List<Area>.filterNotNeighborsOf(area: Area) =
     this.filter {

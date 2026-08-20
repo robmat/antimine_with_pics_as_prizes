@@ -12,7 +12,6 @@ class ControlViewModel(
     private val preferencesRepository: PreferencesRepository,
     private val hapticFeedbackManager: HapticFeedbackManager,
 ) : IntentViewModel<ControlEvent, ControlState>() {
-
     private val gameControlOptions =
         listOf(
             ControlDetails(
@@ -57,9 +56,7 @@ class ControlViewModel(
             ),
         )
 
-    private fun hasChangedPreferences(): Boolean {
-        return preferencesRepository.hasControlCustomizations()
-    }
+    private fun hasChangedPreferences(): Boolean = preferencesRepository.hasControlCustomizations()
 
     override fun initialState(): ControlState {
         val controlDetails =

@@ -139,11 +139,12 @@ class DialogMonetization(
 
     private fun openHexLink(context: Context) {
         context.openExternalLink(HEX_URI) {
-            Toast.makeText(
-                context.applicationContext,
-                i18n.string.unknown_error,
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    context.applicationContext,
+                    i18n.string.unknown_error,
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 
@@ -170,11 +171,12 @@ class DialogMonetization(
     private fun openComposer(composerLink: String) {
         val context = fragment.requireContext()
         context.openExternalLink(composerLink) {
-            Toast.makeText(
-                context.applicationContext,
-                i18n.string.unknown_error,
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    context.applicationContext,
+                    i18n.string.unknown_error,
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 

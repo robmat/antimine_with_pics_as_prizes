@@ -34,13 +34,9 @@ class ThemeListAdapter(
         )
     }
 
-    override fun getItemCount(): Int {
-        return themes.size
-    }
+    override fun getItemCount(): Int = themes.size
 
-    override fun getItemId(position: Int): Long {
-        return themes[position].id
-    }
+    override fun getItemId(position: Int): Long = themes[position].id
 
     override fun onBindViewHolder(
         holder: RecyclerViewHolder,

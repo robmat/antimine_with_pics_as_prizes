@@ -5,13 +5,9 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 
-fun Context.isPortrait(): Boolean {
-    return resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
-}
+fun Context.isPortrait(): Boolean = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
-fun Context.dpToPx(dp: Int): Int {
-    return (dp * resources.displayMetrics.density).toInt()
-}
+fun Context.dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
 
 /**
  * Opens [url] in an external app (e.g. a browser), calling [onError] if it fails

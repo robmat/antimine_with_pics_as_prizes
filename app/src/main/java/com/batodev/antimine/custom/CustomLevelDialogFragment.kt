@@ -33,12 +33,16 @@ class CustomLevelDialogFragment : AppCompatDialogFragment() {
 
     private fun getSelectedMinefield(): Minefield {
         val width = filterInput(binding.mapWidth.text.toString(), MIN_WIDTH).coerceAtMost(MAX_WIDTH)
-        val height = filterInput(binding.mapHeight.text.toString(), MIN_HEIGHT).coerceAtMost(
-            MAX_HEIGHT
-        )
+        val height =
+            filterInput(binding.mapHeight.text.toString(), MIN_HEIGHT).coerceAtMost(
+                MAX_HEIGHT,
+            )
         val maxMines = width * height - MIN_SAFE_AREA
         val mines = filterInput(binding.mapMines.text.toString(), MIN_MINES).coerceAtMost(maxMines)
-        val seedValue = binding.seed.text.toString().toLongOrNull()
+        val seedValue =
+            binding.seed.text
+                .toString()
+                .toLongOrNull()
 
         return Minefield(width, height, mines, seedValue)
     }
@@ -56,19 +60,19 @@ class CustomLevelDialogFragment : AppCompatDialogFragment() {
         return binding.root
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(i18n.string.new_game)
-            setView(createView())
-            setNegativeButton(i18n.string.cancel, null)
-            setPositiveButton(i18n.string.start) { _, _ ->
-                val minefield = getSelectedMinefield()
-                preferencesRepository.setCompleteTutorial(true)
-                createGameViewModel.sendEvent(CustomEvent.UpdateCustomGameEvent(minefield))
-                gameViewModel.sendEvent(MainEvent.StartNewGameEvent(Difficulty.Custom))
-            }
-        }.create()
-    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        MaterialAlertDialogBuilder(requireContext())
+            .apply {
+                setTitle(i18n.string.new_game)
+                setView(createView())
+                setNegativeButton(i18n.string.cancel, null)
+                setPositiveButton(i18n.string.start) { _, _ ->
+                    val minefield = getSelectedMinefield()
+                    preferencesRepository.setCompleteTutorial(true)
+                    createGameViewModel.sendEvent(CustomEvent.UpdateCustomGameEvent(minefield))
+                    gameViewModel.sendEvent(MainEvent.StartNewGameEvent(Difficulty.Custom))
+                }
+            }.create()
 
     override fun onDismiss(dialog: DialogInterface) {
         if (activity is DialogInterface.OnDismissListener) {
@@ -88,11 +92,10 @@ class CustomLevelDialogFragment : AppCompatDialogFragment() {
         private fun filterInput(
             target: String,
             min: Int,
-        ): Int {
-            return runCatching { Integer.valueOf(target) }
+        ): Int =
+            runCatching { Integer.valueOf(target) }
                 .getOrDefault(min)
                 .coerceAtLeast(min)
-        }
 
         val TAG = CustomLevelDialogFragment::class.simpleName!!
     }

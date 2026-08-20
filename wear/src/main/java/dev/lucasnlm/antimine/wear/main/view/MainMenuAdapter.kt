@@ -25,13 +25,9 @@ class MainMenuAdapter(
         return RecyclerViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return menuItems.size
-    }
+    override fun getItemCount(): Int = menuItems.size
 
-    override fun getItemId(position: Int): Long {
-        return menuItems[position].id
-    }
+    override fun getItemId(position: Int): Long = menuItems[position].id
 
     override fun onBindViewHolder(
         holder: RecyclerViewHolder,
@@ -54,15 +50,17 @@ class MainMenuAdapter(
                 setIconResource(menuItem.icon)
                 backgroundTintList =
                     if (menuItem.highlight) {
-                        MaterialColors.getColorStateListOrNull(
-                            context,
-                            AR.attr.colorPrimaryDark,
-                        )?.withAlpha(HIGHLIGHT_ITEM_ALPHA)
+                        MaterialColors
+                            .getColorStateListOrNull(
+                                context,
+                                AR.attr.colorPrimaryDark,
+                            )?.withAlpha(HIGHLIGHT_ITEM_ALPHA)
                     } else {
-                        MaterialColors.getColorStateListOrNull(
-                            context,
-                            GR.attr.colorSurface,
-                        )?.withAlpha(0)
+                        MaterialColors
+                            .getColorStateListOrNull(
+                                context,
+                                GR.attr.colorSurface,
+                            )?.withAlpha(0)
                     }
                 setOnClickListener {
                     menuItem.onClick()

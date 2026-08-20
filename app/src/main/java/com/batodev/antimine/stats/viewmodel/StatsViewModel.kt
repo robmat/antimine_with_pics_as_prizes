@@ -17,7 +17,6 @@ class StatsViewModel(
     minefieldRepository: MinefieldRepository,
     dimensionRepository: DimensionRepository,
 ) : IntentViewModel<StatsEvent, StatsState>() {
-
     private val classifier = StatsSizeClassifier(minefieldRepository, dimensionRepository, preferenceRepository)
 
     private suspend fun loadStatsModel(): List<StatsModel> {
@@ -43,16 +42,16 @@ class StatsViewModel(
                 // Beginner
                 filter(classifier::isBeginner).fold().copy(title = i18n.string.beginner),
                 // Custom
-                classifier.filterNotStandard(
-                    asSequence()
-                        .filterNot(classifier::isExpert)
-                        .filterNot(classifier::isIntermediate)
-                        .filterNot(classifier::isBeginner)
-                        .filterNot(classifier::isMaster)
-                        .filterNot(classifier::isLegend)
-                        .filterNot(classifier::isFixedSize),
-                )
-                    .toList()
+                classifier
+                    .filterNotStandard(
+                        asSequence()
+                            .filterNot(classifier::isExpert)
+                            .filterNot(classifier::isIntermediate)
+                            .filterNot(classifier::isBeginner)
+                            .filterNot(classifier::isMaster)
+                            .filterNot(classifier::isLegend)
+                            .filterNot(classifier::isFixedSize),
+                    ).toList()
                     .fold()
                     .copy(title = i18n.string.custom),
             ).filter {
@@ -142,6 +141,7 @@ class StatsViewModel(
                 is StatsEvent.LoadStats -> {
                     emit(state.copy(stats = loadStatsModel()))
                 }
+
                 is StatsEvent.DeleteStats -> {
                     deleteAll()
                     emit(state.copy(stats = loadStatsModel()))

@@ -13,9 +13,7 @@ class MinefieldCreatorNativeImpl(
 ) : MinefieldCreator {
     private val sgTathamMines: SgTathamMines = SgTathamMines()
 
-    override fun createEmpty(): List<Area> {
-        return minefield.createEmptyAreas()
-    }
+    override fun createEmpty(): List<Area> = minefield.createEmptyAreas()
 
     override suspend fun create(safeIndex: Int): List<Area> =
         withContext(Dispatchers.IO) {
@@ -45,25 +43,27 @@ class MinefieldCreatorNativeImpl(
                     )
                 }
 
-            resultList.map { area ->
-                area.copy(neighborsIds = resultList.filterNeighborsOf(area).map { it.id })
-            }.toMutableList().apply {
-                // Ensure the first click and surround won't have a mine.
-                filterNeighborsOf(safeIndex).forEach {
-                    this[it.id] = this[it.id].copy(hasMine = false)
-                }
-                this[safeIndex] = this[safeIndex].copy(hasMine = false)
-
-                filter {
-                    it.hasMine
-                }.onEach {
-                    it.neighborsIds.forEach { neighborId ->
-                        val neighbor = this[neighborId]
-                        this[neighborId] = this[neighborId].copy(minesAround = neighbor.minesAround + 1)
+            resultList
+                .map { area ->
+                    area.copy(neighborsIds = resultList.filterNeighborsOf(area).map { it.id })
+                }.toMutableList()
+                .apply {
+                    // Ensure the first click and surround won't have a mine.
+                    filterNeighborsOf(safeIndex).forEach {
+                        this[it.id] = this[it.id].copy(hasMine = false)
                     }
-                }.onEach {
-                    this[it.id] = this[it.id].copy(hasMine = true, minesAround = 0)
-                }
-            }.toList()
+                    this[safeIndex] = this[safeIndex].copy(hasMine = false)
+
+                    filter {
+                        it.hasMine
+                    }.onEach {
+                        it.neighborsIds.forEach { neighborId ->
+                            val neighbor = this[neighborId]
+                            this[neighborId] = this[neighborId].copy(minesAround = neighbor.minesAround + 1)
+                        }
+                    }.onEach {
+                        this[it.id] = this[it.id].copy(hasMine = true, minesAround = 0)
+                    }
+                }.toList()
         }
 }

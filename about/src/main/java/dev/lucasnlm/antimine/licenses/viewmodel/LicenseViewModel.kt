@@ -21,7 +21,5 @@ class LicenseViewModel : IntentViewModel<Void, LicenseState>() {
             it.name
         }.toList()
 
-    override fun initialState(): LicenseState {
-        return LicenseState(licenses = getLicensesList())
-    }
+    override fun initialState(): LicenseState = LicenseState(licenses = getLicensesList())
 }

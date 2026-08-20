@@ -25,16 +25,16 @@ internal fun AreaActor.drawUncoveredIcons(batch: Batch) {
                 batch = batch,
                 texture = it.aroundMines[area.minesAround - 1],
                 color =
-                if (area.dimNumber) {
-                    theme.palette
-                        .minesAround(area.minesAround - 1)
-                        .toGdxColor(GameContext.zoomLevelAlpha * AreaActor.DIMMED_NUMBER_ALPHA_FACTOR)
-                        .dim(AreaActor.DIMMED_NUMBER_DIM_FACTOR)
-                } else {
-                    theme.palette
-                        .minesAround(area.minesAround - 1)
-                        .toGdxColor(GameContext.zoomLevelAlpha)
-                },
+                    if (area.dimNumber) {
+                        theme.palette
+                            .minesAround(area.minesAround - 1)
+                            .toGdxColor(GameContext.zoomLevelAlpha * AreaActor.DIMMED_NUMBER_ALPHA_FACTOR)
+                            .dim(AreaActor.DIMMED_NUMBER_DIM_FACTOR)
+                    } else {
+                        theme.palette
+                            .minesAround(area.minesAround - 1)
+                            .toGdxColor(GameContext.zoomLevelAlpha)
+                    },
             )
         } else if (area.hasMine) {
             val color = theme.palette.uncovered
@@ -56,12 +56,12 @@ internal fun AreaActor.drawFocusScaledRegion(
     batch.drawRegion(
         texture = texture,
         bounds =
-        DrawBounds(
-            x = x - width * (focusScale - 1.0f) * 0.5f,
-            y = y - height * (focusScale - 1.0f) * 0.5f,
-            width = width * focusScale,
-            height = height * focusScale,
-        ),
+            DrawBounds(
+                x = x - width * (focusScale - 1.0f) * 0.5f,
+                y = y - height * (focusScale - 1.0f) * 0.5f,
+                width = width * focusScale,
+                height = height * focusScale,
+            ),
         color = color,
         blend = true,
     )
@@ -74,13 +74,17 @@ private fun AreaActor.drawPressedCovered(
     val tint = GameContext.canTintAreas
     val coverColor =
         when {
-            tint ->
+            tint -> {
                 if (isOdd) {
                     theme.palette.coveredOdd
                 } else {
                     theme.palette.covered
                 }
-            else -> Themes.WHITE
+            }
+
+            else -> {
+                Themes.WHITE
+            }
         }.toGdxColor(AreaActor.PRESSED_COVER_ALPHA)
 
     GameContext.gameTextures?.detailedArea?.let {
@@ -101,7 +105,8 @@ private fun AreaActor.drawPressedUncovered(batch: Batch) {
         drawFocusScaledRegion(
             batch,
             it,
-            color.toInverseBackOrWhite(AreaActor.PRESSED_UNCOVERED_ALPHA)
+            color
+                .toInverseBackOrWhite(AreaActor.PRESSED_UNCOVERED_ALPHA)
                 .dim(AreaActor.FOCUS_DIM_BASE - (focusScale - 1.0f)),
         )
     }

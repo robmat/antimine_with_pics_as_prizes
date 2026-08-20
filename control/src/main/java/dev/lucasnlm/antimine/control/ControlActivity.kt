@@ -19,7 +19,9 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import dev.lucasnlm.antimine.i18n.R as i18n
 
-class ControlActivity : ThemedActivity(), Slider.OnChangeListener {
+class ControlActivity :
+    ThemedActivity(),
+    Slider.OnChangeListener {
     private lateinit var binding: ActivityControlBinding
 
     private val viewModel: ControlViewModel by inject()
@@ -121,12 +123,15 @@ class ControlActivity : ThemedActivity(), Slider.OnChangeListener {
                 binding.touchSensibility -> {
                     viewModel.sendEvent(ControlEvent.UpdateTouchSensibility(progress))
                 }
+
                 binding.longPress -> {
                     viewModel.sendEvent(ControlEvent.UpdateLongPress(progress))
                 }
+
                 binding.doubleClick -> {
                     viewModel.sendEvent(ControlEvent.UpdateDoubleClick(progress))
                 }
+
                 binding.hapticLevel -> {
                     viewModel.sendEvent(ControlEvent.UpdateHapticFeedbackLevel(progress))
                 }

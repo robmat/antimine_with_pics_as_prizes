@@ -124,7 +124,10 @@ internal fun AreaActor.drawCoveredIcons(batch: Batch) {
 
     GameContext.gameTextures?.let { textures ->
         when {
-            area.mark.isFlag() -> drawFlagIcon(batch, textures, isAboveOthers)
+            area.mark.isFlag() -> {
+                drawFlagIcon(batch, textures, isAboveOthers)
+            }
+
             area.mark.isQuestion() -> {
                 drawAsset(
                     batch = batch,
@@ -133,6 +136,7 @@ internal fun AreaActor.drawCoveredIcons(batch: Batch) {
                     scale = if (isAboveOthers) focusScale else AreaActor.BASE_ICON_SCALE,
                 )
             }
+
             area.revealed -> {
                 drawAsset(
                     batch = batch,

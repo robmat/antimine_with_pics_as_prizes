@@ -66,11 +66,10 @@ internal class CorePreferencesImpl(
         return listOfSettingsCustoms.any { preferencesManager.contains(it) } || !vibrationDisabled
     }
 
-    override fun hasControlCustomizations(): Boolean {
-        return listOfControlCustoms.fold(false) { acc, current ->
+    override fun hasControlCustomizations(): Boolean =
+        listOfControlCustoms.fold(false) { acc, current ->
             acc || preferencesManager.contains(current)
         }
-    }
 
     override fun resetControls() {
         listOfControlCustoms.forEach { preferencesManager.removeKey(it) }
@@ -112,9 +111,7 @@ internal class CorePreferencesImpl(
         return ControlStyle.values().getOrNull(index) ?: ControlStyle.SwitchMarkOpen
     }
 
-    override fun hasCustomControlStyle(): Boolean {
-        return preferencesManager.contains(PreferenceKeys.PREFERENCE_CONTROL_STYLE)
-    }
+    override fun hasCustomControlStyle(): Boolean = preferencesManager.contains(PreferenceKeys.PREFERENCE_CONTROL_STYLE)
 
     override fun useControlStyle(controlStyle: ControlStyle) {
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_CONTROL_STYLE, controlStyle.ordinal)

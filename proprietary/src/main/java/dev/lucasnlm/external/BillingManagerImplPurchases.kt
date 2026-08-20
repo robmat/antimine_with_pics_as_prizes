@@ -28,7 +28,8 @@ internal fun BillingManagerImpl.asyncRefreshPurchasesList() {
 
 internal suspend fun BillingManagerImpl.refreshPurchasesListOnce(): Boolean {
     val queryPurchasesParams =
-        QueryPurchasesParams.newBuilder()
+        QueryPurchasesParams
+            .newBuilder()
             .setProductType(BillingClient.ProductType.INAPP)
             .build()
 
@@ -50,33 +51,35 @@ internal suspend fun BillingManagerImpl.refreshPurchasesListOnce(): Boolean {
 
 internal suspend fun BillingManagerImpl.handlePurchases(purchases: List<Purchase>): Boolean {
     val status: Boolean =
-        purchases.firstOrNull {
-            it.products.contains(BillingManagerImpl.PREMIUM)
-        }.let {
-            when (it?.purchaseState) {
-                Purchase.PurchaseState.PURCHASED, Purchase.PurchaseState.PENDING -> true
-                else -> false
-            }.also { purchased ->
-                if (purchased && it?.isAcknowledged == false) {
-                    val acknowledgePurchaseParams =
-                        AcknowledgePurchaseParams.newBuilder()
-                            .setPurchaseToken(it.purchaseToken)
-                            .build()
+        purchases
+            .firstOrNull {
+                it.products.contains(BillingManagerImpl.PREMIUM)
+            }.let {
+                when (it?.purchaseState) {
+                    Purchase.PurchaseState.PURCHASED, Purchase.PurchaseState.PENDING -> true
+                    else -> false
+                }.also { purchased ->
+                    if (purchased && it?.isAcknowledged == false) {
+                        val acknowledgePurchaseParams =
+                            AcknowledgePurchaseParams
+                                .newBuilder()
+                                .setPurchaseToken(it.purchaseToken)
+                                .build()
 
-                    val result = billingClient.acknowledgePurchase(acknowledgePurchaseParams)
+                        val result = billingClient.acknowledgePurchase(acknowledgePurchaseParams)
 
-                    if (result.responseCode != BillingClient.BillingResponseCode.OK) {
-                        return false
+                        if (result.responseCode != BillingClient.BillingResponseCode.OK) {
+                            return false
+                        }
                     }
                 }
             }
-        }
 
     purchaseBroadcaster.tryEmit(
         PurchaseInfo.PurchaseResult(
             isFreeUnlock = false,
-            unlockStatus = status
-        )
+            unlockStatus = status,
+        ),
     )
     return true
 }

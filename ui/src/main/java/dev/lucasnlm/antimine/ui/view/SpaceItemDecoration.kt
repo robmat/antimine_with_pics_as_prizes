@@ -16,7 +16,10 @@ class SpaceItemDecoration(
         state: RecyclerView.State,
     ) {
         super.getItemOffsets(outRect, view, parent, state)
-        val space = view.context.resources.getDimension(spaceRes).toInt()
+        val space =
+            view.context.resources
+                .getDimension(spaceRes)
+                .toInt()
         outRect.offset(space, space)
     }
 }

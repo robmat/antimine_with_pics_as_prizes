@@ -26,15 +26,32 @@ import dev.lucasnlm.antimine.i18n.R as i18n
  * split out of [GameActivity], whose combined bindViewModel() was 223 lines
  * at cyclomatic complexity 41.
  */
-class GameEventDialogs(private val activity: GameActivity) {
+class GameEventDialogs(
+    private val activity: GameActivity,
+) {
     suspend fun handle(event: GameEvent) =
         with(activity) {
             when (event) {
-                is GameEvent.ShowNoGuessFailWarning -> showNoGuessFailWarning()
-                is GameEvent.ShowNewGameDialog -> showNewGameDialog()
-                is GameEvent.VictoryDialog -> showVictoryDialog(event)
-                is GameEvent.GameOverDialog -> showGameOverDialog(event)
-                is GameEvent.GameCompleteDialog -> showGameCompleteDialog(event)
+                is GameEvent.ShowNoGuessFailWarning -> {
+                    showNoGuessFailWarning()
+                }
+
+                is GameEvent.ShowNewGameDialog -> {
+                    showNewGameDialog()
+                }
+
+                is GameEvent.VictoryDialog -> {
+                    showVictoryDialog(event)
+                }
+
+                is GameEvent.GameOverDialog -> {
+                    showGameOverDialog(event)
+                }
+
+                is GameEvent.GameCompleteDialog -> {
+                    showGameCompleteDialog(event)
+                }
+
                 else -> {
                     // Empty
                 }
@@ -53,19 +70,20 @@ class GameEventDialogs(private val activity: GameActivity) {
 
     private fun GameActivity.showNewGameDialog() {
         lifecycleScope.launch {
-            GameOverDialogFragment.newInstance(
-                CommonDialogState(
-                    gameResult = GameResult.Completed,
-                    showContinueButton = gameViewModel.hasUnknownMines(),
-                    rightMines = 0,
-                    totalMines = 0,
-                    time = gameViewModel.singleState().duration,
-                    received = 0,
-                    turn = -1,
-                ),
-            ).run {
-                showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
-            }
+            GameOverDialogFragment
+                .newInstance(
+                    CommonDialogState(
+                        gameResult = GameResult.Completed,
+                        showContinueButton = gameViewModel.hasUnknownMines(),
+                        rightMines = 0,
+                        totalMines = 0,
+                        time = gameViewModel.singleState().duration,
+                        received = 0,
+                        turn = -1,
+                    ),
+                ).run {
+                    showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
+                }
         }
     }
 
@@ -78,25 +96,26 @@ class GameEventDialogs(private val activity: GameActivity) {
 
                 gameAudioManager.pauseMusic()
 
-                WinGameDialogFragment.newInstance(
-                    CommonDialogState(
-                        gameResult = GameResult.Victory,
-                        showContinueButton = false,
-                        rightMines = event.rightMines,
-                        totalMines = event.totalMines,
-                        time = event.timestamp,
-                        received = event.receivedTips,
-                        turn = -1,
-                    ),
-                ).run {
-                    showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
+                WinGameDialogFragment
+                    .newInstance(
+                        CommonDialogState(
+                            gameResult = GameResult.Victory,
+                            showContinueButton = false,
+                            rightMines = event.rightMines,
+                            totalMines = event.totalMines,
+                            time = event.timestamp,
+                            received = event.receivedTips,
+                            turn = -1,
+                        ),
+                    ).run {
+                        showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
 
-                    dialog?.setOnDismissListener {
-                        if (!this@GameEventDialogs.activity.isFinishing) {
-                            reviewWrapper.startInAppReview(this@GameEventDialogs.activity)
+                        dialog?.setOnDismissListener {
+                            if (!this@GameEventDialogs.activity.isFinishing) {
+                                reviewWrapper.startInAppReview(this@GameEventDialogs.activity)
+                            }
                         }
                     }
-                }
             }
         } else {
             withContext(Dispatchers.Main) { showKonfettiView() }
@@ -109,19 +128,20 @@ class GameEventDialogs(private val activity: GameActivity) {
         if (preferencesRepository.showWindowsWhenFinishGame()) {
             lifecycleScope.launch {
                 delay(event.delayToShow)
-                GameOverDialogFragment.newInstance(
-                    CommonDialogState(
-                        gameResult = GameResult.GameOver,
-                        showContinueButton = gameViewModel.hasUnknownMines(),
-                        rightMines = event.rightMines,
-                        totalMines = event.totalMines,
-                        time = event.timestamp,
-                        received = event.receivedTips,
-                        turn = event.turn,
-                    ),
-                ).run {
-                    showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
-                }
+                GameOverDialogFragment
+                    .newInstance(
+                        CommonDialogState(
+                            gameResult = GameResult.GameOver,
+                            showContinueButton = gameViewModel.hasUnknownMines(),
+                            rightMines = event.rightMines,
+                            totalMines = event.totalMines,
+                            time = event.timestamp,
+                            received = event.receivedTips,
+                            turn = event.turn,
+                        ),
+                    ).run {
+                        showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
+                    }
             }
         } else {
             showEndGameToast(GameResult.GameOver)
@@ -132,25 +152,26 @@ class GameEventDialogs(private val activity: GameActivity) {
         if (preferencesRepository.showWindowsWhenFinishGame()) {
             lifecycleScope.launch {
                 delay(event.delayToShow)
-                GameOverDialogFragment.newInstance(
-                    CommonDialogState(
-                        gameResult = GameResult.Completed,
-                        showContinueButton = false,
-                        rightMines = event.rightMines,
-                        totalMines = event.totalMines,
-                        time = event.timestamp,
-                        received = event.receivedTips,
-                        turn = event.turn,
-                    ),
-                ).run {
-                    showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
+                GameOverDialogFragment
+                    .newInstance(
+                        CommonDialogState(
+                            gameResult = GameResult.Completed,
+                            showContinueButton = false,
+                            rightMines = event.rightMines,
+                            totalMines = event.totalMines,
+                            time = event.timestamp,
+                            received = event.receivedTips,
+                            turn = event.turn,
+                        ),
+                    ).run {
+                        showAllowingStateLoss(supportFragmentManager, WinGameDialogFragment.TAG)
 
-                    dialog?.setOnDismissListener {
-                        if (!this@GameEventDialogs.activity.isFinishing) {
-                            reviewWrapper.startInAppReview(this@GameEventDialogs.activity)
+                        dialog?.setOnDismissListener {
+                            if (!this@GameEventDialogs.activity.isFinishing) {
+                                reviewWrapper.startInAppReview(this@GameEventDialogs.activity)
+                            }
                         }
                     }
-                }
             }
         } else {
             showEndGameToast(GameResult.Completed)
@@ -168,16 +189,17 @@ class GameEventDialogs(private val activity: GameActivity) {
             }
 
         warning =
-            Snackbar.make(
-                binding.root,
-                message,
-                Snackbar.LENGTH_LONG,
-            ).apply {
-                if (preferencesRepository.controlStyle() == ControlStyle.SwitchMarkOpen) {
-                    view.translationY = -dpToPx(GameActivity.TOAST_OFFSET_Y_DP).toFloat()
+            Snackbar
+                .make(
+                    binding.root,
+                    message,
+                    Snackbar.LENGTH_LONG,
+                ).apply {
+                    if (preferencesRepository.controlStyle() == ControlStyle.SwitchMarkOpen) {
+                        view.translationY = -dpToPx(GameActivity.TOAST_OFFSET_Y_DP).toFloat()
+                    }
+                    show()
                 }
-                show()
-            }
     }
 
     private fun GameActivity.showKonfettiView() {

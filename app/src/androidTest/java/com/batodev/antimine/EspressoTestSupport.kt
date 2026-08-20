@@ -31,7 +31,10 @@ import org.junit.Assert.assertEquals
 // button that could kill the instrumentation process, so the standard
 // press-back-and-expect-DESTROYED pattern is safe to use directly.
 
-fun assertEventuallyDestroyed(scenario: ActivityScenario<*>, timeoutMs: Long = 8_000) {
+fun assertEventuallyDestroyed(
+    scenario: ActivityScenario<*>,
+    timeoutMs: Long = 8_000,
+) {
     val deadline = System.currentTimeMillis() + timeoutMs
     while (scenario.state != Lifecycle.State.DESTROYED && System.currentTimeMillis() < deadline) {
         Thread.sleep(50)
@@ -54,13 +57,19 @@ fun assertBackPressFinishesScenario(scenario: ActivityScenario<*>) {
  * robust than assuming Espresso's default idling always catches up with
  * coroutine-dispatched navigation immediately.
  */
-fun waitFor(millis: Long): ViewAction = object : ViewAction {
-    override fun getConstraints(): Matcher<View> = isRoot()
-    override fun getDescription(): String = "wait for ${millis}ms while pumping the main looper"
-    override fun perform(uiController: UiController, view: View) {
-        uiController.loopMainThreadForAtLeast(millis)
+fun waitFor(millis: Long): ViewAction =
+    object : ViewAction {
+        override fun getConstraints(): Matcher<View> = isRoot()
+
+        override fun getDescription(): String = "wait for ${millis}ms while pumping the main looper"
+
+        override fun perform(
+            uiController: UiController,
+            view: View,
+        ) {
+            uiController.loopMainThreadForAtLeast(millis)
+        }
     }
-}
 
 /**
  * GameActivity.onOpenAppActions() shows a "Do you know how to play
@@ -73,15 +82,21 @@ fun waitFor(millis: Long): ViewAction = object : ViewAction {
  * own root once it's focused, so this reaches the dialog's Close button
  * directly without waiting out a "view never appears" matcher timeout.
  */
-fun dismissTutorialDialogIfShown(): ViewAction = object : ViewAction {
-    override fun getConstraints(): Matcher<View> = isRoot()
-    override fun getDescription(): String =
-        "dismiss the 'do you know how to play' tutorial prompt dialog via its Close button, if currently showing"
-    override fun perform(uiController: UiController, view: View) {
-        val closeButton = view.findViewById<View>(android.R.id.button2)
-        if (closeButton != null && closeButton.isShown) {
-            closeButton.performClick()
-            uiController.loopMainThreadUntilIdle()
+fun dismissTutorialDialogIfShown(): ViewAction =
+    object : ViewAction {
+        override fun getConstraints(): Matcher<View> = isRoot()
+
+        override fun getDescription(): String =
+            "dismiss the 'do you know how to play' tutorial prompt dialog via its Close button, if currently showing"
+
+        override fun perform(
+            uiController: UiController,
+            view: View,
+        ) {
+            val closeButton = view.findViewById<View>(android.R.id.button2)
+            if (closeButton != null && closeButton.isShown) {
+                closeButton.performClick()
+                uiController.loopMainThreadUntilIdle()
+            }
         }
     }
-}

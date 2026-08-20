@@ -11,7 +11,6 @@ import dev.lucasnlm.antimine.licenses.viewmodel.License
 internal class LicensesAdapter(
     private val licenses: List<License>,
 ) : RecyclerView.Adapter<ThirdPartyViewHolder>() {
-
     override fun getItemCount(): Int = licenses.size
 
     override fun onCreateViewHolder(

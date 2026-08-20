@@ -21,10 +21,12 @@ class TipRepositoryImpl(
                 preferencesRepository.setTips(tips - 1)
                 true
             }
+
             preferencesRepository.getExtraTips() >= 1 -> {
                 preferencesRepository.setExtraTips(extra - 1)
                 true
             }
+
             else -> {
                 false
             }
@@ -39,13 +41,9 @@ class TipRepositoryImpl(
         preferencesRepository.setTips(newValue)
     }
 
-    override fun getTotalTips(): Int {
-        return preferencesRepository.getExtraTips() + preferencesRepository.getTips()
-    }
+    override fun getTotalTips(): Int = preferencesRepository.getExtraTips() + preferencesRepository.getTips()
 
-    private fun getMaxTips(): Int {
-        return if (featureFlagManager.isFoss) MAX_TIPS_FOSS else MAX_TIPS_CLOSED
-    }
+    private fun getMaxTips(): Int = if (featureFlagManager.isFoss) MAX_TIPS_FOSS else MAX_TIPS_CLOSED
 
     companion object {
         private const val MAX_TIPS_FOSS = 100

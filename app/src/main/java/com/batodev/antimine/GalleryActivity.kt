@@ -37,7 +37,7 @@ class GalleryActivity : Activity() {
         pics.addAll(settingsHelper.preferences.uncoveredPics)
         if (!pics.isEmpty()) {
             findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
-                ImageHelper.findBitmap(pics[settingsHelper.preferences.lastSeenGalleryPic], this)
+                ImageHelper.findBitmap(pics[settingsHelper.preferences.lastSeenGalleryPic], this),
             )
             currentPic = pics[settingsHelper.preferences.lastSeenGalleryPic]
         }
@@ -47,7 +47,7 @@ class GalleryActivity : Activity() {
         val indexOf = pics.indexOf(currentPic)
         if (indexOf > 0) {
             findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
-                ImageHelper.findBitmap(pics[indexOf - 1], this)
+                ImageHelper.findBitmap(pics[indexOf - 1], this),
             )
             currentPic = pics[indexOf - 1]
             saveLastSeenPic(indexOf - 1)
@@ -59,7 +59,7 @@ class GalleryActivity : Activity() {
         val indexOf = pics.indexOf(currentPic)
         if (indexOf < pics.size - 1) {
             findViewById<PhotoView>(R.id.gallery_activity_background).setImageBitmap(
-                ImageHelper.findBitmap(pics[indexOf + 1], this)
+                ImageHelper.findBitmap(pics[indexOf + 1], this),
             )
             currentPic = pics[indexOf + 1]
             saveLastSeenPic(indexOf + 1)
@@ -71,10 +71,11 @@ class GalleryActivity : Activity() {
         val scope = CoroutineScope(Dispatchers.IO)
         val settingsHelper = SettingsHelper(this)
         scope.launch {
-            val result = async {
-                settingsHelper.preferences.lastSeenGalleryPic = indexOf
-                settingsHelper.savePreferences()
-            }
+            val result =
+                async {
+                    settingsHelper.preferences.lastSeenGalleryPic = indexOf
+                    settingsHelper.savePreferences()
+                }
             val data = result.await()
             Log.d(GalleryActivity::class.java.simpleName, "$data")
         }

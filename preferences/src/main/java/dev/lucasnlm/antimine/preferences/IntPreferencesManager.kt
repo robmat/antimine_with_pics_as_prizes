@@ -28,13 +28,12 @@ internal class IntPreferencesManagerImpl(
         defaultValue: Int,
     ) = preferences.getInt(key, defaultValue)
 
-    override fun getIntOrNull(key: String): Int? {
-        return if (preferences.contains(key)) {
+    override fun getIntOrNull(key: String): Int? =
+        if (preferences.contains(key)) {
             preferences.getInt(key, -1)
         } else {
             null
         }
-    }
 
     override fun putInt(
         key: String,

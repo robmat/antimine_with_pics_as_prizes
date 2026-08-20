@@ -29,7 +29,7 @@ fun GameController.getSaveState(
         status = saveStatus,
         field = field.toList(),
         actions = actions,
-        prizeImage = prizeImage
+        prizeImage = prizeImage,
     )
 }
 

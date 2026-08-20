@@ -33,7 +33,5 @@ class NoAdsManager : AdsManager {
     override fun createBannerAd(
         context: Context,
         onError: (() -> Unit)?,
-    ): View? {
-        return null
-    }
+    ): View? = null
 }

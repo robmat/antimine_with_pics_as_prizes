@@ -17,7 +17,10 @@ import kotlinx.coroutines.withContext
  * Save/load/retry/pause entry points, split out of [GameViewModel] - see its
  * class doc.
  */
-suspend fun GameViewModel.retryGame(uid: Int, context: AppCompatActivity): Minefield =
+suspend fun GameViewModel.retryGame(
+    uid: Int,
+    context: AppCompatActivity,
+): Minefield =
     withContext(Dispatchers.IO) {
         val save = savesRepository.loadFromId(uid)
 

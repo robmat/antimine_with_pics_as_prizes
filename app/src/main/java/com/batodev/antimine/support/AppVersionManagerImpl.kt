@@ -19,7 +19,5 @@ class AppVersionManagerImpl(
         return valid
     }
 
-    override fun isWatch(): Boolean {
-        return false
-    }
+    override fun isWatch(): Boolean = false
 }

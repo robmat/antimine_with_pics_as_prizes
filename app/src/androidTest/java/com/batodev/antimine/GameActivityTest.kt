@@ -21,12 +21,12 @@ import org.junit.runner.RunWith
 // dialog) works safely.
 @RunWith(AndroidJUnit4::class)
 class GameActivityTest {
-
     private fun launchWithDifficulty(): ActivityScenario<GameActivity> {
-        val intent = Intent(
-            InstrumentationRegistry.getInstrumentation().targetContext,
-            GameActivity::class.java
-        ).apply { putExtra(GameActivity.DIFFICULTY, Difficulty.Beginner) }
+        val intent =
+            Intent(
+                InstrumentationRegistry.getInstrumentation().targetContext,
+                GameActivity::class.java,
+            ).apply { putExtra(GameActivity.DIFFICULTY, Difficulty.Beginner) }
         return ActivityScenario.launch(intent)
     }
 

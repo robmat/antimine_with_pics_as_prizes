@@ -87,10 +87,21 @@ internal fun WearGameActivity.updateTimerLabel(state: GameState) {
 internal fun WearGameActivity.handleGameEvent(event: GameEvent) {
     when (event) {
         is GameEvent.ShowNoGuessFailWarning -> {}
+
         is GameEvent.ShowNewGameDialog -> {}
-        is GameEvent.VictoryDialog -> startDialogActivity(VictoryActivity::class.java)
-        is GameEvent.GameOverDialog -> startDialogActivity(GameOverActivity::class.java)
-        is GameEvent.GameCompleteDialog -> startDialogActivity(VictoryActivity::class.java)
+
+        is GameEvent.VictoryDialog -> {
+            startDialogActivity(VictoryActivity::class.java)
+        }
+
+        is GameEvent.GameOverDialog -> {
+            startDialogActivity(GameOverActivity::class.java)
+        }
+
+        is GameEvent.GameCompleteDialog -> {
+            startDialogActivity(VictoryActivity::class.java)
+        }
+
         else -> {
             // Empty
         }

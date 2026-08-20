@@ -23,7 +23,9 @@ import dev.lucasnlm.antimine.i18n.R as i18n
  * since refreshTipShortcutIcon() alone was too long, too complex, and nested
  * too deeply.
  */
-class TipShortcutController(private val activity: GameActivity) {
+class TipShortcutController(
+    private val activity: GameActivity,
+) {
     fun refresh() {
         val dt = System.currentTimeMillis() - activity.preferencesRepository.lastHelpUsed()
         val canUseHelpNow = dt > GameActivity.TIP_COOLDOWN_MS

@@ -40,6 +40,4 @@ private fun Int.fillEntries(): Map<String, Boolean> =
         AtlasNames.FILL_BOTTOM_RIGHT to (bottom() && right() && bottomRight()),
     )
 
-fun Int.toAtlasNames(): Map<String, Boolean> {
-    return edgeEntries() + cornerEntries() + borderCornerEntries() + fillEntries()
-}
+fun Int.toAtlasNames(): Map<String, Boolean> = edgeEntries() + cornerEntries() + borderCornerEntries() + fillEntries()

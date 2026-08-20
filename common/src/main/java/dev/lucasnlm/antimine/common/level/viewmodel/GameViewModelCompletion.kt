@@ -7,9 +7,7 @@ import dev.lucasnlm.antimine.common.level.logic.hasIsolatedAllMines
  * End-of-turn completion handling (victory / mistakes / game-over dialogs),
  * split out of [GameViewModel] - see its class doc.
  */
-internal fun GameViewModel.isCompletedWithMistakes(): Boolean {
-    return gameController.hadMistakes() && gameController.hasIsolatedAllMines()
-}
+internal fun GameViewModel.isCompletedWithMistakes(): Boolean = gameController.hadMistakes() && gameController.hasIsolatedAllMines()
 
 private suspend fun GameViewModel.onVictoryCompletion() {
     onVictory(context)

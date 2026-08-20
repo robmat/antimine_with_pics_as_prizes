@@ -11,9 +11,7 @@ private class TestPreferenceManager : PreferencesManager {
     override fun getBoolean(
         key: String,
         defaultValue: Boolean,
-    ): Boolean {
-        return values.getOrDefault(key, defaultValue) as Boolean
-    }
+    ): Boolean = values.getOrDefault(key, defaultValue) as Boolean
 
     override fun putBoolean(
         key: String,
@@ -25,13 +23,9 @@ private class TestPreferenceManager : PreferencesManager {
     override fun getInt(
         key: String,
         defaultValue: Int,
-    ): Int {
-        return values.getOrDefault(key, defaultValue) as Int
-    }
+    ): Int = values.getOrDefault(key, defaultValue) as Int
 
-    override fun getIntOrNull(key: String): Int? {
-        return values[key] as? Int
-    }
+    override fun getIntOrNull(key: String): Int? = values[key] as? Int
 
     override fun putInt(
         key: String,
@@ -40,9 +34,7 @@ private class TestPreferenceManager : PreferencesManager {
         values[key] = value
     }
 
-    override fun getString(key: String): String? {
-        return values[key] as? String
-    }
+    override fun getString(key: String): String? = values[key] as? String
 
     override fun putString(
         key: String,
@@ -59,20 +51,14 @@ private class TestPreferenceManager : PreferencesManager {
         values.clear()
     }
 
-    override fun contains(key: String): Boolean {
-        return values.containsKey(key)
-    }
+    override fun contains(key: String): Boolean = values.containsKey(key)
 
-    override fun toMap(): Map<String, Any?> {
-        return values.toMap()
-    }
+    override fun toMap(): Map<String, Any?> = values.toMap()
 
     override fun getLong(
         key: String,
         defaultValue: Long,
-    ): Long {
-        return values.getOrDefault(key, defaultValue) as Long
-    }
+    ): Long = values.getOrDefault(key, defaultValue) as Long
 
     override fun putLong(
         key: String,
@@ -81,9 +67,7 @@ private class TestPreferenceManager : PreferencesManager {
         values[key] = value
     }
 
-    override fun getLongOrNull(key: String): Long? {
-        return values[key] as? Long
-    }
+    override fun getLongOrNull(key: String): Long? = values[key] as? Long
 }
 
 class PreferencesRepositoryTest {

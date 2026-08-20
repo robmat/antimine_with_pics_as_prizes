@@ -125,6 +125,7 @@ class AreaActor(
                         ),
                     )
                 }
+
                 else -> {
                     AREA_NO_FORM
                 }
@@ -226,8 +227,6 @@ class AreaActor(
         const val FOCUS_DIM_BASE = 0.8f
         const val PRESSED_UNCOVERED_ALPHA = 0.25f
 
-        private fun Area.canLinkTo(area: Area): Boolean {
-            return isCovered && mark.ligatureMask == area.mark.ligatureMask
-        }
+        private fun Area.canLinkTo(area: Area): Boolean = isCovered && mark.ligatureMask == area.mark.ligatureMask
     }
 }

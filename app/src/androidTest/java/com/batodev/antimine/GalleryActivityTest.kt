@@ -29,14 +29,14 @@ import org.junit.runner.RunWith
 // what's actually being tested.
 @RunWith(AndroidJUnit4::class)
 class GalleryActivityTest {
-
     private lateinit var images: List<String>
 
     @Before
     fun setUp() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         images = context.assets.list(PRIZE_IMAGES)!!.take(3)
-        context.getSharedPreferences("SettingsHelper", android.content.Context.MODE_PRIVATE)
+        context
+            .getSharedPreferences("SettingsHelper", android.content.Context.MODE_PRIVATE)
             .edit()
             .putString("uncoveredPics", images.joinToString(","))
             .putInt("lastSeenGalleryPic", 0)
@@ -49,8 +49,7 @@ class GalleryActivityTest {
         Intents.release()
     }
 
-    private fun launch(): ActivityScenario<GalleryActivity> =
-        ActivityScenario.launch(GalleryActivity::class.java)
+    private fun launch(): ActivityScenario<GalleryActivity> = ActivityScenario.launch(GalleryActivity::class.java)
 
     @Test
     fun launchesShowingFirstImage() {

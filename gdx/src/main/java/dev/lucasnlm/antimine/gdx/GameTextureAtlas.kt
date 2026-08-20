@@ -12,15 +12,12 @@ object GameTextureAtlas {
     private fun gp(
         x: Int,
         y: Int,
-    ): GridPoint2 {
-        return GridPoint2(x, y)
-    }
+    ): GridPoint2 = GridPoint2(x, y)
 
-    private fun gridOf(vararg pairs: Pair<String, GridPoint2>): Map<String, GridPoint2> {
-        return pairs.associate { (key, value) ->
+    private fun gridOf(vararg pairs: Pair<String, GridPoint2>): Map<String, GridPoint2> =
+        pairs.associate { (key, value) ->
             key to value.set(value.x * TEXTURE_SIZE, value.y * TEXTURE_SIZE)
         }
-    }
 
     fun loadTextureAtlas(
         skinFile: String,

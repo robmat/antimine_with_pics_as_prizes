@@ -168,14 +168,16 @@ class GameControllerTest {
             withGameController { controller ->
                 assertFalse(controller.hasFlaggedAllMines())
 
-                controller.field()
+                controller
+                    .field()
                     .filter { it.hasMine }
                     .take(10)
                     .forEach { fakeLongPress(controller, it.id) }
 
                 assertFalse(controller.hasFlaggedAllMines())
 
-                controller.field()
+                controller
+                    .field()
                     .filter { it.hasMine }
                     .filter { it.mark.isNone() }
                     .forEach { fakeLongPress(controller, it.id) }
@@ -191,7 +193,8 @@ class GameControllerTest {
                 assertEquals(20, controller.remainingMines())
 
                 repeat(20) { flagCount ->
-                    controller.field()
+                    controller
+                        .field()
                         .filter { it.hasMine }
                         .take(flagCount)
                         .forEach {
@@ -212,10 +215,13 @@ class GameControllerTest {
                 assertFalse(controller.isGameOver())
 
                 val lastArea =
-                    controller.field()
-                        .last { !it.hasMine }.id
+                    controller
+                        .field()
+                        .last { !it.hasMine }
+                        .id
 
-                controller.field()
+                controller
+                    .field()
                     .filter { !it.hasMine }
                     .onEach {
                         fakeSingleClick(controller, it.id)
@@ -551,9 +557,7 @@ class GameControllerTest {
             }
         }
 
-    private fun GameController.at(index: Int): Area {
-        return this.field().first { it.id == index }
-    }
+    private fun GameController.at(index: Int): Area = this.field().first { it.id == index }
 
     private suspend fun fakeSingleClick(
         gameController: GameController,

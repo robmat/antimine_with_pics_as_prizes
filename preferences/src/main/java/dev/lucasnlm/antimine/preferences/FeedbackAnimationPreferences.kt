@@ -38,9 +38,8 @@ internal class FeedbackAnimationPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_VIBRATION, value)
     }
 
-    override fun getHapticFeedbackLevel(): Int {
-        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_VIBRATION_LEVEL, DEFAULT_HAPTIC_FEEDBACK_LEVEL)
-    }
+    override fun getHapticFeedbackLevel(): Int =
+        preferencesManager.getInt(PreferenceKeys.PREFERENCE_VIBRATION_LEVEL, DEFAULT_HAPTIC_FEEDBACK_LEVEL)
 
     override fun setHapticFeedbackLevel(value: Int) {
         val newValue = value.coerceIn(0, MAX_HAPTIC_FEEDBACK_LEVEL)
@@ -51,16 +50,13 @@ internal class FeedbackAnimationPreferencesImpl(
         preferencesManager.removeKey(PreferenceKeys.PREFERENCE_VIBRATION_LEVEL)
     }
 
-    override fun useAnimations(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_ANIMATION, true)
-    }
+    override fun useAnimations(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_ANIMATION, true)
 
     override fun setAnimations(enabled: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_ANIMATION, enabled)
     }
 
-    override fun useQuestionMark(): Boolean =
-        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_QUESTION_MARK, false)
+    override fun useQuestionMark(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_QUESTION_MARK, false)
 
     override fun setQuestionMark(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_QUESTION_MARK, value)

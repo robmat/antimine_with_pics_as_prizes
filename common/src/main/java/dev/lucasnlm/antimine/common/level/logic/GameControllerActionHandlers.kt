@@ -68,12 +68,15 @@ private fun GameController.handleSelectedSubAction(
                 minefieldHandler.removeMarkAt(target.id)
             }
         }
+
         Action.SwitchMark -> {
             minefieldHandler.switchMarkAt(target.id)
         }
+
         Action.QuestionMark -> {
             minefieldHandler.toggleMarkAt(target.id, Mark.Question)
         }
+
         else -> {
             // Unexpected Action. Ignore.
         }
@@ -99,10 +102,22 @@ internal fun GameController.handleSubsequentAction(
     val minefieldHandler = newMinefieldHandler()
 
     when (action) {
-        Action.OpenTile -> handleOpenTileAction(minefieldHandler, target)
-        Action.SwitchMark -> handleSwitchMarkAction(minefieldHandler, target)
-        Action.OpenNeighbors -> handleOpenNeighborsAction(minefieldHandler, target)
-        Action.OpenOrMark -> handleOpenOrMarkAction(minefieldHandler, target)
+        Action.OpenTile -> {
+            handleOpenTileAction(minefieldHandler, target)
+        }
+
+        Action.SwitchMark -> {
+            handleSwitchMarkAction(minefieldHandler, target)
+        }
+
+        Action.OpenNeighbors -> {
+            handleOpenNeighborsAction(minefieldHandler, target)
+        }
+
+        Action.OpenOrMark -> {
+            handleOpenOrMarkAction(minefieldHandler, target)
+        }
+
         else -> {}
     }
 

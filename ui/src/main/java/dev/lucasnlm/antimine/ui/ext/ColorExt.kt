@@ -23,8 +23,8 @@ fun Int.alpha(): Float = Color.alpha(this) / MAX_COLOR_VALUE_FLOAT
  * @param alpha The alpha value of the color, between 0 and 255
  */
 @ColorInt
-fun Int.toAndroidColor(alpha: Int? = null): Int {
-    return if (alpha == null) {
+fun Int.toAndroidColor(alpha: Int? = null): Int =
+    if (alpha == null) {
         Color.rgb(
             Color.red(this),
             Color.green(this),
@@ -38,15 +38,14 @@ fun Int.toAndroidColor(alpha: Int? = null): Int {
             Color.blue(this),
         )
     }
-}
 
 /**
  * Convert a Int to a Android Color, inverting the color.
  * @param alpha The alpha value of the color, between 0 and 255
  */
 @ColorInt
-fun Int.toInvertedAndroidColor(alpha: Int? = null): Int {
-    return if (alpha == null) {
+fun Int.toInvertedAndroidColor(alpha: Int? = null): Int =
+    if (alpha == null) {
         Color.rgb(
             MAX_COLOR_VALUE_INT - Color.red(this),
             MAX_COLOR_VALUE_INT - Color.green(this),
@@ -60,4 +59,3 @@ fun Int.toInvertedAndroidColor(alpha: Int? = null): Int {
             MAX_COLOR_VALUE_INT - Color.blue(this),
         )
     }
-}

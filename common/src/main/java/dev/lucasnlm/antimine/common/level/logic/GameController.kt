@@ -50,7 +50,7 @@ class GameController {
         useSimonTatham: Boolean,
         saveId: Int? = null,
         onCreateUnsafeLevel: (() -> Unit)? = null,
-        prizeImage: String
+        prizeImage: String,
     ) {
         val creationSeed = minefield.seed ?: seed
         val shouldUseSimonTatham = useSimonTatham

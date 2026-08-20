@@ -51,9 +51,7 @@ class GameOverDialogFragment : CommonGameDialogFragment() {
         dismissAllowingStateLoss()
     }
 
-    override fun canShowMusicBanner(): Boolean {
-        return dialogViewModel.singleState().showMusicDialog
-    }
+    override fun canShowMusicBanner(): Boolean = dialogViewModel.singleState().showMusicDialog
 
     private fun GameOverDialogBinding.bindNewGameButton(context: Context) {
         newGame.setOnClickListener {
@@ -135,7 +133,10 @@ class GameOverDialogFragment : CommonGameDialogFragment() {
         }
     }
 
-    private fun GameOverDialogBinding.bindTutorialButton(context: Context, state: EndGameDialogState) {
+    private fun GameOverDialogBinding.bindTutorialButton(
+        context: Context,
+        state: EndGameDialogState,
+    ) {
         if (state.showTutorial) {
             tutorial.isVisible = true
             tutorial.setOnClickListener {

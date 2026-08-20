@@ -9,9 +9,9 @@ import android.widget.FrameLayout
  * (plain XML inflation, and manual instantiation) needed by every custom view here.
  */
 abstract class BaseFrameLayout
-@JvmOverloads
-constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
-) : FrameLayout(context, attrs, defStyleAttr)
+    @JvmOverloads
+    constructor(
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0,
+    ) : FrameLayout(context, attrs, defStyleAttr)

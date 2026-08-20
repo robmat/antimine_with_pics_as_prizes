@@ -13,12 +13,11 @@ class LocalizationViewModel(
     private val audioManager: GameAudioManager,
     private val gameLocaleManager: GameLocaleManager,
 ) : IntentViewModel<LocalizationEvent, LocalizationState>() {
-    override fun initialState(): LocalizationState {
-        return LocalizationState(
+    override fun initialState(): LocalizationState =
+        LocalizationState(
             loading = true,
             languages = listOf(),
         )
-    }
 
     override suspend fun mapEventToState(event: LocalizationEvent) =
         flow {
@@ -28,6 +27,7 @@ class LocalizationViewModel(
                     val languages = loadLocaleList()
                     emit(state.copy(loading = false, languages = languages))
                 }
+
                 is LocalizationEvent.SetLanguage -> {
                     val locale = event.locale.toLanguageTag()
                     withContext(Dispatchers.Main) {
@@ -37,37 +37,36 @@ class LocalizationViewModel(
                         sendSideEffect(LocalizationEvent.FinishActivity)
                     }
                 }
+
                 else -> {
                     // Ignore
                 }
             }
         }
 
-    private fun appLocales(): List<Locale> {
-        return gameLocaleManager.getAllGameLocaleTags().map {
+    private fun appLocales(): List<Locale> =
+        gameLocaleManager.getAllGameLocaleTags().map {
             Locale.Builder().setLanguageTag(it).build()
         }
-    }
 
-    private fun Locale.getNativeName(): String {
-        return getDisplayName(this).replaceFirstChar {
+    private fun Locale.getNativeName(): String =
+        getDisplayName(this).replaceFirstChar {
             if (it.isLowerCase()) {
                 it.titlecase(this)
             } else {
                 it.toString()
             }
         }
-    }
 
-    private fun loadLocaleList(): List<GameLanguage> {
-        return appLocales().mapIndexed { index, locale ->
-            GameLanguage(
-                id = index,
-                locale = locale,
-                name = locale.getNativeName(),
-            )
-        }.sortedBy {
-            it.name
-        }
-    }
+    private fun loadLocaleList(): List<GameLanguage> =
+        appLocales()
+            .mapIndexed { index, locale ->
+                GameLanguage(
+                    id = index,
+                    locale = locale,
+                    name = locale.getNativeName(),
+                )
+            }.sortedBy {
+                it.name
+            }
 }

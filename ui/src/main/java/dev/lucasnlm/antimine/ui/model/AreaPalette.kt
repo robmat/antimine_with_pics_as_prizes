@@ -21,8 +21,8 @@ data class AreaPalette(
     @ColorInt val focus: Int,
 )
 
-fun AreaPalette.minesAround(index: Int): Int {
-    return listOf(
+fun AreaPalette.minesAround(index: Int): Int =
+    listOf(
         minesAround1,
         minesAround2,
         minesAround3,
@@ -32,4 +32,3 @@ fun AreaPalette.minesAround(index: Int): Int {
         minesAround7,
         minesAround8,
     )[index]
-}

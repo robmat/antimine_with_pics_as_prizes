@@ -25,17 +25,11 @@ class LocalizationItemAdapter(
         )
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return 0
-    }
+    override fun getItemViewType(position: Int): Int = 0
 
-    override fun getItemId(position: Int): Long {
-        return gameLanguages[position].id.toLong()
-    }
+    override fun getItemId(position: Int): Long = gameLanguages[position].id.toLong()
 
-    override fun getItemCount(): Int {
-        return gameLanguages.size
-    }
+    override fun getItemCount(): Int = gameLanguages.size
 
     override fun onBindViewHolder(
         holder: LocalizationItemViewHolder,

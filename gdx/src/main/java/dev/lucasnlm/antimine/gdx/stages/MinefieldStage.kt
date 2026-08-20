@@ -65,14 +65,13 @@ class MinefieldStage(
                     y: Float,
                     pointer: Int,
                     button: Int,
-                ): Boolean {
-                    return if (event?.target is Group) {
+                ): Boolean =
+                    if (event?.target is Group) {
                         event.cancel()
                         true
                     } else {
                         false
                     }
-                }
             },
         )
 
@@ -100,7 +99,10 @@ class MinefieldStage(
                     theme.palette.background.toInverseBackOrWhite(LIGHT_THEME_BG_ALPHA_FACTOR * zoomLevelAlpha)
                 }
             coveredAreaColor = theme.palette.covered.toGdxColor(1.0f)
-            coveredMarkedAreaColor = theme.palette.covered.toGdxColor(1.0f).dim(MARKED_AREA_DIM)
+            coveredMarkedAreaColor =
+                theme.palette.covered
+                    .toGdxColor(1.0f)
+                    .dim(MARKED_AREA_DIM)
             markColor =
                 if (canTintAreas) {
                     theme.palette.covered.toInverseBackOrWhite(TINTED_MARK_ALPHA)
@@ -147,8 +149,8 @@ class MinefieldStage(
         screenX: Int,
         screenY: Int,
         pointer: Int,
-    ): Boolean {
-        return minefieldSize?.let {
+    ): Boolean =
+        minefieldSize?.let {
             val dx = Gdx.input.deltaX.toFloat()
             val dy = Gdx.input.deltaY.toFloat()
 
@@ -170,7 +172,6 @@ class MinefieldStage(
 
             true
         } != null
-    }
 
     fun updateActionSettings(actionSettings: ActionSettings) {
         this.actionSettings = actionSettings

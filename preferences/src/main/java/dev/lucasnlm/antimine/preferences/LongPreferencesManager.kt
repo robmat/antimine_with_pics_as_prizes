@@ -33,11 +33,10 @@ internal class LongPreferencesManagerImpl(
         value: Long,
     ) = preferences.edit { putLong(key, value) }
 
-    override fun getLongOrNull(key: String): Long? {
-        return if (preferences.contains(key)) {
+    override fun getLongOrNull(key: String): Long? =
+        if (preferences.contains(key)) {
             preferences.getLong(key, -1)
         } else {
             null
         }
-    }
 }

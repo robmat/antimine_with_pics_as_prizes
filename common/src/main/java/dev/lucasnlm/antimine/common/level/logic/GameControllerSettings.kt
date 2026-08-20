@@ -38,6 +38,4 @@ fun GameController.increaseErrorTolerance(value: Int = 1) {
 
 fun GameController.getErrorTolerance(): Int = errorTolerance
 
-fun GameController.hadMistakes(): Boolean {
-    return errorTolerance != 0
-}
+fun GameController.hadMistakes(): Boolean = errorTolerance != 0

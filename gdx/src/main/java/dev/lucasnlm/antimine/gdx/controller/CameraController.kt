@@ -20,14 +20,13 @@ class CameraController(
         min: Float,
         max: Float,
         default: Float?,
-    ): Float {
-        return if (min < max) {
+    ): Float =
+        if (min < max) {
             value.coerceIn(min, max)
         } else {
             // No need to limit.
             default ?: value
         }
-    }
 
     fun act(minefieldSize: SizeF) {
         val cameraPosition = camera.position

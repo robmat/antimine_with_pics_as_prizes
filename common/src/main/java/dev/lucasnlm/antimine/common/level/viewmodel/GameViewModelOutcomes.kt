@@ -56,9 +56,7 @@ internal fun GameViewModel.addNewTip(amount: Int) {
     tipRepository.increaseTip(amount.coerceAtLeast(0))
 }
 
-fun GameViewModel.getTips(): Int {
-    return tipRepository.getTotalTips()
-}
+fun GameViewModel.getTips(): Int = tipRepository.getTotalTips()
 
 internal suspend fun GameViewModel.onVictory(context: Context) {
     withContext(Dispatchers.IO) {
@@ -112,8 +110,8 @@ internal suspend fun GameViewModel.onVictory(context: Context) {
     }
 }
 
-internal fun GameViewModel.calcRewardHints(): Int {
-    return if (clock.time() > GameViewModel.MIN_REWARD_GAME_SECONDS && preferencesRepository.isPremiumEnabled()) {
+internal fun GameViewModel.calcRewardHints(): Int =
+    if (clock.time() > GameViewModel.MIN_REWARD_GAME_SECONDS && preferencesRepository.isPremiumEnabled()) {
         val rewardedHints =
             if (isCompletedWithMistakes()) {
                 (gameState.minefield.mines * GameViewModel.REWARD_RATIO_WITH_MISTAKES)
@@ -125,4 +123,3 @@ internal fun GameViewModel.calcRewardHints(): Int {
     } else {
         0
     }
-}

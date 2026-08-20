@@ -13,7 +13,6 @@ class HistoryViewModel(
     private val savesRepository: SavesRepository,
     private val audioManager: GameAudioManager,
 ) : IntentViewModel<HistoryEvent, HistoryState>() {
-
     override fun initialState() =
         HistoryState(
             saveList = listOf(),
@@ -25,9 +24,11 @@ class HistoryViewModel(
             is HistoryEvent.LoadSave -> {
                 loadGame(event.id)
             }
+
             is HistoryEvent.ReplaySave -> {
                 replayGame(event.id)
             }
+
             else -> {
             }
         }
@@ -41,6 +42,7 @@ class HistoryViewModel(
                     val newSaveList = savesRepository.getAllSaves().sortedByDescending { it.uid }
                     emit(state.copy(saveList = newSaveList, loading = false))
                 }
+
                 else -> {
                 }
             }

@@ -30,13 +30,9 @@ class ControlTypeListAdapter(
         )
     }
 
-    override fun getItemCount(): Int {
-        return controlTypeItemList.size
-    }
+    override fun getItemCount(): Int = controlTypeItemList.size
 
-    override fun getItemId(position: Int): Long {
-        return controlTypeItemList[position].id
-    }
+    override fun getItemId(position: Int): Long = controlTypeItemList[position].id
 
     override fun onBindViewHolder(
         holder: RecyclerViewHolder,

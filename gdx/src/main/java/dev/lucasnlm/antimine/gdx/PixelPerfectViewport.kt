@@ -3,7 +3,10 @@ package dev.lucasnlm.antimine.gdx
 import com.badlogic.gdx.utils.viewport.FitViewport
 import kotlin.math.floor
 
-class PixelPerfectViewport(worldWidth: Float, worldHeight: Float) : FitViewport(worldWidth, worldHeight) {
+class PixelPerfectViewport(
+    worldWidth: Float,
+    worldHeight: Float,
+) : FitViewport(worldWidth, worldHeight) {
     override fun update(
         screenWidth: Int,
         screenHeight: Int,

@@ -9,19 +9,17 @@ class GameAudioManagerImpl(
 ) : GameAudioManager,
     MusicPlayback by MusicController(SoundAssetPlayer(context, preferencesRepository), preferencesRepository),
     SoundEffects by SoundEffectPlayerImpl(SoundAssetPlayer(context, preferencesRepository)) {
-
     override fun free() {
         stopMusic()
     }
 
-    override fun getComposerData(): List<ComposerData> {
-        return listOf(
+    override fun getComposerData(): List<ComposerData> =
+        listOf(
             ComposerData(
                 composer = "Tatyana Jacques",
                 composerLink = "https://open.spotify.com/artist/5Z1PXKko20wSH0yFr9HtNr",
             ),
         )
-    }
 
     companion object {
         private fun filesCount(count: Int) = (0 until count)

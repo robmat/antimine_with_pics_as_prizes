@@ -10,6 +10,7 @@ inline fun <reified T : Serializable> Bundle.serializable(key: String): T? =
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
             getSerializable(key, T::class.java)
         }
+
         else -> {
             @Suppress("DEPRECATION")
             getSerializable(key) as? T
@@ -28,6 +29,4 @@ inline fun <reified T : Parcelable> Bundle.parcelable(key: String): T? =
         }
     }
 
-inline fun <reified T : Serializable> Bundle.serializableNonSafe(key: String): T {
-    return serializable(key)!!
-}
+inline fun <reified T : Serializable> Bundle.serializableNonSafe(key: String): T = serializable(key)!!

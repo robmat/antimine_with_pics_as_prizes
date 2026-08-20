@@ -39,5 +39,5 @@ data class Save(
     @ColumnInfo(name = "actions")
     val actions: Int,
     @ColumnInfo(name = "prizeImage")
-    val prizeImage: String
+    val prizeImage: String,
 )

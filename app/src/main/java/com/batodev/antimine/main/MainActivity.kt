@@ -134,7 +134,8 @@ class MainActivity : ThemedActivity() {
         val (name, icon) = shortcutLabelAndIconFor(difficulty) ?: return
 
         val shortcut =
-            ShortcutInfoCompat.Builder(applicationContext, difficulty.id)
+            ShortcutInfoCompat
+                .Builder(applicationContext, difficulty.id)
                 .setShortLabel(getString(name))
                 .setIcon(IconCompat.createWithResource(applicationContext, icon))
                 .setIntent(Intent(Intent.ACTION_VIEW, deeplink))
@@ -152,13 +153,13 @@ class MainActivity : ThemedActivity() {
         }
     }
 
-    internal fun getDifficultyExtra(difficulty: Difficulty): String {
-        return minefieldRepository.fromDifficulty(
-            difficulty,
-            dimensionRepository,
-            preferencesRepository,
-        ).toExtraString()
-    }
+    internal fun getDifficultyExtra(difficulty: Difficulty): String =
+        minefieldRepository
+            .fromDifficulty(
+                difficulty,
+                dimensionRepository,
+                preferencesRepository,
+            ).toExtraString()
 
     private fun redirectToGame() {
         val playGames = playGamesManager.hasGooglePlayGames()
@@ -169,35 +170,40 @@ class MainActivity : ThemedActivity() {
         }
     }
 
-    private fun Minefield.toExtraString(): String {
-        return getString(i18n.string.minefield_with_mines_size, width, height, mines)
-    }
+    private fun Minefield.toExtraString(): String = getString(i18n.string.minefield_with_mines_size, width, height, mines)
 
     private fun handleSideEffects(event: MainEvent) {
         when (event) {
             is MainEvent.ShowCustomDifficultyDialogEvent -> {
                 showCustomLevelDialog()
             }
+
             is MainEvent.GoToMainPageEvent -> {
                 viewPager.setCurrentItem(0, true)
             }
+
             is MainEvent.OpenActivity -> {
                 startActivity(event.intent)
             }
+
             is MainEvent.GoToSettingsPageEvent -> {
                 viewPager.setCurrentItem(1, true)
             }
+
             is MainEvent.ShowControlsEvent -> {
                 startActivity(Intent(this, ControlActivity::class.java))
             }
+
             is MainEvent.ShowGooglePlayGamesEvent -> {
                 playGamesFlow.show()
             }
+
             is MainEvent.Recreate -> {
                 finish()
                 startActivity(Intent(this, MainActivity::class.java))
                 compatOverridePendingTransition()
             }
+
             else -> {
             }
         }

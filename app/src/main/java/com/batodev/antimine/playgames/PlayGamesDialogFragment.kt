@@ -16,13 +16,13 @@ class PlayGamesDialogFragment : AppCompatDialogFragment() {
     private val playGamesViewModel by viewModel<PlayGamesViewModel>()
     private val adapter by lazy { PlayGamesAdapter(playGamesViewModel) }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(i18n.string.google_play_games)
-            setAdapter(adapter, null)
-            setPositiveButton(i18n.string.ok, null)
-        }.create()
-    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+        MaterialAlertDialogBuilder(requireContext())
+            .apply {
+                setTitle(i18n.string.google_play_games)
+                setAdapter(adapter, null)
+                setPositiveButton(i18n.string.ok, null)
+            }.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +34,7 @@ class PlayGamesDialogFragment : AppCompatDialogFragment() {
                             playGamesViewModel.openAchievements(activity)
                         }
                     }
+
                     is PlayGamesEvent.OpenLeaderboards -> {
                         activity?.let { activity ->
                             playGamesViewModel.openLeaderboards(activity)

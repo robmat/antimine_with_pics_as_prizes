@@ -103,7 +103,8 @@ class MinefieldHandlerTest {
         handleMinefield { handler ->
             handler.openAt(5, false, openNeighbors = true)
 
-            handler.result()
+            handler
+                .result()
                 .filterNeighborsOf(handler.result().first { it.id == 5 })
                 .filter { it.hasMine }
                 .forEach { handler.switchMarkAt(it.id) }
@@ -125,7 +126,8 @@ class MinefieldHandlerTest {
         handleMinefield(useQuestionMark = true) { handler ->
             handler.openAt(5, false, openNeighbors = false)
 
-            handler.result()
+            handler
+                .result()
                 .filterNeighborsOf(handler.result().first { it.id == 5 })
                 .filter { it.hasMine }
                 .forEach {

@@ -28,9 +28,7 @@ interface SupportHelpPreferences {
 internal class SupportHelpPreferencesImpl(
     private val preferencesManager: PreferencesManager,
 ) : SupportHelpPreferences {
-    override fun isPremiumEnabled(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_PREMIUM_FEATURES, false)
-    }
+    override fun isPremiumEnabled(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_PREMIUM_FEATURES, false)
 
     override fun setRequestDonation(request: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_REQUEST_DONATION, request)
@@ -44,27 +42,19 @@ internal class SupportHelpPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_SHOW_SUPPORT, show)
     }
 
-    override fun showSupport(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOW_SUPPORT, true)
-    }
+    override fun showSupport(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOW_SUPPORT, true)
 
-    override fun useHelp(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_USE_HINT, true)
-    }
+    override fun useHelp(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_USE_HINT, true)
 
     override fun setHelp(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_USE_HINT, value)
     }
 
-    override fun lastHelpUsed(): Long {
-        return preferencesManager.getLong(PreferenceKeys.PREFERENCE_LAST_HELP_USED, 0L)
-    }
+    override fun lastHelpUsed(): Long = preferencesManager.getLong(PreferenceKeys.PREFERENCE_LAST_HELP_USED, 0L)
 
     override fun refreshLastHelpUsed() {
         preferencesManager.putLong(PreferenceKeys.PREFERENCE_LAST_HELP_USED, System.currentTimeMillis())
     }
 
-    override fun useSimonTathamAlgorithm(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SIMON_TATHAM_ALGORITHM, true)
-    }
+    override fun useSimonTathamAlgorithm(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SIMON_TATHAM_ALGORITHM, true)
 }

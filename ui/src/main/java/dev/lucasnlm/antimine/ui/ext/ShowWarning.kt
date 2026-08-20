@@ -8,18 +8,18 @@ import dev.lucasnlm.antimine.core.dpToPx
 fun Activity.showWarning(
     @StringRes text: Int,
     isSwitchMarkOpen: Boolean = false,
-): Snackbar {
-    return Snackbar.make(
-        findViewById(android.R.id.content),
-        getString(text),
-        Snackbar.LENGTH_SHORT,
-    ).apply {
-        if (isSwitchMarkOpen) {
-            view.translationY = -dpToPx(SNACK_BAR_VERTICAL_OFFSET_DP).toFloat()
-        }
+): Snackbar =
+    Snackbar
+        .make(
+            findViewById(android.R.id.content),
+            getString(text),
+            Snackbar.LENGTH_SHORT,
+        ).apply {
+            if (isSwitchMarkOpen) {
+                view.translationY = -dpToPx(SNACK_BAR_VERTICAL_OFFSET_DP).toFloat()
+            }
 
-        show()
-    }
-}
+            show()
+        }
 
 private const val SNACK_BAR_VERTICAL_OFFSET_DP = 128

@@ -29,13 +29,20 @@ internal fun MinefieldStage.handleTapWithDoubleTapSupport(
     touchUpEvents: List<GdxEvent.TouchUpEvent>,
 ) {
     if (dt > actionSettings.doubleTapTimeout) {
-        touchUpEvents.groupBy { it.id }
+        touchUpEvents
+            .groupBy { it.id }
             .entries
             .first()
             .let {
                 when (it.value.count()) {
-                    1 -> callbacks.onSingleTap(it.key)
-                    2 -> callbacks.onDoubleTap(it.key)
+                    1 -> {
+                        callbacks.onSingleTap(it.key)
+                    }
+
+                    2 -> {
+                        callbacks.onDoubleTap(it.key)
+                    }
+
                     else -> {
                     }
                 }
@@ -54,7 +61,8 @@ internal fun MinefieldStage.handleTouchUp(
         if (actionSettings.handleDoubleTaps) {
             handleTapWithDoubleTapSupport(dt, touchUpEvents)
         } else {
-            touchUpEvents.map { it.id }
+            touchUpEvents
+                .map { it.id }
                 .first()
                 .run(callbacks.onSingleTap)
                 .also {
@@ -71,7 +79,8 @@ internal fun MinefieldStage.handleTouchDown(
     touchDownEvents: List<GdxEvent.TouchDownEvent>,
 ) {
     if (dt > actionSettings.longTapTimeout) {
-        touchDownEvents.map { it.id }
+        touchDownEvents
+            .map { it.id }
             .first()
             .run(callbacks.onLongTap)
             .also {

@@ -26,8 +26,8 @@ class CloudSaveManagerImpl(
         }
     }
 
-    private suspend fun getCloudSave(): CloudSave? {
-        return runCatching {
+    private suspend fun getCloudSave(): CloudSave? =
+        runCatching {
             val prefs = preferencesRepository
             val minId = prefs.getStatsBase()
             playGamesManager.playerId()?.let { playerId ->
@@ -57,7 +57,6 @@ class CloudSaveManagerImpl(
                 )
             }
         }.getOrNull()
-    }
 
     private fun Boolean.toInt() = if (this) 1 else 0
 }

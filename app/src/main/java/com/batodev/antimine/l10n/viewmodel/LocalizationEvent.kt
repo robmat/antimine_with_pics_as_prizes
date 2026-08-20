@@ -7,5 +7,7 @@ sealed class LocalizationEvent {
 
     data object FinishActivity : LocalizationEvent()
 
-    data class SetLanguage(val locale: Locale) : LocalizationEvent()
+    data class SetLanguage(
+        val locale: Locale,
+    ) : LocalizationEvent()
 }

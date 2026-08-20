@@ -15,7 +15,6 @@ class ThemeRepositoryImpl(
     internal val context: Context,
     internal val preferenceRepository: PreferencesRepository,
 ) : ThemeRepository {
-
     override fun getCustomTheme(): AppTheme? {
         val targetThemeId = preferenceRepository.themeId()
         return getAllThemes().firstOrNull { it.id == targetThemeId }
@@ -27,15 +26,11 @@ class ThemeRepositoryImpl(
         return allSkins.firstOrNull { it.id == targetSkinId } ?: allSkins.first()
     }
 
-    override fun getTheme(): AppTheme {
-        return getCustomTheme() ?: getDefaultTheme()
-    }
+    override fun getTheme(): AppTheme = getCustomTheme() ?: getDefaultTheme()
 
     override fun getAllThemes(): List<AppTheme> = listOf(buildSystemTheme()) + Themes.getAllCustom()
 
-    override fun getAllSkins(): List<AppSkin> {
-        return Skins.getAllSkins()
-    }
+    override fun getAllSkins(): List<AppSkin> = Skins.getAllSkins()
 
     override fun setTheme(themeId: Long) {
         preferenceRepository.useTheme(themeId)

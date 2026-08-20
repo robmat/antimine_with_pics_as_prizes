@@ -23,4 +23,6 @@ enum class Leaderboard(
     LegendaryBestTime(""),
 }
 
-interface PlayGamesManager : PlayGamesAuth, PlayGamesProgress
+interface PlayGamesManager :
+    PlayGamesAuth,
+    PlayGamesProgress

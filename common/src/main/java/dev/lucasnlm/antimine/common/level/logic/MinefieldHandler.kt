@@ -34,11 +34,11 @@ class MinefieldHandler(
                 field[index] =
                     it.copy(
                         mark =
-                        when (it.mark) {
-                            Mark.PurposefulNone, Mark.None -> Mark.Flag
-                            Mark.Flag -> if (useQuestionMark && !individualActions) Mark.Question else Mark.None
-                            Mark.Question -> Mark.None
-                        },
+                            when (it.mark) {
+                                Mark.PurposefulNone, Mark.None -> Mark.Flag
+                                Mark.Flag -> if (useQuestionMark && !individualActions) Mark.Question else Mark.None
+                                Mark.Question -> Mark.None
+                            },
                     )
             }
         }
@@ -80,11 +80,12 @@ class MinefieldHandler(
         val coveredNeighbors = neighbors.filter { it.isCovered }
         val minesAmongNeighbors = neighbors.count { it.hasMine && it.isCovered }
         if (coveredNeighbors.count() == minesAmongNeighbors) {
-            coveredNeighbors.filter {
-                it.mark.isNone()
-            }.forEach {
-                switchMarkAt(it.id)
-            }
+            coveredNeighbors
+                .filter {
+                    it.mark.isNone()
+                }.forEach {
+                    switchMarkAt(it.id)
+                }
         }
     }
 

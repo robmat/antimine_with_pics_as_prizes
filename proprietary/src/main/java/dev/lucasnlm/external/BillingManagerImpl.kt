@@ -33,19 +33,21 @@ class BillingManagerImpl(
     private val context: Context,
     internal val crashReporter: CrashReporterImpl,
     internal val coroutineScope: CoroutineScope,
-) : BillingManager, BillingClientStateListener, PurchasesUpdatedListener {
+) : BillingManager,
+    BillingClientStateListener,
+    PurchasesUpdatedListener {
     private var retry = 0
     private var isLoading = false
     internal val purchaseBroadcaster = MutableStateFlow<PurchaseInfo?>(null)
     internal val unlockPrice = MutableStateFlow<Price?>(null)
     internal val billingClient by lazy {
         try {
-            BillingClient.newBuilder(context)
+            BillingClient
+                .newBuilder(context)
                 .setListener(this)
                 .enablePendingPurchases(
-                    PendingPurchasesParams.newBuilder().enableOneTimeProducts().build()
-                )
-                .build()
+                    PendingPurchasesParams.newBuilder().enableOneTimeProducts().build(),
+                ).build()
         } catch (e: IllegalStateException) {
             crashReporter.sendError("Failed to initialize BillingClient: ${e.message}")
             throw e
@@ -63,12 +65,9 @@ class BillingManagerImpl(
 
     override suspend fun getPrice(): Price? = unlockPrice.value
 
-    override suspend fun getPriceFlow(): Flow<Price> {
-        return unlockPrice.asSharedFlow().filterNotNull()
-    }
+    override suspend fun getPriceFlow(): Flow<Price> = unlockPrice.asSharedFlow().filterNotNull()
 
-    override fun listenPurchases(): Flow<PurchaseInfo> =
-        purchaseBroadcaster.asSharedFlow().filterNotNull()
+    override fun listenPurchases(): Flow<PurchaseInfo> = purchaseBroadcaster.asSharedFlow().filterNotNull()
 
     override fun onBillingServiceDisconnected() {
         crashReporter.sendError("Billing service disconnected $retry")
@@ -98,7 +97,8 @@ class BillingManagerImpl(
                     .build()
 
             val productDetailsParams =
-                QueryProductDetailsParams.newBuilder()
+                QueryProductDetailsParams
+                    .newBuilder()
                     .setProductList(listOf(premiumProductParams))
                     .build()
 
@@ -133,21 +133,21 @@ class BillingManagerImpl(
         }
     }
 
-    override fun isEnabled(): Boolean {
-        return false
-    }
+    override fun isEnabled(): Boolean = false
 
     override suspend fun charge(activity: Activity) {
         val premiumProduct = this.premiumProduct
 
         if (billingClient.isReady && premiumProduct != null) {
             val productDetailsParams =
-                BillingFlowParams.ProductDetailsParams.newBuilder()
+                BillingFlowParams.ProductDetailsParams
+                    .newBuilder()
                     .setProductDetails(premiumProduct)
                     .build()
 
             val flowParams =
-                BillingFlowParams.newBuilder()
+                BillingFlowParams
+                    .newBuilder()
                     .setProductDetailsParamsList(listOf(productDetailsParams))
                     .build()
 

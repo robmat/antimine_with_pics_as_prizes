@@ -35,17 +35,11 @@ data class CommonDialogState(
         parcel.writeInt(turn)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 
     companion object CREATOR : Parcelable.Creator<CommonDialogState> {
-        override fun createFromParcel(parcel: Parcel): CommonDialogState {
-            return CommonDialogState(parcel)
-        }
+        override fun createFromParcel(parcel: Parcel): CommonDialogState = CommonDialogState(parcel)
 
-        override fun newArray(size: Int): Array<CommonDialogState?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int): Array<CommonDialogState?> = arrayOfNulls(size)
     }
 }

@@ -32,21 +32,20 @@ class AboutInfoFragment : Fragment() {
     private fun PackageManager.getPackageInfoCompat(
         packageName: String,
         flags: Int = 0,
-    ): PackageInfo? {
-        return runCatching {
+    ): PackageInfo? =
+        runCatching {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
             } else {
                 getPackageInfo(packageName, flags)
             }
         }.getOrNull()
-    }
 
     private fun PackageManager.getApplicationInfoCompat(
         packageName: String,
         flags: Int = 0,
-    ): ApplicationInfo? {
-        return runCatching {
+    ): ApplicationInfo? =
+        runCatching {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 val applicationInfoFlags = PackageManager.ApplicationInfoFlags.of(flags.toLong())
                 getApplicationInfo(packageName, applicationInfoFlags)
@@ -55,7 +54,6 @@ class AboutInfoFragment : Fragment() {
                 getApplicationInfo(packageName, flags)
             }
         }.getOrNull()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,11 +117,12 @@ class AboutInfoFragment : Fragment() {
             composerLink,
             beforeLaunch = { analyticsManager.sentEvent(Analytics.OpenMusicLink(from = "About")) },
         ) {
-            Toast.makeText(
-                context.applicationContext,
-                i18n.string.unknown_error,
-                Toast.LENGTH_SHORT,
-            ).show()
+            Toast
+                .makeText(
+                    context.applicationContext,
+                    i18n.string.unknown_error,
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 

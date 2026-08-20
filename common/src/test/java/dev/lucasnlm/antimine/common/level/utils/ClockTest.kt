@@ -18,7 +18,6 @@ internal class MockClock(
 }
 
 class ClockTest {
-
     @Test
     fun testClock() {
         val mockTimer = mock<Timer>()

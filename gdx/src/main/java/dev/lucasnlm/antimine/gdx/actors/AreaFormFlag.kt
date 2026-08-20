@@ -11,9 +11,7 @@ object AreaFormFlag {
     const val BOTTOM_RIGHT = 0b10000000
 }
 
-private fun Int.checkForm(flag: Int): Boolean {
-    return (this and flag) != 0
-}
+private fun Int.checkForm(flag: Int): Boolean = (this and flag) != 0
 
 fun Int.top(): Boolean = checkForm(AreaFormFlag.TOP)
 

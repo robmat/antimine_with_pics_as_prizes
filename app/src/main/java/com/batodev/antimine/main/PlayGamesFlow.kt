@@ -14,7 +14,9 @@ import kotlinx.coroutines.withContext
  * fallback, user-id migration) - split out of [MainActivity] since this was
  * the bulk of its function count.
  */
-class PlayGamesFlow(private val activity: MainActivity) {
+class PlayGamesFlow(
+    private val activity: MainActivity,
+) {
     fun launch() {
         if (activity.playGamesManager.hasGooglePlayGames() &&
             activity.playGamesManager.shouldRequestLogin() &&

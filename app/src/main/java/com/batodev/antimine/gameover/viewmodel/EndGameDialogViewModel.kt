@@ -131,6 +131,7 @@ class EndGameDialogViewModel(
                                 showMusicDialog = canShowMusicDialog(),
                             )
                         }
+
                         GameResult.GameOver -> {
                             EndGameDialogState(
                                 titleEmoji = randomGameOverEmoji(0),
@@ -143,6 +144,7 @@ class EndGameDialogViewModel(
                                 showMusicDialog = canShowMusicDialog(),
                             )
                         }
+
                         GameResult.Completed -> {
                             EndGameDialogState(
                                 titleEmoji = randomNeutralEmoji(0),
@@ -163,9 +165,11 @@ class EndGameDialogViewModel(
                     GameResult.Victory -> {
                         emit(state.copy(titleEmoji = randomVictoryEmoji(event.titleEmoji)))
                     }
+
                     GameResult.GameOver -> {
                         emit(state.copy(titleEmoji = randomGameOverEmoji(event.titleEmoji)))
                     }
+
                     GameResult.Completed -> {
                         emit(state.copy(titleEmoji = randomNeutralEmoji(event.titleEmoji)))
                     }

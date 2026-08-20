@@ -225,23 +225,25 @@ class MinefieldRepositoryTest {
         ratios.forEach {
             assertEquals(
                 it.value,
-                minefieldRepository.fromDifficulty(
-                    it.key,
-                    dimensionRepository,
-                    preferencesRepository,
-                ).ratioPercent(),
+                minefieldRepository
+                    .fromDifficulty(
+                        it.key,
+                        dimensionRepository,
+                        preferencesRepository,
+                    ).ratioPercent(),
                 "${it.key} should have ratio of ${it.value}",
             )
         }
 
-        ratios.entries.sortedBy {
-            it.key.ordinal
-        }.reduce { previous, current ->
-            assertTrue(
-                current.value > previous.value,
-                "${current.key} must have a ratio greater than ${previous.key}",
-            )
-            current
-        }
+        ratios.entries
+            .sortedBy {
+                it.key.ordinal
+            }.reduce { previous, current ->
+                assertTrue(
+                    current.value > previous.value,
+                    "${current.key} must have a ratio greater than ${previous.key}",
+                )
+                current
+            }
     }
 }

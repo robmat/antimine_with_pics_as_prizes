@@ -13,7 +13,6 @@ class HapticFeedbackManagerImpl(
     application: Application,
     private val preferencesRepository: PreferencesRepositoryImpl,
 ) : HapticFeedbackManager {
-
     private val vibrator by lazy {
         val context = application.applicationContext
 

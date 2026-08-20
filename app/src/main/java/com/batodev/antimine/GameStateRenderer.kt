@@ -26,7 +26,9 @@ import dev.lucasnlm.antimine.i18n.R as i18n
  * split out of [GameActivity], whose combined bindViewModel() was 223 lines
  * at cyclomatic complexity 41.
  */
-class GameStateRenderer(private val activity: GameActivity) {
+class GameStateRenderer(
+    private val activity: GameActivity,
+) {
     suspend fun render(state: GameState) =
         with(activity) {
             if (state.isNewGame) {
@@ -62,9 +64,11 @@ class GameStateRenderer(private val activity: GameActivity) {
                         state.isCreatingGame -> {
                             getString(i18n.string.creating_valid_game)
                         }
+
                         state.isLoadingMap -> {
                             getString(i18n.string.loading)
                         }
+
                         else -> {
                             getString(i18n.string.tap_to_begin)
                         }
@@ -239,12 +243,14 @@ class GameStateRenderer(private val activity: GameActivity) {
         to: Int,
         updateMineCount: (Int) -> Unit,
     ) {
-        ValueAnimator.ofInt(from, to).apply {
-            duration = GameActivity.MINE_COUNTER_ANIM_COUNTER_MS
-            addUpdateListener { animation ->
-                updateMineCount(animation.animatedValue as Int)
-            }
-        }.start()
+        ValueAnimator
+            .ofInt(from, to)
+            .apply {
+                duration = GameActivity.MINE_COUNTER_ANIM_COUNTER_MS
+                addUpdateListener { animation ->
+                    updateMineCount(animation.animatedValue as Int)
+                }
+            }.start()
     }
 
     private fun GameActivity.stopKonfettiView() {

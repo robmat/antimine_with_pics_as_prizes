@@ -15,22 +15,22 @@ class SettingsBackupManager(
     private val context: Context,
 ) {
     @VisibleForTesting
-    private fun filterDataToExport(data: Map<String, Any?>): Map<String, Any?> {
-        return data.filter {
-            it.key != PreferenceKeys.PREFERENCE_PREMIUM_FEATURES
-        }.map {
-            it.key.replace(PREFERENCE_SUFFIX, "") to it.value
-        }.toMap()
-    }
+    private fun filterDataToExport(data: Map<String, Any?>): Map<String, Any?> =
+        data
+            .filter {
+                it.key != PreferenceKeys.PREFERENCE_PREMIUM_FEATURES
+            }.map {
+                it.key.replace(PREFERENCE_SUFFIX, "") to it.value
+            }.toMap()
 
-    private fun filterDataToImport(data: Map<String, Any?>?): Map<String, Any?>? {
-        return data?.filter {
-            it.key != PreferenceKeys.PREFERENCE_PREMIUM_FEATURES || it.key.contains("premium")
-        }?.map {
-            val key = it.key
-            "$PREFERENCE_SUFFIX$key" to it.value
-        }?.toMap()
-    }
+    private fun filterDataToImport(data: Map<String, Any?>?): Map<String, Any?>? =
+        data
+            ?.filter {
+                it.key != PreferenceKeys.PREFERENCE_PREMIUM_FEATURES || it.key.contains("premium")
+            }?.map {
+                val key = it.key
+                "$PREFERENCE_SUFFIX$key" to it.value
+            }?.toMap()
 
     fun importSettings(location: Uri): Map<String, Any?>? {
         val contentResolver: ContentResolver = context.contentResolver
@@ -83,19 +83,14 @@ class SettingsBackupManager(
         }
     }
 
-    private fun mapToJsonString(exportData: Map<String, Any?>): String {
-        return JSONObject(exportData).toString(2)
-    }
+    private fun mapToJsonString(exportData: Map<String, Any?>): String = JSONObject(exportData).toString(2)
 
-    private fun jsonStringToMap(importData: String): Map<String, Any?>? {
-        return runCatching {
+    private fun jsonStringToMap(importData: String): Map<String, Any?>? =
+        runCatching {
             JSONObject(importData).toMap()
         }.getOrNull()
-    }
 
-    private fun JSONObject.toMap(): Map<String, Any?> {
-        return keys().asSequence().associateWith { opt(it) }
-    }
+    private fun JSONObject.toMap(): Map<String, Any?> = keys().asSequence().associateWith { opt(it) }
 
     companion object {
         const val FILE_NAME = "antimine-settings-backup.json"

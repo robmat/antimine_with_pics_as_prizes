@@ -34,30 +34,26 @@ internal class TipsControlActionPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_SIMON_TATHAM_ALGORITHM, enabled)
     }
 
-    override fun getTips(): Int {
-        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_HINTS, DEFAULT_HINTS)
-    }
+    override fun getTips(): Int = preferencesManager.getInt(PreferenceKeys.PREFERENCE_HINTS, DEFAULT_HINTS)
 
     override fun setTips(tips: Int) {
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_HINTS, tips)
     }
 
-    override fun getExtraTips(): Int {
-        return preferencesManager.getInt(PreferenceKeys.PREFERENCE_EXTRA_HINTS, 0)
-    }
+    override fun getExtraTips(): Int = preferencesManager.getInt(PreferenceKeys.PREFERENCE_EXTRA_HINTS, 0)
 
     override fun setExtraTips(tips: Int) {
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_EXTRA_HINTS, tips)
     }
 
-    override fun getSwitchControlAction(): Action {
-        return preferencesManager.getInt(
-            PreferenceKeys.PREFERENCE_USE_OPEN_SWITCH_CONTROL,
-            Action.OpenTile.ordinal,
-        ).let {
-            Action.values()[it]
-        }
-    }
+    override fun getSwitchControlAction(): Action =
+        preferencesManager
+            .getInt(
+                PreferenceKeys.PREFERENCE_USE_OPEN_SWITCH_CONTROL,
+                Action.OpenTile.ordinal,
+            ).let {
+                Action.values()[it]
+            }
 
     override fun setSwitchControl(action: Action) {
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_USE_OPEN_SWITCH_CONTROL, action.ordinal)
@@ -69,9 +65,7 @@ internal class TipsControlActionPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_ASSISTANT, value)
     }
 
-    override fun dimNumbers(): Boolean {
-        return preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_DIM_NUMBERS, true)
-    }
+    override fun dimNumbers(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_DIM_NUMBERS, true)
 
     private companion object {
         const val DEFAULT_HINTS = 5
