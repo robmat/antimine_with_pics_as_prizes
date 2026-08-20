@@ -2,7 +2,7 @@ package dev.lucasnlm.antimine.common.level.logic
 
 import dev.lucasnlm.antimine.core.models.Area
 import dev.lucasnlm.antimine.preferences.models.Minefield
-import java.util.*
+import java.util.Random
 
 class MinefieldCreatorImpl(
     private val minefield: Minefield,

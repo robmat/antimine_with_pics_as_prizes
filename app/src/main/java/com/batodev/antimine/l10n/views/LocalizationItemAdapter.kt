@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.batodev.antimine.databinding.ViewLocalizationItemBinding
 import com.batodev.antimine.l10n.models.GameLanguage
-import java.util.*
+import java.util.Locale
 
 class LocalizationItemAdapter(
     private val gameLanguages: List<GameLanguage>,

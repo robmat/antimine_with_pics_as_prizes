@@ -164,7 +164,7 @@ class MainActivity : ThemedActivity() {
     private fun redirectToGame() {
         val playGames = playGamesManager.hasGooglePlayGames()
         val openDirectly = preferencesRepository.openGameDirectly()
-        val canOpenGameDirectly = (playGames && preferencesRepository.userId() != null || !playGames) && openDirectly
+        val canOpenGameDirectly = ((playGames && preferencesRepository.userId() != null) || !playGames) && openDirectly
         if (canOpenGameDirectly) {
             Intent(this, GameActivity::class.java).run { startActivity(this) }
         }

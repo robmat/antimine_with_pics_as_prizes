@@ -7,7 +7,7 @@ import dev.lucasnlm.antimine.core.viewmodel.IntentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import java.util.*
+import java.util.Locale
 
 class LocalizationViewModel(
     private val audioManager: GameAudioManager,

@@ -1,6 +1,6 @@
 package com.batodev.antimine.l10n
 
-import java.util.*
+import java.util.Locale
 
 interface GameLocaleManager {
     fun getAllGameLocaleTags(): List<String>

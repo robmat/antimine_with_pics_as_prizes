@@ -3,7 +3,7 @@ package com.batodev.antimine.l10n
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import dev.lucasnlm.antimine.preferences.PreferencesRepositoryImpl
-import java.util.*
+import java.util.Locale
 
 class GameLocaleManagerImpl(
     private val preferencesRepository: PreferencesRepositoryImpl,
