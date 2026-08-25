@@ -38,19 +38,22 @@ internal class UserInterfacePreferencesImpl(
         }
     }
 
-    override fun showTutorialDialog(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_TUTORIAL_DIALOG, true)
+    override fun showTutorialDialog(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_TUTORIAL_DIALOG, true)
 
     override fun setTutorialDialog(show: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_TUTORIAL_DIALOG, show)
     }
 
-    override fun allowTapOnNumbers(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_ALLOW_TAP_NUMBER, true)
+    override fun allowTapOnNumbers(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_ALLOW_TAP_NUMBER, true)
 
     override fun setAllowTapOnNumbers(allow: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_ALLOW_TAP_NUMBER, allow)
     }
 
-    override fun letNumbersAutoFlag(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_LET_NUMBERS_AUTO_FLAG, true)
+    override fun letNumbersAutoFlag(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_LET_NUMBERS_AUTO_FLAG, true)
 
     override fun setNumbersAutoFlag(allow: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_LET_NUMBERS_AUTO_FLAG, allow)

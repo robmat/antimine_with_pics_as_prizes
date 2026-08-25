@@ -46,7 +46,6 @@ android {
 configurations { natives }
 
 dependencies {
-    detektPlugins libs.detekt.formatting
 
     implementation project(':core')
     implementation project(':preferences')

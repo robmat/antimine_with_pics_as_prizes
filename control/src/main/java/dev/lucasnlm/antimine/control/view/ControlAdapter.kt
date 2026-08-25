@@ -35,7 +35,14 @@ class ControlAdapter(
 
     override fun getItemId(position: Int): Long = controls[position].id
 
-    override fun getItemViewType(position: Int): Int = if (position == SINGLE_LINE_ID) SINGLE_LINE_CONTROL else TWO_LINES_CONTROL
+    override fun getItemViewType(position: Int): Int =
+        if (position ==
+            SINGLE_LINE_ID
+        ) {
+            SINGLE_LINE_CONTROL
+        } else {
+            TWO_LINES_CONTROL
+        }
 
     private fun <T> Int.inflateIf(
         type: Int,

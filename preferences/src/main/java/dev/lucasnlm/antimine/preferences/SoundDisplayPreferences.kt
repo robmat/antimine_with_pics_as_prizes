@@ -46,19 +46,22 @@ internal class SoundDisplayPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_MUSIC, value)
     }
 
-    override fun touchSensibility(): Int = preferencesManager.getInt(PreferenceKeys.PREFERENCE_TOUCH_SENSIBILITY, DEFAULT_TOUCH_SENSIBILITY)
+    override fun touchSensibility(): Int =
+        preferencesManager.getInt(PreferenceKeys.PREFERENCE_TOUCH_SENSIBILITY, DEFAULT_TOUCH_SENSIBILITY)
 
     override fun setTouchSensibility(sensibility: Int) {
         preferencesManager.putInt(PreferenceKeys.PREFERENCE_TOUCH_SENSIBILITY, sensibility)
     }
 
-    override fun showWindowsWhenFinishGame(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOW_WINDOWS, true)
+    override fun showWindowsWhenFinishGame(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOW_WINDOWS, true)
 
     override fun mustShowWindowsWhenFinishGame(enabled: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_SHOW_WINDOWS, enabled)
     }
 
-    override fun openGameDirectly(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_OPEN_DIRECTLY, false)
+    override fun openGameDirectly(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_OPEN_DIRECTLY, false)
 
     override fun setOpenGameDirectly(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_OPEN_DIRECTLY, value)

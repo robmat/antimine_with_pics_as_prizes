@@ -28,7 +28,8 @@ interface SupportHelpPreferences {
 internal class SupportHelpPreferencesImpl(
     private val preferencesManager: PreferencesManager,
 ) : SupportHelpPreferences {
-    override fun isPremiumEnabled(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_PREMIUM_FEATURES, false)
+    override fun isPremiumEnabled(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_PREMIUM_FEATURES, false)
 
     override fun setRequestDonation(request: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_REQUEST_DONATION, request)
@@ -56,5 +57,6 @@ internal class SupportHelpPreferencesImpl(
         preferencesManager.putLong(PreferenceKeys.PREFERENCE_LAST_HELP_USED, System.currentTimeMillis())
     }
 
-    override fun useSimonTathamAlgorithm(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SIMON_TATHAM_ALGORITHM, true)
+    override fun useSimonTathamAlgorithm(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SIMON_TATHAM_ALGORITHM, true)
 }

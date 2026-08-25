@@ -23,4 +23,5 @@ fun GameController.remainingMines(): Int {
     return (minesCount - flagsCount - openMinesCount)
 }
 
-fun GameController.almostAchievement(): Boolean = mines().count() - mines().count { it.isCovered && it.mark.isFlag() } == 1
+fun GameController.almostAchievement(): Boolean =
+    mines().count() - mines().count { it.isCovered && it.mark.isFlag() } == 1

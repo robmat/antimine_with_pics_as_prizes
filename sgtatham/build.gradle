@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-    detektPlugins libs.detekt.formatting
 
     implementation libs.androidx.appcompat
     implementation(libs.material) { version { strictly('1.13.0') } }

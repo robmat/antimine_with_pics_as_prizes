@@ -170,7 +170,8 @@ class MainActivity : ThemedActivity() {
         }
     }
 
-    private fun Minefield.toExtraString(): String = getString(i18n.string.minefield_with_mines_size, width, height, mines)
+    private fun Minefield.toExtraString(): String =
+        getString(i18n.string.minefield_with_mines_size, width, height, mines)
 
     private fun handleSideEffects(event: MainEvent) {
         when (event) {

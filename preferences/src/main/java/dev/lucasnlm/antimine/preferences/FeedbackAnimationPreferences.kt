@@ -56,7 +56,8 @@ internal class FeedbackAnimationPreferencesImpl(
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_ANIMATION, enabled)
     }
 
-    override fun useQuestionMark(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_QUESTION_MARK, false)
+    override fun useQuestionMark(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_QUESTION_MARK, false)
 
     override fun setQuestionMark(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_QUESTION_MARK, value)

@@ -42,7 +42,8 @@ class SkinAdapter(
 
     override fun getItemCount(): Int = appSkins.size
 
-    override fun getItemViewType(position: Int): Int = if (appSkins[position].showPadding) WITH_PADDING else WITHOUT_PADDING
+    override fun getItemViewType(position: Int): Int =
+        if (appSkins[position].showPadding) WITH_PADDING else WITHOUT_PADDING
 
     override fun onBindViewHolder(
         holder: SkinViewHolder,

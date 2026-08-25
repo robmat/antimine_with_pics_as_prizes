@@ -28,13 +28,15 @@ interface GameFlowPreferences {
 internal class GameFlowPreferencesImpl(
     private val preferencesManager: PreferencesManager,
 ) : GameFlowPreferences {
-    override fun showContinueGame(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOW_CONTINUE, false)
+    override fun showContinueGame(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SHOW_CONTINUE, false)
 
     override fun setContinueGameLabel(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_SHOW_CONTINUE, value)
     }
 
-    override fun showNewThemesIcon(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_NEW_THEMES_ICON, true)
+    override fun showNewThemesIcon(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_NEW_THEMES_ICON, true)
 
     override fun setNewThemesIcon(visible: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_NEW_THEMES_ICON, visible)
@@ -79,7 +81,8 @@ internal class GameFlowPreferencesImpl(
         }
     }
 
-    override fun keepRequestPlayGames(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_PLAY_GAMES, true)
+    override fun keepRequestPlayGames(): Boolean =
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_REQUEST_PLAY_GAMES, true)
 
     override fun setRequestPlayGames(showRequest: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_REQUEST_PLAY_GAMES, showRequest)
