@@ -2,7 +2,7 @@ package dev.lucasnlm.external
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import dev.lucasnlm.external.model.Price
 import dev.lucasnlm.external.model.PurchaseInfo
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,7 @@ class BillingManagerImpl : BillingManager {
 
     override suspend fun charge(activity: Activity) {
         val donationDeeplink = "app://antimine/donation"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(donationDeeplink))
+        val intent = Intent(Intent.ACTION_VIEW, donationDeeplink.toUri())
         activity.startActivity(intent)
     }
 

@@ -35,6 +35,7 @@
         <activity
             android:name=".main.MainActivity"
             android:windowSwipeToDismiss="true"
+            android:taskAffinity=""
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,34 +45,42 @@
 
         <activity
             android:name=".game.WearGameActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".message.MessageActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".message.GameOverActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".message.VictoryActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".main.DifficultyActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".main.ControlTypeActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".main.WearThemeActivity"
+            android:taskAffinity=""
             android:exported="true"/>
 
         <activity
             android:name=".tutorial.WearTutorialActivity"
+            android:taskAffinity=""
             android:exported="true"/>
     </application>
 

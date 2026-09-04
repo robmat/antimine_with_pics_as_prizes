@@ -1,9 +1,9 @@
 package dev.lucasnlm.antimine.licenses.views
 
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import dev.lucasnlm.antimine.about.databinding.ViewThirdPartyBinding
 import dev.lucasnlm.antimine.licenses.viewmodel.License
@@ -32,7 +32,7 @@ internal class LicensesAdapter(
             binding.thirdName.text = thirdParty.name
             itemView.setOnClickListener { view ->
                 runCatching {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(thirdParty.url))
+                    val intent = Intent(Intent.ACTION_VIEW, thirdParty.url.toUri())
                     view.context.startActivity(intent)
                 }
             }

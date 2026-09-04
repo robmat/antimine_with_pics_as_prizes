@@ -1,8 +1,8 @@
 package dev.lucasnlm.antimine.tutorial
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import androidx.core.net.toUri
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
 import dev.lucasnlm.antimine.core.models.Analytics
 import dev.lucasnlm.antimine.preferences.PreferencesRepository
@@ -34,7 +34,7 @@ class TutorialActivity : ThemedActivity() {
 
             audioManager.playClickSound()
 
-            val deeplink = Uri.parse(NEW_GAME_DEEPLINK)
+            val deeplink = NEW_GAME_DEEPLINK.toUri()
             val intent =
                 Intent(Intent.ACTION_VIEW, deeplink).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP

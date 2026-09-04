@@ -40,7 +40,7 @@ suspend fun GameViewModel.startNewGame(
 
         val seed = minefieldRepository.randomSeed()
         prizeImage = ImageHelper.randomImage(context)
-        this@startNewGame.context = context
+        this@startNewGame.context = context.applicationContext
         gameController =
             GameController(
                 minefield = minefield,

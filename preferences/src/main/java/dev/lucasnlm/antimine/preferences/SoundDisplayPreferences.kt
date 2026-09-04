@@ -1,7 +1,5 @@
 package dev.lucasnlm.antimine.preferences
 
-import android.os.Build
-
 /**
  * Split out of [PreferencesRepository] - see [CorePreferences]'s doc.
  */
@@ -31,16 +29,13 @@ internal class SoundDisplayPreferencesImpl(
     private val preferencesManager: PreferencesManager,
 ) : SoundDisplayPreferences {
     override fun isSoundEffectsEnabled(): Boolean =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SOUND_EFFECTS, true)
+        preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_SOUND_EFFECTS, true)
 
     override fun setSoundEffectsEnabled(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_SOUND_EFFECTS, value)
     }
 
-    override fun isMusicEnabled(): Boolean =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_MUSIC, true)
+    override fun isMusicEnabled(): Boolean = preferencesManager.getBoolean(PreferenceKeys.PREFERENCE_MUSIC, true)
 
     override fun setMusicEnabled(value: Boolean) {
         preferencesManager.putBoolean(PreferenceKeys.PREFERENCE_MUSIC, value)

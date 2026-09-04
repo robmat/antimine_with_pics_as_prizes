@@ -32,7 +32,7 @@ open class Clock {
         stop()
         timer =
             provideTimer().apply {
-                scheduleAtFixedRate(
+                schedule(
                     object : TimerTask() {
                         override fun run() {
                             elapsedTimeSeconds++

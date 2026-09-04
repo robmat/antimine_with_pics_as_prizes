@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- This module's manifest merges into the app manifest, which already declares
+         android:supportsRtl="true" - but a standalone lint run on this library has no
+         merged <application> to see that, and reports RtlEnabled as a whole-file finding
+         with no XML node to attach an inline tools:ignore to. -->
+    <issue id="RtlEnabled" severity="ignore" />
+</lint>

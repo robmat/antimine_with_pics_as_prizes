@@ -3,7 +3,7 @@ package dev.lucasnlm.antimine.core
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
+import androidx.core.net.toUri
 
 fun Context.isPortrait(): Boolean = resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
@@ -22,7 +22,7 @@ fun Context.openExternalLink(
     runCatching {
         beforeLaunch()
         val intent =
-            Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            Intent(Intent.ACTION_VIEW, url.toUri()).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
         startActivity(intent)

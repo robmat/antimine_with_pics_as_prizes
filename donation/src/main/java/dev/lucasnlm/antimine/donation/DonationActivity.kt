@@ -3,10 +3,10 @@ package dev.lucasnlm.antimine.donation
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ShareCompat
+import androidx.core.net.toUri
 import androidx.core.os.LocaleListCompat
 import androidx.core.view.isVisible
 import dev.lucasnlm.antimine.core.audio.GameAudioManager
@@ -50,7 +50,7 @@ class DonationActivity : ThemedActivity() {
         val context = application.applicationContext
         runCatching {
             val intent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(link)).apply {
+                Intent(Intent.ACTION_VIEW, link.toUri()).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }
             context.startActivity(intent)

@@ -43,6 +43,12 @@ private fun isEmulator(): Boolean {
     return emulatorBrand || emulatorModel
 }
 
+// getIdentifier() reflection lookups of internal Android system-bar resources
+// (status_bar_height, navigation_bar_height, config_showNavigationBar) are a deliberate,
+// long-standing pattern here for pre-WindowInsets system-bar sizing. A "correct" fix means
+// migrating to WindowInsetsCompat, a real behavior-risk refactor outside the scope of a lint
+// cleanup - suppressed rather than rewritten.
+@Suppress("DiscouragedApi", "InternalInsetResource")
 class DimensionRepositoryImpl(
     private val context: Context,
 ) : DimensionRepository {

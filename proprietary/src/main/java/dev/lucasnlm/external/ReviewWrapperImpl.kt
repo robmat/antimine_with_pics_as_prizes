@@ -2,7 +2,7 @@ package dev.lucasnlm.external
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import com.google.android.play.core.review.ReviewManagerFactory
 
 class ReviewWrapperImpl : ReviewWrapper {
@@ -15,12 +15,12 @@ class ReviewWrapperImpl : ReviewWrapper {
             val playStorePage = "https://play.google.com/store/apps/details?id=$appPackage"
 
             runCatching {
-                activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(playStoreUri)))
+                activity.startActivity(Intent(Intent.ACTION_VIEW, playStoreUri.toUri()))
             }.onFailure {
                 activity.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse(playStorePage),
+                        playStorePage.toUri(),
                     ),
                 )
             }

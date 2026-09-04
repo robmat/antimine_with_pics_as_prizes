@@ -1,5 +1,6 @@
 package dev.lucasnlm.antimine.common.level.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -50,6 +51,10 @@ open class GameViewModel(
     internal val playGamesManager = feedbackDependencies.playGamesManager
 
     var prizeImage: String = ""
+
+    // Always assigned context.applicationContext (see startNewGame in
+    // GameViewModelLifecycle.kt) - lint can't see that from the field's static type alone.
+    @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
     internal lateinit var gameController: GameController
     internal var initialized = false

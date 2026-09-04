@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
-    tools:targetApi="m">
+    tools:ignore="Overdraw">
 
     <TextView
         android:id="@+id/third_name"
