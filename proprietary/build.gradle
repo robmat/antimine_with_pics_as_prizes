@@ -37,34 +37,32 @@ android {
 
 dependencies {
 
-    // Dependencies must be hardcoded to support F-droid
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':external')
 
     // Amplitude
-    implementation 'com.amplitude:android-sdk:3.35.1'
-    implementation 'com.squareup.okhttp3:okhttp:5.1.0'
+    implementation libs.amplitude.android.sdk
+    implementation libs.squareup.okhttp3.okhttp
 
     // Google
-    implementation 'com.android.billingclient:billing-ktx:8.0.0'
-    implementation 'com.google.android.gms:play-services-instantapps:18.2.0'
+    implementation(libs.billing.ktx) { version { strictly('8.0.0') } }
+    implementation libs.play.services.instantapps
     implementation libs.play.services.games.v2
-    implementation 'com.google.android.gms:play-services-auth:21.4.0'
+    implementation libs.play.services.auth
     implementation(libs.play.services.ads) { version { strictly('24.6.0') } }
     implementation libs.google.play.review.ktx
-    implementation 'com.google.android.play:app-update-ktx:2.1.0'
+    implementation libs.google.play.app.update.ktx
 
     // Jetbrains
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2'
+    implementation(libs.kotlinx.coroutines.play.services) { version { strictly('1.10.2') } }
 
     // Kotlin
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.20'
-    implementation 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
+    implementation(libs.kotlinx.coroutines.android) { version { strictly('1.10.2') } }
+    implementation libs.antimine.kotlin.stdlib
+    implementation libs.kotlinx.metadata.jvm
+    testImplementation(libs.kotlinx.coroutines.test) { version { strictly('1.10.2') } }
 
     // Koin
-    implementation 'io.insert-koin:koin-android:4.1.1'
-    testImplementation 'io.insert-koin:koin-test:4.1.1'
+    implementation(libs.koin.android) { version { strictly('4.1.1') } }
+    testImplementation(libs.koin.test) { version { strictly('4.1.1') } }
 }

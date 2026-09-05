@@ -57,12 +57,12 @@ dependencies {
     implementation(libs.androidx.fragment.ktx) { version { strictly('1.8.9') } }
 
     // Koin
-    implementation 'io.insert-koin:koin-android:4.1.1'
-    testImplementation 'io.insert-koin:koin-test:4.1.1'
+    implementation(libs.koin.android) { version { strictly('4.1.1') } }
+    testImplementation(libs.koin.test) { version { strictly('4.1.1') } }
 
     // LibGDX
     api libs.gdx.backend.android
-    api 'com.badlogicgames.gdx:gdx:1.13.1'
+    api libs.gdx
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-armeabi-v7a'
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-arm64-v8a'
     natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-x86'

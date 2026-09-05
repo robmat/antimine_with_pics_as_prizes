@@ -35,8 +35,6 @@ android {
 
 dependencies {
 
-    // Dependencies must be hardcoded to support F-droid
-
     implementation libs.androidx.appcompat
     implementation(libs.material) { version { strictly('1.13.0') } }
     testImplementation libs.junit

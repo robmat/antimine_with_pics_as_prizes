@@ -31,11 +31,7 @@ android {
     }
 }
 
-
-
 dependencies {
-
-    // Dependencies must be hardcoded to support F-droid
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':core')
@@ -48,9 +44,9 @@ dependencies {
     implementation project(':sgtatham')
 
     // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.7.1'
-    implementation 'androidx.preference:preference-ktx:1.2.1'
-    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.preference.ktx
+    implementation libs.androidx.recyclerview
     implementation(libs.androidx.activity.ktx) { version { strictly('1.11.0') } }
     implementation(libs.androidx.fragment.ktx) { version { strictly('1.8.9') } }
 
@@ -58,48 +54,48 @@ dependencies {
     implementation(libs.material) { version { strictly('1.13.0') } }
 
     // Constraint
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation libs.androidx.constraintlayout
 
     // Lifecycle
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.3'
+    implementation libs.androidx.lifecycle.viewmodel.ktx
 
     // Koin
-    implementation 'io.insert-koin:koin-android:4.1.1'
-    testImplementation 'io.insert-koin:koin-test:4.1.1'
+    implementation(libs.koin.android) { version { strictly('4.1.1') } }
+    testImplementation(libs.koin.test) { version { strictly('4.1.1') } }
 
     // Room
-    api 'androidx.room:room-runtime:2.8.0'
-    api 'androidx.room:room-ktx:2.8.0'
-    ksp 'androidx.room:room-compiler:2.8.0'
-    testImplementation 'androidx.room:room-testing:2.8.0'
+    api(libs.androidx.room.runtime) { version { strictly('2.8.0') } }
+    api(libs.androidx.room.ktx) { version { strictly('2.8.0') } }
+    ksp(libs.androidx.room.compiler) { version { strictly('2.8.0') } }
+    testImplementation(libs.androidx.room.testing) { version { strictly('2.8.0') } }
 
     // Moshi - Json
-    api 'com.squareup.moshi:moshi:1.15.2'
-    api 'com.squareup.moshi:moshi-kotlin:1.15.2'
-    ksp 'com.squareup.moshi:moshi-kotlin-codegen:1.15.2'
+    api libs.squareup.moshi
+    api libs.squareup.moshi.kotlin
+    ksp libs.squareup.moshi.kotlin.codegen
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2'
+    implementation(libs.kotlinx.coroutines.core) { version { strictly('1.10.2') } }
+    implementation(libs.kotlinx.coroutines.android) { version { strictly('1.10.2') } }
+    testImplementation(libs.kotlinx.coroutines.test) { version { strictly('1.10.2') } }
 
     // Kotlin Lib
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.20'
-    implementation 'org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0'
+    implementation libs.antimine.kotlin.stdlib
+    implementation libs.kotlinx.metadata.jvm
 
     // Unit Tests
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation libs.junit
     testImplementation(libs.mockito.core) { version { strictly('5.19.0') } }
-    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
-    testImplementation 'io.mockk:mockk:1.14.5'
+    testImplementation libs.nhaarman.mockito.kotlin
+    testImplementation libs.mockk
 
     // Core library
-    androidTestImplementation 'androidx.test:core:1.7.0'
+    androidTestImplementation libs.androidx.test.core
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation libs.androidx.test.runner
     androidTestImplementation libs.androidx.test.rules
-    androidTestUtil 'androidx.test:orchestrator:1.6.1'
+    androidTestUtil libs.androidx.test.orchestrator
 }
 
 tasks.withType(Test).configureEach {
