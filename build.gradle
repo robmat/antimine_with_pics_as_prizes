@@ -10,7 +10,7 @@ buildscript {
         classpath "com.android.tools.build:gradle:${libs.versions.agp.get()}"
         // Kotlin/KSP intentionally not on the shared alias - this repo is ahead of
         // the fleet-wide 2.2.10 at 2.2.20 (KSP-paired).
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.10"
         classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:2.2.20-2.0.2"
 
         if (System.getenv('IS_GOOGLE_BUILD')) {
