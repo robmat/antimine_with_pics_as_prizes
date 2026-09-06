@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Wear module is not shipped (no store listing, no released build) - these
+         are pre-release polish items for a Wear release that doesn't exist yet. -->
+    <issue id="WearRecents" severity="ignore" />
+    <issue id="MissingApplicationIcon" severity="ignore" />
+</lint>
