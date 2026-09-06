@@ -63,10 +63,14 @@ dependencies {
     // LibGDX
     api libs.gdx.backend.android
     api libs.gdx
-    natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-armeabi-v7a'
-    natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-arm64-v8a'
-    natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-x86'
-    natives 'com.badlogicgames.gdx:gdx-platform:1.13.1:natives-x86_64'
+    // Classifier variants aren't cleanly aliasable in the version catalog TOML
+    // format, so the coordinate stays literal here - but the version itself
+    // is derived from the catalog, not a disconnected number, to stay in
+    // sync with libs.gdx above.
+    natives "com.badlogicgames.gdx:gdx-platform:${libs.versions.gdx.get()}:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-platform:${libs.versions.gdx.get()}:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-platform:${libs.versions.gdx.get()}:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-platform:${libs.versions.gdx.get()}:natives-x86_64"
 }
 
 tasks.register('copyAndroidNatives') {
