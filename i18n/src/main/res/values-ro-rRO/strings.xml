@@ -33,7 +33,11 @@
     <string name="retry_sure">Dacă începi un joc nou, progresul actual va fi pierdut.</string>
     <string name="show_licenses">Afișează licențele</string>
     <string name="new_game_request">Vrei să începi un joc nou?</string>
-    <string name="mines_remaining">%d mine</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mină</item>
+        <item quantity="few">%d mine</item>
+        <item quantity="other">%d mine</item>
+    </plurals>
     <string name="game_time">Timp de joc</string>
     <string name="settings_general">General</string>
     <string name="settings_gameplay">Dinamica jocului</string>

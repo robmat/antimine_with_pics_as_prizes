@@ -33,7 +33,10 @@
     <string name="retry_sure">Bila anda memulai permainan baru, Perkembangan anda saat ini akan hilang.</string>
     <string name="show_licenses">Tampilkan lisensi</string>
     <string name="new_game_request">Apakah Anda ingin memulai permainan baru?</string>
-    <string name="mines_remaining">%d ranjau</string>
+    <!-- Indonesian has no grammatical plural distinction. -->
+    <plurals name="mines_remaining">
+        <item quantity="other">%d ranjau</item>
+    </plurals>
     <string name="game_time">Waktu permainan</string>
     <string name="settings_general">Umum</string>
     <string name="settings_gameplay">Gameplay</string>

@@ -33,7 +33,10 @@
     <string name="retry_sure">Jos aloitat uuden pelin, nykyinen edistymisesi tyhjennetään.</string>
     <string name="show_licenses">Näytä lisenssit</string>
     <string name="new_game_request">Tahdotko aloittaa uuden pelin?</string>
-    <string name="mines_remaining">%d miinaa</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d miina</item>
+        <item quantity="other">%d miinaa</item>
+    </plurals>
     <string name="game_time">Peliaika</string>
     <string name="settings_general">Yleiset</string>
     <string name="settings_gameplay">Pelattavuus</string>

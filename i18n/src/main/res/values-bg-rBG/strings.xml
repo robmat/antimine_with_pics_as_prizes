@@ -33,7 +33,10 @@
     <string name="retry_sure">Ако стартираш нова игра, твоят досегашен прогрес ще бъде занулен.</string>
     <string name="show_licenses">Преглед на лиценза</string>
     <string name="new_game_request">Искате ли да започнете нова игра?</string>
-    <string name="mines_remaining">%d мини</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d мина</item>
+        <item quantity="other">%d мини</item>
+    </plurals>
     <string name="game_time">Време в играта</string>
     <string name="settings_general">Основни</string>
     <string name="settings_gameplay">Начин на игра</string>

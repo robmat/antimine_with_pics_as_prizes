@@ -33,7 +33,11 @@
     <string name="retry_sure">Ha új játékot kezdesz, minden haladásod elveszik.</string>
     <string name="show_licenses">Licencek megtekintése</string>
     <string name="new_game_request">Szeretnél új játékot kezdeni?</string>
-    <string name="mines_remaining">%d akna</string>
+    <!-- Hungarian nouns don't inflect for plural after a numeral. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d akna</item>
+        <item quantity="other">%d akna</item>
+    </plurals>
     <string name="game_time">Játékidő</string>
     <string name="settings_general">Általános</string>
     <string name="settings_gameplay">Játékmenet</string>

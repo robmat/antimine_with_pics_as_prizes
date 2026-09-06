@@ -33,7 +33,10 @@
     <string name="retry_sure">หากคุณเริ่มเกมใหม่ความคืบหน้าในปัจจุบันของคุณจะหายไป</string>
     <string name="show_licenses">แสดงสิทธิ์การใช้งาน</string>
     <string name="new_game_request">ยืนยันเริ่มเกมใหม่หรือไม่？</string>
-    <string name="mines_remaining">%d กับระเบิด</string>
+    <!-- Thai has no grammatical plural distinction. -->
+    <plurals name="mines_remaining">
+        <item quantity="other">%d กับระเบิด</item>
+    </plurals>
     <string name="game_time">เวลาเล่นเกม</string>
     <string name="settings_general">ทั่วไป</string>
     <string name="settings_gameplay">การเล่นเกม</string>

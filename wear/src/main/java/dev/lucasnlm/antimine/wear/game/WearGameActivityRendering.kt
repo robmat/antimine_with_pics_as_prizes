@@ -77,7 +77,8 @@ internal fun WearGameActivity.updateTimerLabel(state: GameState) {
         }
     } else if (state.duration > 0) {
         binding.timer.apply {
-            text = getString(i18n.string.mines_remaining, state.mineCount)
+            val mineCount = state.mineCount ?: 0
+            text = resources.getQuantityString(i18n.plurals.mines_remaining, mineCount, mineCount)
         }
     } else {
         binding.timer.isVisible = false

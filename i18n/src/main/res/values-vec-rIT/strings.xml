@@ -33,7 +33,10 @@
     <string name="retry_sure">Se te scuminsi na nova partìa, te perdarè i to progresi corivi.</string>
     <string name="show_licenses">Mostra Łicense</string>
     <string name="new_game_request">Vuto scuminsiar na nova partìa?</string>
-    <string name="mines_remaining">%d mine</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="other">%d mine</item>
+    </plurals>
     <string name="game_time">Tenpo de Zogo</string>
     <string name="settings_general">Zenarałe</string>
     <string name="settings_gameplay">Zogo</string>

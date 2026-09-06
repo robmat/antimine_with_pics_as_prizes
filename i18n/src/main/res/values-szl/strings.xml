@@ -29,7 +29,13 @@
     <string name="retry_sure">Jeźli zaczniesz nowy szpil, Twōj teroźny postymp bydzie stracōny.</string>
     <string name="show_licenses">Licyncyje</string>
     <string name="new_game_request">Chcesz zaczōńć nowy szpil?</string>
-    <string name="mines_remaining">%d</string>
+    <!-- The noun was missing entirely in the previous flat string (just
+         "%d"). Lower-confidence translation (Silesian, not a full CLDR
+         locale) - approximated from its close relation to Polish. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="other">%d miny</item>
+    </plurals>
     <string name="game_time">Czas szpilu</string>
     <string name="settings_general">Ôgōlne</string>
     <string name="settings_gameplay">Szpilanie</string>

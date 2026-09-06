@@ -33,7 +33,13 @@
     <string name="retry_sure">ئەگەر دەست بە یارییەکی نوێ بکەیت، پێشکەوتنی ئێستات لەدەست دەچێت.</string>
     <string name="show_licenses">نیشاندانی مۆڵەتەکان</string>
     <string name="new_game_request">ئایا دەتەوێت یاریەکی نوێ دەست پێبکەیت؟</string>
-    <string name="mines_remaining">%dمینەکان</string>
+    <!-- Lower-confidence translation (Sorani Kurdish morphology) - kept the
+         existing wording for both categories rather than guessing new
+         grammar; only fixed the missing space before %d. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d مینەکان</item>
+        <item quantity="other">%d مینەکان</item>
+    </plurals>
     <string name="game_time">کاتی یاری</string>
     <string name="settings_general">گشتی</string>
     <string name="settings_gameplay">شێوازی یاری</string>

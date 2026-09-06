@@ -33,7 +33,11 @@
     <string name="retry_sure">כאשר יתחיל משחק חדש, ההתקדמות הנוכחית שלך תיעלם.</string>
     <string name="show_licenses">הצג רשיונות</string>
     <string name="new_game_request">האם ברצונך להתחיל משחק חדש?</string>
-    <string name="mines_remaining">%d מוקשים</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">מוקש אחד</item>
+        <item quantity="two">שני מוקשים</item>
+        <item quantity="other">%d מוקשים</item>
+    </plurals>
     <string name="game_time">זמן משחק</string>
     <string name="settings_general">כללי</string>
     <string name="settings_gameplay">משחק</string>

@@ -33,7 +33,11 @@
     <string name="retry_sure">Uzsākot jaunu spēli pašreizējais progress tiks zaudēts.</string>
     <string name="show_licenses">Rādīt licences</string>
     <string name="new_game_request">Vai tu vēlies uzsākt jaunu spēli?</string>
-    <string name="mines_remaining">%d mīnas</string>
+    <plurals name="mines_remaining">
+        <item quantity="zero">%d mīnu</item>
+        <item quantity="one">%d mīna</item>
+        <item quantity="other">%d mīnas</item>
+    </plurals>
     <string name="game_time">Spēles laiks</string>
     <string name="settings_general">Vispārīgi</string>
     <string name="settings_gameplay">Spēlē</string>

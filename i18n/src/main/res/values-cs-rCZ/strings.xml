@@ -33,7 +33,16 @@
     <string name="retry_sure">Pokud zahájíte novou hru,\nbude váš aktuální postup ztracen.</string>
     <string name="show_licenses">Zobrazit licence</string>
     <string name="new_game_request">Chcete začít novou hru?</string>
-    <string name="mines_remaining">Počet min: %d</string>
+    <!-- Already sidesteps declension by counting rather than naming a
+         quantity of mines ("Number of mines: %d") - grammatically correct
+         Czech for any %d, so kept unchanged for every category rather than
+         forcing separate one/few/many wording. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">Počet min: %d</item>
+        <item quantity="few">Počet min: %d</item>
+        <item quantity="many">Počet min: %d</item>
+        <item quantity="other">Počet min: %d</item>
+    </plurals>
     <string name="game_time">Herní čas</string>
     <string name="settings_general">Obecné</string>
     <string name="settings_gameplay">Hra</string>

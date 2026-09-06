@@ -33,7 +33,11 @@
     <string name="retry_sure">Partida berri bat hasten baduzu, orain artekoa galduko duzu.</string>
     <string name="show_licenses">Lizentziak erakutsi</string>
     <string name="new_game_request">Partida berria hasi nahi duzu?</string>
-    <string name="mines_remaining">%d mina</string>
+    <!-- Basque nouns don't inflect for plural after a numeral. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="other">%d mina</item>
+    </plurals>
     <string name="game_time">Partidaren denbora</string>
     <string name="settings_general">Orokorra</string>
     <string name="settings_gameplay">Jolasteko modua</string>

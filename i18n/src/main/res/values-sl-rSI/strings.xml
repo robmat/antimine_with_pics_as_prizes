@@ -30,7 +30,12 @@
     <string name="retry_sure">Če pričnete novo igro, bo vaš napredek izgubljen.</string>
     <string name="show_licenses">Licence</string>
     <string name="new_game_request">Ali želite pričeti novo igro?</string>
-    <string name="mines_remaining">%d min</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="two">%d mini</item>
+        <item quantity="few">%d mine</item>
+        <item quantity="other">%d min</item>
+    </plurals>
     <string name="game_time">Čas igre</string>
     <string name="settings_general">Splošne</string>
     <string name="settings_gameplay">Igralne</string>

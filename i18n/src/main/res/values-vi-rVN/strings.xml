@@ -33,7 +33,10 @@
     <string name="retry_sure">Nếu chơi trò chơi mới,\ntrò chơi đang chơi dở sẽ bị mất.</string>
     <string name="show_licenses">Hiển thị giấy phép</string>
     <string name="new_game_request">Bạn có chắc muốn bắt đầu trò chơi mới?</string>
-    <string name="mines_remaining">%d mìn</string>
+    <!-- Vietnamese has no grammatical plural distinction. -->
+    <plurals name="mines_remaining">
+        <item quantity="other">%d mìn</item>
+    </plurals>
     <string name="game_time">Thời gian chơi</string>
     <string name="settings_general">Tổng quan</string>
     <string name="settings_gameplay">Cách thức chơi</string>

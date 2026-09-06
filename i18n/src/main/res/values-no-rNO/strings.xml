@@ -33,7 +33,10 @@
     <string name="retry_sure">Hvis du starter et nytt spill vil din nåværende fremgang gå tapt.</string>
     <string name="show_licenses">Vis Lisenser</string>
     <string name="new_game_request">Vil du starte et nytt spill?</string>
-    <string name="mines_remaining">%d miner</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mine</item>
+        <item quantity="other">%d miner</item>
+    </plurals>
     <string name="game_time">Spilletid</string>
     <string name="settings_general">Generelt</string>
     <string name="settings_gameplay">Spillopplevelse</string>

@@ -33,7 +33,10 @@
     <string name="retry_sure">Als je een nieuw spel start,\nzal je huidige voortgang verloren gaan.</string>
     <string name="show_licenses">Licenties tonen</string>
     <string name="new_game_request">Wil je een nieuw spel beginnen?</string>
-    <string name="mines_remaining">%d mijnen</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mijn</item>
+        <item quantity="other">%d mijnen</item>
+    </plurals>
     <string name="game_time">Game Tijd</string>
     <string name="settings_general">Algemeen</string>
     <string name="settings_gameplay">Gameplay</string>

@@ -33,7 +33,11 @@
     <string name="retry_sure">Si comences un altre joc, el teu progrés actual es perdrà.</string>
     <string name="show_licenses">Mostra les llicències</string>
     <string name="new_game_request">Vols començar un joc nou?</string>
-    <string name="mines_remaining">%d mines</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="many">%d mines</item>
+        <item quantity="other">%d mines</item>
+    </plurals>
     <string name="game_time">Temps de joc</string>
     <string name="settings_general">General</string>
     <string name="settings_gameplay">Joc</string>

@@ -33,7 +33,10 @@
     <string name="retry_sure">Om du startar ett nytt spel kommer dina pågående framsteg att förloras.</string>
     <string name="show_licenses">Visa licenser</string>
     <string name="new_game_request">Vill du starta ett nytt spel?</string>
-    <string name="mines_remaining">%d minor</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="other">%d minor</item>
+    </plurals>
     <string name="game_time">Speltid</string>
     <string name="settings_general">Allmänt</string>
     <string name="settings_gameplay">Spelsätt</string>

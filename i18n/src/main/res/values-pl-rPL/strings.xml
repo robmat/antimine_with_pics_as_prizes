@@ -33,7 +33,13 @@
     <string name="retry_sure">Jeśli rozpoczniesz nową rozgrywkę, Twój obecny postęp zostanie utracony.</string>
     <string name="show_licenses">Licencje</string>
     <string name="new_game_request">Czy chcesz rozpocząć nową rozgrywkę?</string>
-    <string name="mines_remaining">%d</string>
+    <!-- The noun was missing entirely in the previous flat string (just "%d"). -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="few">%d miny</item>
+        <item quantity="many">%d min</item>
+        <item quantity="other">%d miny</item>
+    </plurals>
     <string name="game_time">Czas gry</string>
     <string name="settings_general">Ogólne</string>
     <string name="settings_gameplay">Rozgrywka</string>

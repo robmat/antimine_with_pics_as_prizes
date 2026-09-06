@@ -33,7 +33,10 @@
     <string name="retry_sure">Εάν ξεκινήσετε ένα νέο παιχνίδι,\nη τρέχουσα πρόοδός σας θα χαθεί.</string>
     <string name="show_licenses">Εμφάνιση αδειών</string>
     <string name="new_game_request">Θέλετε να ξεκινήσετε ένα νέο παιχνίδι;</string>
-    <string name="mines_remaining">%d νάρκες</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d νάρκη</item>
+        <item quantity="other">%d νάρκες</item>
+    </plurals>
     <string name="game_time">Ώρα Παιχνιδιού</string>
     <string name="settings_general">Γενικά</string>
     <string name="settings_gameplay">Gameplay</string>

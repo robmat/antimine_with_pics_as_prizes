@@ -33,7 +33,14 @@
     <string name="retry_sure">إذا بدأت لعبة جديدة،\nستفقد تقدمك الحالي.</string>
     <string name="show_licenses">إظهار التراخيص</string>
     <string name="new_game_request">هل تريد بدء لعبة جديدة؟</string>
-    <string name="mines_remaining">%d لغم</string>
+    <plurals name="mines_remaining">
+        <item quantity="zero">%d لغم</item>
+        <item quantity="one">لغم واحد</item>
+        <item quantity="two">لغمان</item>
+        <item quantity="few">%d ألغام</item>
+        <item quantity="many">%d لغماً</item>
+        <item quantity="other">%d لغم</item>
+    </plurals>
     <string name="game_time">وقت اللعب</string>
     <string name="settings_general">عام</string>
     <string name="settings_gameplay">أسلوب اللعبة</string>

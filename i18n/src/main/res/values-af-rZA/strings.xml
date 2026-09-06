@@ -33,7 +33,10 @@
     <string name="retry_sure">Wil u \'n nuwe spel begin met hierdie kaart?</string>
     <string name="show_licenses">Wys lisensies</string>
     <string name="new_game_request">Wil u \'n nuwe spel begin met hierdie kaart?</string>
-    <string name="mines_remaining">%d myne</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d myn</item>
+        <item quantity="other">%d myne</item>
+    </plurals>
     <string name="game_time">Speeltyd</string>
     <string name="settings_general">Algemeen</string>
     <string name="settings_gameplay">Spel</string>

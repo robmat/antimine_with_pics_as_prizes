@@ -33,7 +33,16 @@
     <string name="retry_sure">Jei pradėsite naują žaidimą, jūsų dabartinis progresas bus prarastas.</string>
     <string name="show_licenses">Rodyti licencijas</string>
     <string name="new_game_request">Tikrai norite pradėti naują žaidimą?</string>
-    <string name="mines_remaining">Liko minų: %d</string>
+    <!-- Already sidesteps declension by counting rather than naming a
+         quantity of mines ("Remaining mines: %d", genitive plural), which
+         is grammatically valid Lithuanian for any %d - kept unchanged for
+         every category. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">Liko minų: %d</item>
+        <item quantity="few">Liko minų: %d</item>
+        <item quantity="many">Liko minų: %d</item>
+        <item quantity="other">Liko minų: %d</item>
+    </plurals>
     <string name="game_time">Žaidimo laikas</string>
     <string name="settings_general">Bendrieji</string>
     <string name="settings_gameplay">Žaidimo procesas</string>

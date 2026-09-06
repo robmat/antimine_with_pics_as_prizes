@@ -33,7 +33,11 @@
     <string name="retry_sure">Si comienzas una partida nueva,\ntu progreso actual se perderá.</string>
     <string name="show_licenses">Ver Licencias</string>
     <string name="new_game_request">¿Deseas empezar una nueva partida?</string>
-    <string name="mines_remaining">%d minas</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mina</item>
+        <item quantity="many">%d minas</item>
+        <item quantity="other">%d minas</item>
+    </plurals>
     <string name="game_time">Tiempo de juego</string>
     <string name="settings_general">General</string>
     <string name="settings_gameplay">Jugabilidad</string>

@@ -33,7 +33,10 @@
     <string name="retry_sure">如果您開始新遊戲，您當前的進度將丟失。</string>
     <string name="show_licenses">顯示許可證</string>
     <string name="new_game_request">你想開始一個新的遊戲嗎？</string>
-    <string name="mines_remaining">%d 個地雷</string>
+    <!-- Chinese has no grammatical plural distinction. -->
+    <plurals name="mines_remaining">
+        <item quantity="other">%d 個地雷</item>
+    </plurals>
     <string name="game_time">遊戲時間</string>
     <string name="settings_general">一般的</string>
     <string name="settings_gameplay">遊戲玩法</string>

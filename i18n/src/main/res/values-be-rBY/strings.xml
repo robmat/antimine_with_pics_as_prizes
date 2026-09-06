@@ -33,7 +33,12 @@
     <string name="retry_sure">Калі вы запусціце новую гульню, прагрэс у дзейнай гульні будзе незваротна страчаны.</string>
     <string name="show_licenses">Паказаць ліцэнзіі</string>
     <string name="new_game_request">Ці вы хочаце запусціць новую гульню?</string>
-    <string name="mines_remaining">%d мін</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d міна</item>
+        <item quantity="few">%d міны</item>
+        <item quantity="many">%d мін</item>
+        <item quantity="other">%d міны</item>
+    </plurals>
     <string name="game_time">Час гульні</string>
     <string name="settings_general">Асноўныя</string>
     <string name="settings_gameplay">Геймплэй</string>

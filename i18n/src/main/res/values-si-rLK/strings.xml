@@ -33,7 +33,10 @@
     <string name="retry_sure">ඔබ නව ක්‍රීඩාවක් ආරම්භ කළහොත්, ඔබගේ වර්තමාන ප්‍රගතිය නැති වනු ඇත.</string>
     <string name="show_licenses">බලපත්ර පෙන්වන්න</string>
     <string name="new_game_request">නව ක්‍රීඩාවක් ඉදිරිපත් කිරීමට තිබේද?</string>
-    <string name="mines_remaining">පතල් %d ක්</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d පතලක්</item>
+        <item quantity="other">පතල් %d ක්</item>
+    </plurals>
     <string name="game_time">ක්රීඩා කාලය</string>
     <string name="settings_general">ජනරාල්</string>
     <string name="settings_gameplay">ක්රීඩාව</string>

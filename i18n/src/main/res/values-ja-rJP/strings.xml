@@ -33,7 +33,10 @@
     <string name="retry_sure">新しいゲームを開始すると、\n現在の進行状況は失われます。</string>
     <string name="show_licenses">ライセンスを表示</string>
     <string name="new_game_request">新しくゲームを始めますか？</string>
-    <string name="mines_remaining">%d 個の地雷</string>
+    <!-- Japanese has no grammatical plural distinction. -->
+    <plurals name="mines_remaining">
+        <item quantity="other">%d 個の地雷</item>
+    </plurals>
     <string name="game_time">ゲーム時間</string>
     <string name="settings_general">全般</string>
     <string name="settings_gameplay">ゲームプレイ</string>

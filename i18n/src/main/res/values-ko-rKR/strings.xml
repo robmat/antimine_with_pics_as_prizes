@@ -33,7 +33,12 @@
     <string name="retry_sure">새 게임을 시작하면 현재 진행 상황이 손실됩니다.</string>
     <string name="show_licenses">저작권 표시</string>
     <string name="new_game_request">새로운 게임을 시작하시겠습니까?</string>
-    <string name="mines_remaining">%d 개</string>
+    <!-- Korean has no grammatical plural distinction. Also fixes a missing
+         noun - the existing text was just "%d 개" (a bare counter with no
+         "mine" noun). -->
+    <plurals name="mines_remaining">
+        <item quantity="other">지뢰 %d개</item>
+    </plurals>
     <string name="game_time">게임 시간</string>
     <string name="settings_general">일반</string>
     <string name="settings_gameplay">게임 플레이</string>

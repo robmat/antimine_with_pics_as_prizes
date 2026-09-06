@@ -104,7 +104,12 @@ class HistoryAdapter(
 
             minefieldSize.text =
                 context.getString(i18n.string.minefield_size, save.minefield.width, save.minefield.height)
-            minesCount.text = context.getString(i18n.string.mines_remaining, save.minefield.mines)
+            minesCount.text =
+                context.resources.getQuantityString(
+                    i18n.plurals.mines_remaining,
+                    save.minefield.mines,
+                    save.minefield.mines,
+                )
         }
 
         bindReplayButton(holder.binding, save, buttonBackgroundColor)

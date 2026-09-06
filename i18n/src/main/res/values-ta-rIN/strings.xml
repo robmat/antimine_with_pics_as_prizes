@@ -33,7 +33,12 @@
     <string name="retry_sure">If you start a new game, your current progress will be lost.</string>
     <string name="show_licenses">Show Licenses</string>
     <string name="new_game_request">Do you want to start a new game?</string>
-    <string name="mines_remaining">%d mines</string>
+    <!-- Was untranslated (literal English "mines"); Tamil nouns don't
+         inflect for plural after a numeral. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d கண்ணிவெடி</item>
+        <item quantity="other">%d கண்ணிவெடி</item>
+    </plurals>
     <string name="game_time">Game Time</string>
     <string name="settings_general">General</string>
     <string name="settings_gameplay">Gameplay</string>

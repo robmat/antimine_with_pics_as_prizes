@@ -33,7 +33,12 @@
     <string name="retry_sure">यदि आप नया गेम शुरू करते हैं, तो आपकी वर्तमान प्रगति खो जाएगी.</string>
     <string name="show_licenses">लाइसेंस दिखाएं</string>
     <string name="new_game_request">क्या आप एक नया गेम शुरू करना चाहते हैं?</string>
-    <string name="mines_remaining">%d माइन</string>
+    <!-- "माइन" is an English loanword and doesn't visibly inflect for
+         plural after a numeral in colloquial Hindi. -->
+    <plurals name="mines_remaining">
+        <item quantity="one">%d माइन</item>
+        <item quantity="other">%d माइन</item>
+    </plurals>
     <string name="game_time">गेम टाइम</string>
     <string name="settings_general">सामान्य</string>
     <string name="settings_gameplay">गेमप्ले</string>

@@ -33,7 +33,10 @@
     <string name="retry_sure">Se vi komencus novan ludon, perdiĝus via kuranta progreso.</string>
     <string name="show_licenses">Montri Permesilojn</string>
     <string name="new_game_request">Ĉu vi volas komenci novan ludon?</string>
-    <string name="mines_remaining">%d minoj</string>
+    <plurals name="mines_remaining">
+        <item quantity="one">%d mino</item>
+        <item quantity="other">%d minoj</item>
+    </plurals>
     <string name="game_time">Luda Tempo</string>
     <string name="settings_general">Ĝeneralaj</string>
     <string name="settings_gameplay">Ludmaniero</string>
