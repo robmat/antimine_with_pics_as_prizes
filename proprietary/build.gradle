@@ -15,7 +15,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            // Was true. A library's own R8 pass only sees references from inside the library,
+            // so it stripped ExternalAnalyticsWrapperImpl, ReviewWrapperImpl and
+            // ExternalModuleKt - which nothing here calls, because the *app* resolves them
+            // through Koin. That only became a build failure once the app itself started
+            // minifying ("Missing class dev.lucasnlm.external.ExternalAnalyticsWrapperImpl").
+            // Shrinking is the app's job; the app's R8 covers this module's code anyway.
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -49,7 +55,7 @@ dependencies {
     implementation libs.play.services.instantapps
     implementation libs.play.services.games.v2
     implementation libs.play.services.auth
-    implementation(libs.play.services.ads) { version { strictly('24.6.0') } }
+    implementation libs.play.services.ads
     // play-services-ads transitively pins the ancient androidx.work:work-runtime:2.7.0 -
     // override it so WorkManager's own WorkDatabase creation doesn't crash on real
     // devices (see sgtpuzzles' fix for the full incident writeup).
