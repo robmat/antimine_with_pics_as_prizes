@@ -5,9 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.github.chrisbanes.photoview.PhotoView
+import com.google.android.material.card.MaterialCardView
 import dev.lucasnlm.external.AdsManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +32,22 @@ class GalleryActivity : Activity() {
         super.onCreate(savedInstanceState)
         this.requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.gallery_activity)
+        avoidNavigationBarOverlap(findViewById<MaterialCardView>(R.id.gallery_bottom_bar))
+    }
+
+    /**
+     * The system navigation bar can overlay this screen, so the bottom-pinned button bar
+     * needs its margin padded by the nav bar inset or it renders partly underneath it and
+     * its buttons become untappable.
+     */
+    private fun avoidNavigationBarOverlap(view: View) {
+        val baseBottomMargin = (view.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val navBarBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            (v.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin = baseBottomMargin + navBarBottom
+            v.requestLayout()
+            insets
+        }
     }
 
     override fun onResume() {
